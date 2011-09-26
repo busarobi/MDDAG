@@ -1,0 +1,136 @@
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Kernel.o: Kernel.cc Kernel.h /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/QCCache.o: QCCache.cc QCCache.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/QCMachine.o: QCMachine.cc QCMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h QCCache.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/QCTrainer.o: QCTrainer.cc QCTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h QCMachine.h QCCache.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SVMCache.o: SVMCache.cc SVMCache.h QCCache.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h Kernel.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h SVMClassification.h SVM.h \
+  QCMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequenceArray.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h SVMRegression.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SVM.o: SVM.cc SVM.h QCMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h QCCache.h Kernel.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequenceArray.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SVMClassification.o: SVMClassification.cc SVMClassification.h SVM.h \
+  QCMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h QCCache.h Kernel.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequenceArray.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h SVMCache.h SVMRegression.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SVMRegression.o: SVMRegression.cc SVMRegression.h SVM.h QCMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h QCCache.h Kernel.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequenceArray.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h SVMCache.h \
+  SVMClassification.h

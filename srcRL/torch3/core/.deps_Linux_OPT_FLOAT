@@ -1,0 +1,116 @@
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Allocator.o: Allocator.cc Allocator.h general.h Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Bagging.o: Bagging.cc Bagging.h Trainer.h Object.h general.h Allocator.h \
+  Machine.h DataSet.h Sequence.h List.h PreProcessing.h Stack.h \
+  Measurer.h XFile.h WeightedSumMachine.h Random.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Boosting.o: Boosting.cc Boosting.h Trainer.h Object.h general.h \
+  Allocator.h Machine.h DataSet.h Sequence.h List.h PreProcessing.h \
+  Stack.h Measurer.h XFile.h WeightedSumMachine.h ClassFormat.h \
+  BoostingMeasurer.h Random.h NullXFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/BoostingMeasurer.o: BoostingMeasurer.cc BoostingMeasurer.h Measurer.h \
+  Object.h general.h Allocator.h Machine.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h XFile.h ClassFormat.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ClassFormat.o: ClassFormat.cc ClassFormat.h Object.h general.h \
+  Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ClassFormatDataSet.o: ClassFormatDataSet.cc ClassFormatDataSet.h \
+  DataSet.h Object.h general.h Allocator.h Sequence.h List.h \
+  PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ClassMeasurer.o: ClassMeasurer.cc ClassMeasurer.h Measurer.h Object.h \
+  general.h Allocator.h Machine.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h XFile.h ClassFormat.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ClassNLLMeasurer.o: ClassNLLMeasurer.cc ClassNLLMeasurer.h Measurer.h \
+  Object.h general.h Allocator.h Machine.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h XFile.h ClassFormat.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/CmdLine.o: CmdLine.cc CmdLine.h Object.h general.h Allocator.h \
+  CmdOption.h DiskXFile.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/CmdOption.o: CmdOption.cc CmdOption.h Object.h general.h Allocator.h \
+  XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DataSet.o: DataSet.cc DataSet.h Object.h general.h Allocator.h Sequence.h \
+  List.h PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DiskDataSet.o: DiskDataSet.cc DiskDataSet.h DataSet.h Object.h general.h \
+  Allocator.h Sequence.h List.h PreProcessing.h Stack.h IOSequence.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DiskMatDataSet.o: DiskMatDataSet.cc DiskMatDataSet.h DiskDataSet.h \
+  DataSet.h Object.h general.h Allocator.h Sequence.h List.h \
+  PreProcessing.h Stack.h IOSequence.h IOBufferize.h IOAscii.h \
+  DiskXFile.h XFile.h IOMulti.h IOBin.h IOSub.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DiskXFile.o: DiskXFile.cc DiskXFile.h XFile.h Object.h general.h \
+  Allocator.h string_utils.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/FileListCmdOption.o: FileListCmdOption.cc FileListCmdOption.h CmdOption.h \
+  Object.h general.h Allocator.h DiskXFile.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/FrameSelectorDataSet.o: FrameSelectorDataSet.cc FrameSelectorDataSet.h \
+  DataSet.h Object.h general.h Allocator.h Sequence.h List.h \
+  PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/general.o: general.cc general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOAscii.o: IOAscii.cc IOAscii.h IOSequence.h Sequence.h Object.h \
+  general.h Allocator.h List.h DiskXFile.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOBin.o: IOBin.cc IOBin.h IOSequence.h Sequence.h Object.h general.h \
+  Allocator.h List.h DiskXFile.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOBufferize.o: IOBufferize.cc IOBufferize.h IOSequence.h Sequence.h \
+  Object.h general.h Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOMulti.o: IOMulti.cc IOMulti.h IOSequence.h Sequence.h Object.h \
+  general.h Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOSequenceArray.o: IOSequenceArray.cc IOSequenceArray.h Object.h \
+  general.h Allocator.h Sequence.h List.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOSequence.o: IOSequence.cc IOSequence.h Sequence.h Object.h general.h \
+  Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOSub.o: IOSub.cc IOSub.h IOBufferize.h IOSequence.h Sequence.h Object.h \
+  general.h Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/KFold.o: KFold.cc KFold.h Trainer.h Object.h general.h Allocator.h \
+  Machine.h DataSet.h Sequence.h List.h PreProcessing.h Stack.h \
+  Measurer.h XFile.h Random.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/log_add.o: log_add.cc log_add.h general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Machine.o: Machine.cc Machine.h Object.h general.h Allocator.h DataSet.h \
+  Sequence.h List.h PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MatDataSet.o: MatDataSet.cc IOBufferize.h IOSequence.h Sequence.h \
+  Object.h general.h Allocator.h List.h MatDataSet.h MemoryDataSet.h \
+  DataSet.h PreProcessing.h Stack.h IOAscii.h DiskXFile.h XFile.h \
+  IOMulti.h IOBin.h IOSub.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MeanVarNorm.o: MeanVarNorm.cc MeanVarNorm.h PreProcessing.h Sequence.h \
+  Object.h general.h Allocator.h List.h DataSet.h Stack.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Measurer.o: Measurer.cc Measurer.h Object.h general.h Allocator.h \
+  Machine.h DataSet.h Sequence.h List.h PreProcessing.h Stack.h XFile.h \
+  DiskXFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MemoryDataSet.o: MemoryDataSet.cc MemoryDataSet.h DataSet.h Object.h \
+  general.h Allocator.h Sequence.h List.h PreProcessing.h Stack.h \
+  IOSequence.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MemoryXFile.o: MemoryXFile.cc MemoryXFile.h XFile.h Object.h general.h \
+  Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MSEMeasurer.o: MSEMeasurer.cc MSEMeasurer.h Measurer.h Object.h general.h \
+  Allocator.h Machine.h DataSet.h Sequence.h List.h PreProcessing.h \
+  Stack.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MultiClassFormat.o: MultiClassFormat.cc MultiClassFormat.h ClassFormat.h \
+  Object.h general.h Allocator.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/NullXFile.o: NullXFile.cc NullXFile.h XFile.h Object.h general.h \
+  Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Object.o: Object.cc Object.h general.h Allocator.h DiskXFile.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/OneHotClassFormat.o: OneHotClassFormat.cc OneHotClassFormat.h \
+  ClassFormat.h Object.h general.h Allocator.h DataSet.h Sequence.h \
+  List.h PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/OutputMeasurer.o: OutputMeasurer.cc OutputMeasurer.h Measurer.h Object.h \
+  general.h Allocator.h Machine.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Parameters.o: Parameters.cc Parameters.h Object.h general.h Allocator.h \
+  XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/PipeXFile.o: PipeXFile.cc PipeXFile.h DiskXFile.h XFile.h Object.h \
+  general.h Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/PreProcessing.o: PreProcessing.cc PreProcessing.h Sequence.h Object.h \
+  general.h Allocator.h List.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Random.o: Random.cc Random.h general.h Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Sequence.o: Sequence.cc Sequence.h Object.h general.h Allocator.h List.h \
+  XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Stack.o: Stack.cc Stack.h Object.h general.h Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/string_utils.o: string_utils.cc general.h string_utils.h Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/TimeMeasurer.o: TimeMeasurer.cc TimeMeasurer.h Measurer.h Object.h \
+  general.h Allocator.h Machine.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h XFile.h Timer.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Timer.o: Timer.cc Timer.h Object.h general.h Allocator.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Trainer.o: Trainer.cc Trainer.h Object.h general.h Allocator.h Machine.h \
+  DataSet.h Sequence.h List.h PreProcessing.h Stack.h Measurer.h XFile.h \
+  Random.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/TwoClassFormat.o: TwoClassFormat.cc TwoClassFormat.h ClassFormat.h \
+  Object.h general.h Allocator.h DataSet.h Sequence.h List.h \
+  PreProcessing.h Stack.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/WeightedSumMachine.o: WeightedSumMachine.cc WeightedSumMachine.h \
+  Trainer.h Object.h general.h Allocator.h Machine.h DataSet.h Sequence.h \
+  List.h PreProcessing.h Stack.h Measurer.h XFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/XFile.o: XFile.cc XFile.h Object.h general.h Allocator.h

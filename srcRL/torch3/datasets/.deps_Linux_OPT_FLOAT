@@ -1,0 +1,124 @@
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DiskHTKDataSet.o: DiskHTKDataSet.cc DiskHTKDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DiskDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/MeanVarNorm.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h IOHTK.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h LexiconInfo.h Vocabulary.h \
+  PhoneInfo.h IOHTKTarget.h /home/mammoth/gerhard/Torch3/core/IOSub.h \
+  /home/mammoth/gerhard/Torch3/core/IOBufferize.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/IOMulti.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ExampleFrameSelectorDataSet.o: ExampleFrameSelectorDataSet.cc \
+  ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/HTKDataSet.o: HTKDataSet.cc HTKDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/MemoryDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/MeanVarNorm.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h IOHTK.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h LexiconInfo.h Vocabulary.h \
+  PhoneInfo.h IOHTKTarget.h /home/mammoth/gerhard/Torch3/core/IOSub.h \
+  /home/mammoth/gerhard/Torch3/core/IOBufferize.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/IOMulti.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOHTK.o: IOHTK.cc IOHTK.h /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/IOHTKTarget.o: IOHTKTarget.cc IOHTKTarget.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h LexiconInfo.h Vocabulary.h \
+  PhoneInfo.h /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LexiconInfo.o: LexiconInfo.cc LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h Vocabulary.h PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/PhoneInfo.o: PhoneInfo.cc PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Vocabulary.o: Vocabulary.cc Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h

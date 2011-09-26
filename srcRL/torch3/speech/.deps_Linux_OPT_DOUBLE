@@ -1,0 +1,146 @@
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/EditDistance.o: EditDistance.cc EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/EditDistanceMeasurer.o: EditDistanceMeasurer.cc EditDistanceMeasurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Measurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Machine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/FrameSeg.o: FrameSeg.cc FrameSeg.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/FrameSegMeasurer.o: FrameSegMeasurer.cc FrameSegMeasurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Measurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Machine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  FrameSeg.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/Grammar.o: Grammar.cc Grammar.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/SimpleDecoderSpeechHMM.o: SimpleDecoderSpeechHMM.cc \
+  SimpleDecoderSpeechHMM.h SpeechHMM.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/HMM.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Distribution.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/GradientMachine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Machine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Parameters.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Trainer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Measurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/log_add.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/EMTrainer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/ExampleFrameSelectorDataSet.h \
+  Grammar.h WordSeg.h FrameSeg.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/SpeechHMM.o: SpeechHMM.cc SpeechHMM.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/HMM.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Distribution.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/GradientMachine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Machine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Parameters.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Trainer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Measurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/log_add.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/EMTrainer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/ExampleFrameSelectorDataSet.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/WordSeg.o: WordSeg.cc WordSeg.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/WordSegMeasurer.o: WordSegMeasurer.cc WordSegMeasurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Measurer.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Machine.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  WordSeg.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  EditDistance.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h

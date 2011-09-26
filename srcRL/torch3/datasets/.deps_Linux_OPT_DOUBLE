@@ -1,0 +1,105 @@
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/DiskHTKDataSet.o: DiskHTKDataSet.cc DiskHTKDataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskDataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/MeanVarNorm.h \
+  IOHTK.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  Vocabulary.h PhoneInfo.h IOHTKTarget.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSub.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOBufferize.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOMulti.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/ExampleFrameSelectorDataSet.o: ExampleFrameSelectorDataSet.cc \
+  ExampleFrameSelectorDataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/HTKDataSet.o: HTKDataSet.cc HTKDataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/MemoryDataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DataSet.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/PreProcessing.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Stack.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/MeanVarNorm.h \
+  IOHTK.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  Vocabulary.h PhoneInfo.h IOHTKTarget.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSub.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOBufferize.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOMulti.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/IOHTK.o: IOHTK.cc IOHTK.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/IOHTKTarget.o: IOHTKTarget.cc IOHTKTarget.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/IOSequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Sequence.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/List.h \
+  LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  Vocabulary.h PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/LexiconInfo.o: LexiconInfo.cc LexiconInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  Vocabulary.h PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/PhoneInfo.o: PhoneInfo.cc PhoneInfo.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h
+/exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/objs/Linux_OPT_DOUBLE/Vocabulary.o: Vocabulary.cc Vocabulary.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/general.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Allocator.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/log_add.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/DiskXFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/XFile.h \
+  /exp/appstat/busarobi/LWC/Code/RL_Toolbox/external_libs/torch3/core/Object.h

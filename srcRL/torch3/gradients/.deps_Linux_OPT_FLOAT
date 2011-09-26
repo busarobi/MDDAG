@@ -1,0 +1,423 @@
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ClassNLLCriterion.o: ClassNLLCriterion.cc ClassNLLCriterion.h Criterion.h \
+  GradientMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/ClassFormat.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/ConnectedMachine.o: ConnectedMachine.cc ConnectedMachine.h \
+  GradientMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Criterion.o: Criterion.cc Criterion.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Exp.o: Exp.cc Exp.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/GradientMachine.o: GradientMachine.cc GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/InputsSelect.o: InputsSelect.cc InputsSelect.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Linear.o: Linear.cc Linear.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Random.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LogMixer.o: LogMixer.cc LogMixer.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LogSigmoid.o: LogSigmoid.cc LogSigmoid.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LogSoftMax.o: LogSoftMax.cc LogSoftMax.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Mixer.o: Mixer.cc Mixer.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MLP.o: MLP.cc MLP.h ConnectedMachine.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h Linear.h Tanh.h Sigmoid.h \
+  SoftMax.h LogSoftMax.h Exp.h SoftPlus.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MSECriterion.o: MSECriterion.cc MSECriterion.h Criterion.h \
+  GradientMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/MultiCriterion.o: MultiCriterion.cc MultiCriterion.h Criterion.h \
+  GradientMachine.h /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SaturationMeasurer.o: SaturationMeasurer.cc SaturationMeasurer.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Sigmoid.o: Sigmoid.cc Sigmoid.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SoftMax.o: SoftMax.cc SoftMax.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SoftPlus.o: SoftPlus.cc SoftPlus.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/StochasticGradient.o: StochasticGradient.cc StochasticGradient.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h Criterion.h \
+  /home/mammoth/gerhard/Torch3/core/Random.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SumMachine.o: SumMachine.cc SumMachine.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/Tanh.o: Tanh.cc Tanh.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/WeightedMSECriterion.o: WeightedMSECriterion.cc WeightedMSECriterion.h \
+  Criterion.h GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h

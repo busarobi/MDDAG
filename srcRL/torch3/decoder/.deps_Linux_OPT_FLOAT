@@ -1,0 +1,479 @@
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/BeamSearchDecoder.o: BeamSearchDecoder.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h BeamSearchDecoder.h \
+  DecodingHypothesis.h WordChainElemPool.h PhoneModels.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SpeechHMM.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/EditDistance.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h LinearLexicon.h \
+  LanguageModel.h LMNGram.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h LMCache.h LMCacheEntry.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DecoderBatchTest.o: DecoderBatchTest.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h DecoderBatchTest.h \
+  BeamSearchDecoder.h DecodingHypothesis.h WordChainElemPool.h \
+  PhoneModels.h /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SpeechHMM.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/EditDistance.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h LinearLexicon.h \
+  LanguageModel.h LMNGram.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h LMCache.h LMCacheEntry.h DecoderSingleTest.h \
+  string_stuff.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DecoderSingleTest.o: DecoderSingleTest.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h DecoderSingleTest.h \
+  BeamSearchDecoder.h DecodingHypothesis.h WordChainElemPool.h \
+  PhoneModels.h /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SpeechHMM.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/EditDistance.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h LinearLexicon.h \
+  LanguageModel.h LMNGram.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h LMCache.h LMCacheEntry.h \
+  /home/mammoth/gerhard/Torch3/core/IOHTK.h \
+  /home/mammoth/gerhard/Torch3/core/IOSequence.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DecodingHMM.o: DecodingHMM.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/DecodingHypothesis.o: DecodingHypothesis.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h DecodingHypothesis.h \
+  WordChainElemPool.h /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LanguageModel.o: LanguageModel.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LanguageModel.h \
+  DecodingHypothesis.h WordChainElemPool.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h LMNGram.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h LMCache.h LMCacheEntry.h string_stuff.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LinearLexicon.o: LinearLexicon.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LinearLexicon.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h PhoneModels.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SpeechHMM.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/EditDistance.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h string_stuff.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LMCache.o: LMCache.cc /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMCache.h LMCacheEntry.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LMCacheEntry.o: LMCacheEntry.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMCacheEntry.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LMInteriorLevelWordEntry.o: LMInteriorLevelWordEntry.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMInteriorLevelWordEntry.h \
+  LMInteriorLevelWordList.h /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LMInteriorLevelWordList.o: LMInteriorLevelWordList.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/LMNGram.o: LMNGram.cc /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMNGram.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h LMInteriorLevelWordList.h \
+  LMInteriorLevelWordEntry.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h LMCache.h LMCacheEntry.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/PhoneModels.o: PhoneModels.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h PhoneModels.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h DecodingHMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Measurer.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SpeechHMM.h \
+  /home/mammoth/gerhard/Torch3/core/HMM.h \
+  /home/mammoth/gerhard/Torch3/core/LexiconInfo.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Vocabulary.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PhoneInfo.h \
+  /home/mammoth/gerhard/Torch3/core/EditDistance.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/log_add.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h \
+  /home/mammoth/gerhard/Torch3/core/Trainer.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/ExampleFrameSelectorDataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/DiagonalGMM.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/EMTrainer.h string_stuff.h \
+  SpeechMLPDistr.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SpeechMLP.o: SpeechMLP.cc /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Tanh.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Sigmoid.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/SoftMax.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/LogSoftMax.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/DiskXFile.h \
+  /home/mammoth/gerhard/Torch3/core/XFile.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h string_stuff.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/SpeechMLPDistr.o: SpeechMLPDistr.cc SpeechMLPDistr.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Distribution.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Machine.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/DataSet.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/List.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/PreProcessing.h \
+  /home/mammoth/gerhard/Torch3/core/Sequence.h \
+  /home/mammoth/gerhard/Torch3/core/Stack.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h \
+  /home/mammoth/gerhard/Torch3/core/Parameters.h \
+  /home/mammoth/gerhard/Torch3/core/Object.h SpeechMLP.h \
+  /home/mammoth/gerhard/Torch3/core/ConnectedMachine.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h \
+  /home/mammoth/gerhard/Torch3/core/Linear.h \
+  /home/mammoth/gerhard/Torch3/core/GradientMachine.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/string_stuff.o: string_stuff.cc string_stuff.h \
+  /home/mammoth/gerhard/Torch3/core/general.h \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h
+/home/mammoth/gerhard/Torch3/objs/Linux_OPT_FLOAT/WordChainElemPool.o: WordChainElemPool.cc \
+  /home/mammoth/gerhard/Torch3/core/Allocator.h \
+  /home/mammoth/gerhard/Torch3/core/general.h WordChainElemPool.h
