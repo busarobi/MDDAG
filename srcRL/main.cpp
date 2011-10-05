@@ -22,6 +22,7 @@
 #include "cvfunctionlearner.h"
 
 #include "cadaptivesoftmaxnetwork.h"
+#include "crbftrees.h"
 #include "ctorchvfunction.h"
 #include "ccontinuousactions.h"
 #include "MLP.h"
@@ -56,9 +57,6 @@
 using namespace std;
 using namespace MultiBoost;
 using namespace Torch;
-
-
-static const char CURRENT_VERSION[] = "1.1";
 
 //#define LOGQTABLE				
 //////////////////////////////////////////////////////////////////////////
@@ -297,7 +295,7 @@ int main(int argc, const char *argv[])
 	int steps = 0;
     int ges_failed = 0, ges_succeeded = 0, last_succeeded = 0;	
     int totalSteps = 0;
-	
+
 	// Initialize the random generator 
 	srand((unsigned int) time(NULL));
 	
@@ -414,7 +412,7 @@ int main(int argc, const char *argv[])
 	if (verbose>4)
 	{
 		char *debugFile = "debug.txt";
-		//DebugInit("debug", "+", false);
+//		DebugInit("debug.txt", "+", false);
 	}
 	
 	if (args.hasArgument("gridworldfilename"))
@@ -483,12 +481,15 @@ int main(int argc, const char *argv[])
 		int featnum = 11;
 		if ( args.hasArgument("numoffeat") ) featnum = args.getValue<int>("numoffeat", 0);			
 			
+        
 		CRBFCenterFeatureCalculator* rbfFC;
+        CRBFCenterNetwork* rbfNW;
         CQFunction * qData;
         
+        int sptype = -1;
 		if ( args.hasArgument("statespace") )
 		{
-			int sptype = args.getValue<int>("statespace", 0);
+			sptype = args.getValue<int>("statespace", 0);
 			
             if (sptype == 2 ) {
                 CStateModifier * nnStateModifier = classifierContinous->getStateSpaceNN();
@@ -528,6 +529,9 @@ int main(int argc, const char *argv[])
                 else if (sptype==1) {
                     discState = classifierContinous->getStateSpaceRBF(featnum);
                 }
+                else if (sptype==3) {
+                    discState = classifierContinous->getStateSpaceRBFAdaptiveCenters(featnum, &rbfFC, &rbfNW);
+                }
                 else {
                     cout << "unkown statespcae" << endl;
                 }
@@ -537,14 +541,14 @@ int main(int argc, const char *argv[])
                 
                 
                 // optimistic intial values
-                const int numWeights = qData->getNumWeights();
-                double weights[numWeights];
-                qData->getWeights(weights);
-                
-                for (int i = numWeights/3; i < numWeights*2/3; ++i) {
-                    weights[i] = 2000;
-                }
-                qData->setWeights(weights);
+//                const int numWeights = qData->getNumWeights();
+//                double weights[numWeights];
+//                qData->getWeights(weights);
+//                
+//                for (int i = numWeights/3; i < numWeights*2/3; ++i) {
+//                    weights[i] = 0;//2000;
+//                }
+//                qData->setWeights(weights);
                 
             }
 		} else {
@@ -576,12 +580,23 @@ int main(int argc, const char *argv[])
 		// The Q-Function needs to know which actions and which state it has to use
 
 //		CFeatureQFunction *qData = new CFeatureQFunction(agentContinous->getActions(), discState);
-        
-        
-        
+
+        //obsolete
 //        CQFunctionFromGradientFunction *qData = new CQFunctionFromGradientFunction(new CContinuousAction(new CContinuousActionProperties(0)), torchGradientFunction, agentContinous->getActions(), classifierContinous->getStateProperties());
+
+
 		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
         
+        //gradient stuff !!!
+        CDiscreteResidual* residualFunction = new CDiscreteResidual(0.95);
+//        CConstantBetaCalculator* betaCalculator = new CConstantBetaCalculator(0.8);
+        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.9) ; //mu and maxBeta
+        CResidualBetaFunction* residualGradient = new CResidualBetaFunction(betaCalculator, residualFunction);
+        
+
+//        CTDGradientLearner *qFunctionLearner = new CTDGradientLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient);
+//        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient, betaCalculator);
+
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
 
@@ -660,6 +675,7 @@ int main(int argc, const char *argv[])
 		cout << "Valid: " << ovaccTrain << " Test: " << ovaccTest << endl << flush;
 		
         double bestAcc=0., bestWhypNumber=0.;
+        int bestEpNumber = 0;
         
 		// Learn for 500 Episodes
 		for (int i = 0; i < episodeNumber; i++)
@@ -778,7 +794,18 @@ int main(int argc, const char *argv[])
 				sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );
 				evalTest.classficationAccruacy(bres,logfname);			
                 
+                if (sptype==3)
+                {
+                    cout << "CENTERS : " << endl;                    
+                    rbfFC->saveData(stdout);
+                    //                for (int k = 0 ; k < rbfFC->getNumCenters(); ++k) {
+                    //                    cout << dynamic_cast<CRBFCenterNetworkSimpleSearch*> ( rbfFC )->getCenter(k)->getCenter()[0] << "   ";
+                    //                }
+                    //                cout << endl;                    
+                }
+
                 if (bres.acc > bestAcc) {
+                    bestEpNumber = i;
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
                     
@@ -806,7 +833,6 @@ int main(int argc, const char *argv[])
 //                        rbfWeights << weights[w] << " ";
 //                    }
 //                    rbfWeights << endl << endl;
-
                     
                 }
             
@@ -814,7 +840,7 @@ int main(int argc, const char *argv[])
 				cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
 				cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
 				
-                cout << endl << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+                cout << endl << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
 				classifierContinous->outPutStatistic( bres );
 				

@@ -80,7 +80,7 @@ namespace MultiBoost {
 		CStateModifier* getStateSpace( int divNum );
 		CStateModifier* getStateSpace( int divNum, double maxVal );
 		CStateModifier* getStateSpaceRBF(unsigned int partitionNumber);
-		CStateModifier* getStateSpaceRBFAdaptiveCenters(unsigned int numberOfFeatures, CRBFCenterFeatureCalculator** rbfFC);
+		CStateModifier* getStateSpaceRBFAdaptiveCenters(unsigned int numberOfFeatures, CRBFCenterFeatureCalculator** rbfFC, CRBFCenterNetwork** rbfNW);
         CStateModifier* getStateSpaceNN();
         
 		void outPutStatistic( BinaryResultStruct& bres );

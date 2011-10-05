@@ -314,38 +314,42 @@ namespace MultiBoost {
 		
 		CRBFCenterNetwork* network = new CRBFCenterNetworkSimpleSearch(numClasses);
 		
-        for (int i=0; i < numClasses; ++i) {
-            ColumnVector* center = new ColumnVector(numberOfFeatures);
-            ColumnVector* sigma = new ColumnVector(numberOfFeatures);
-            for (int j=0; j < numberOfFeatures; ++j) {
-                center->element(j) = 1./numberOfFeatures + i;
-                sigma->element(j) = 1. / (2*numberOfFeatures);
+        for (int j=0; j < numberOfFeatures; ++j) {
+            
+            ColumnVector* center = new ColumnVector(numClasses);
+            ColumnVector* sigma = new ColumnVector(numClasses);
+            
+            //TODO: works only for binary !
+            for (int i=0; i < numClasses; ++i) {
+                center->element(i) = 1./numberOfFeatures * j;
+                sigma->element(i) = 1. / (2*numberOfFeatures);
             }
             
             CRBFBasisFunction* rbf = new CRBFBasisFunction(center, sigma);
             network->addCenter(rbf);
         }
         
-//        CStateProperties* stateProp = new CStateProperties(numberOfFeatures, 1);
+        //        CStateProperties* stateProp = new CStateProperties(numberOfFeatures, 1);
         
 		//CStateProperties *stateProperties = new CStateProperties(1,0);
-//		CRBFCenterFeatureCalculator* rbffeat = new CRBFCenterFeatureCalculator(this->properties, network, numberOfFeatures);
-		CRBFCenterFeatureCalculator* rbffeat = new CRBFCenterFeatureCalculator(this->properties, network, 2);
-		*rbfFC = rbffeat;
+        //		CRBFCenterFeatureCalculator* rbffeat = new CRBFCenterFeatureCalculator(this->properties, network, numberOfFeatures);
+		CRBFCenterFeatureCalculator* rbffeat = new CRBFCenterFeatureCalculator(this->properties, network, 1);
+		*rbfNW = network;
+        *rbfFC = rbffeat;
         
         
-//        for (int i=0; i < numberOfFeatures; ++i) {
-//            ColumnVector* center = new ColumnVector(numClasses);
-//            ColumnVector* sigma = new ColumnVector(numClasses);
-//            for (int j=0; j < numClasses; ++j) {
-//                center->element(j) = 1./numberOfFeatures + i;
-//                sigma->element(j) = 1. / (2*numberOfFeatures);
-//            }
-//            
-//            CRBFBasisFunction* rbf = new CRBFBasisFunction(center, sigma);
-//            rbffeat->addCenter(rbf);
-//        }
-
+        //        for (int i=0; i < numberOfFeatures; ++i) {
+        //            ColumnVector* center = new ColumnVector(numClasses);
+        //            ColumnVector* sigma = new ColumnVector(numClasses);
+        //            for (int j=0; j < numClasses; ++j) {
+        //                center->element(j) = 1./numberOfFeatures + i;
+        //                sigma->element(j) = 1. / (2*numberOfFeatures);
+        //            }
+        //            
+        //            CRBFBasisFunction* rbf = new CRBFBasisFunction(center, sigma);
+        //            rbffeat->addCenter(rbf);
+        //        }
+        
         
 		//		return rbfCalc;
 		CAbstractStateDiscretizer* disc= new AdaBoostMDPClassifierSimpleDiscreteSpace(_data->getIterationNumber()+1);

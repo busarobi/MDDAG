@@ -51,6 +51,10 @@
 #include "cresiduals.h"
 #include "cfeaturefunction.h"
 
+// For RBF network
+#include "ckdtrees.h"
+#include "cadaptivesoftmaxnetwork.h"
+
 CTDLearner::CTDLearner(CRewardFunction *rewardFunction,CAbstractQFunction *qfunction, CAbstractQETraces *etraces, CAgentController *estimationPolicy) : CSemiMDPRewardListener(rewardFunction) {
     this->qfunction = qfunction;
     this->etraces = etraces;
@@ -348,8 +352,20 @@ void CTDGradientLearner::addETraces(CStateCollection *oldState, CStateCollection
 }
 
 
-CTDResidualLearner::CTDResidualLearner(CRewardFunction *rewardFunction, CGradientQFunction *qfunction, CAgentController *agent, CResidualFunction *residual, CResidualGradientFunction *residualGradient, CAbstractBetaCalculator *betaCalc) : CTDGradientLearner(rewardFunction, qfunction, agent, residual, residualGradient)
+CTDResidualLearner::CTDResidualLearner(CRewardFunction *rewardFunction, 
+                                       CGradientQFunction *qfunction, 
+                                       CAgentController *agent, 
+                                       CResidualFunction *residual, 
+                                       CResidualGradientFunction *residualGradient, 
+                                       CAbstractBetaCalculator *betaCalc,
+                                       bool adaptive)
+
+: CTDGradientLearner(rewardFunction, qfunction, agent, residual, residualGradient)
+
 {
+    adaptiveFeatures = adaptive;
+    network = NULL;
+    
 	this->betaCalculator = betaCalc;
 
 	residualETraces = new CGradientQETraces(qfunction);
@@ -405,6 +421,10 @@ void CTDResidualLearner::learnStep(CStateCollection *oldState, CAction *action, 
 		}
 		assert(qfunction->getActions()->getIndex(lastEstimatedAction) >= 0);
 	}
+    
+    //FIXME: not sure whether this should be here or not
+    if (adaptiveFeatures)
+        adaptFeatures();
 
 
 	double td = getParameter("QLearningRate") * getTemporalDifference(oldState, action, reward, newState);
@@ -415,6 +435,33 @@ void CTDResidualLearner::learnStep(CStateCollection *oldState, CAction *action, 
 	gradientQETraces->updateQFunction(td * (1- beta));
 	residualETraces->updateQFunction(td * beta);
 }
+
+////////////////////////////////////////////////////////////////////////////////////
+
+void CTDResidualLearner::setNetwork(CRBFCenterNetwork* nw) {
+    network = nw;
+}
+
+CRBFCenterNetwork* CTDResidualLearner::getNetwork() {
+    return network;
+}
+
+//TODO: extend to multiclass
+void CTDResidualLearner::adaptFeatures() {
+    int numCenters = network->getNumCenters();
+//    int numDim = network->getNumDimensions();
+    
+    for (int i = 0; i < numCenters; ++i) {
+        CRBFBasisFunction* rbf = network->getCenter(i);
+        
+        ColumnVector* centers = rbf->getCenter();
+        ColumnVector* sigmas = rbf->getSigma();
+        
+        CState *state = stateCol->getState( originalState);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 
 void CTDResidualLearner::addETraces(CStateCollection *oldState, CStateCollection *newState, CAction *action, double td)
 {

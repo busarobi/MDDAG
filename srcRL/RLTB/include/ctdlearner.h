@@ -82,6 +82,8 @@ CTDLearner has following Parameters:
 @see CSarsaLearner
 */
 
+class CRBFCenterNetwork;
+
 class CTDLearner : public CSemiMDPRewardListener, public CErrorSender
 {
   protected:
@@ -220,6 +222,10 @@ public:
 class CTDResidualLearner : public CTDGradientLearner
 {
 protected:
+    
+    //perso modif
+    bool adaptiveFeatures;
+    CRBFCenterNetwork* network;
 	
 	CGradientQETraces *residualGradientTraces;
 	CGradientQETraces *directGradientTraces;
@@ -231,7 +237,13 @@ protected:
 	virtual void learnStep(CStateCollection *oldState, CAction *action, double reward, CStateCollection *nextState);
 
 public:
-	CTDResidualLearner(CRewardFunction *rewardFunction, CGradientQFunction *qfunction, CAgentController *agent, CResidualFunction *residual, CResidualGradientFunction *residualGradient, CAbstractBetaCalculator *betaCalc);
+	CTDResidualLearner(CRewardFunction *rewardFunction, 
+                       CGradientQFunction *qfunction, 
+                       CAgentController *agent, 
+                       CResidualFunction *residual, 
+                       CResidualGradientFunction *residualGradient, 
+                       CAbstractBetaCalculator *betaCalc,
+                       bool adaptive=false);
 
 	~CTDResidualLearner();
 
@@ -240,6 +252,11 @@ public:
 	virtual void addETraces(CStateCollection *oldState, CStateCollection *newState, CAction *action, double td);
 
 	CGradientQETraces *getResidualETraces() {return residualETraces;};
+    
+    void adaptFeatures();
+    
+    void setNetwork(CRBFCenterNetwork* nw);        
+    CRBFCenterNetwork* getNetwork();
 };
 
 
