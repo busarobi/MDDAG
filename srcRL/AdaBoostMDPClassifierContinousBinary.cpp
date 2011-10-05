@@ -299,7 +299,8 @@ namespace MultiBoost {
 	}	
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
-	CStateModifier* AdaBoostMDPClassifierContinousBinary::getStateSpaceRBFAdaptiveCenters(unsigned int numberOfFeatures, CRBFCenterFeatureCalculator** rbfFC)
+
+	CStateModifier* AdaBoostMDPClassifierContinousBinary::getStateSpaceRBFAdaptiveCenters(unsigned int numberOfFeatures, CRBFCenterFeatureCalculator** rbfFC, CRBFCenterNetwork** rbfNW)
 	{
 		// Now we can already create our RBF network
 		// Therefore we will use a CRBFFeatureCalculator, our feature calculator uses both dimensions of the model state 
