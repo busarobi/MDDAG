@@ -52,7 +52,7 @@
 #include "cfeaturefunction.h"
 
 // For RBF network
-#include "ckdtrees.h"
+#include "crbftrees.h"
 #include "cadaptivesoftmaxnetwork.h"
 
 CTDLearner::CTDLearner(CRewardFunction *rewardFunction,CAbstractQFunction *qfunction, CAbstractQETraces *etraces, CAgentController *estimationPolicy) : CSemiMDPRewardListener(rewardFunction) {
@@ -457,7 +457,7 @@ void CTDResidualLearner::adaptFeatures() {
         ColumnVector* centers = rbf->getCenter();
         ColumnVector* sigmas = rbf->getSigma();
         
-        CState *state = stateCol->getState( originalState);
+//        CState *state = stateCol->getState( originalState);
     }
 }
 
