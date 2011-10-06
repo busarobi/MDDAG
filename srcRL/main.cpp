@@ -30,6 +30,7 @@
 #include "LogRBF.h"
 #include "Linear.h"
 #include "Tanh.h"
+#include "RBFBasedQFunction.h"
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,7 @@
 using namespace std;
 using namespace MultiBoost;
 using namespace Torch;
+
 
 //#define LOGQTABLE				
 //////////////////////////////////////////////////////////////////////////
@@ -487,7 +489,7 @@ int main(int argc, const char *argv[])
         
 		CRBFCenterFeatureCalculator* rbfFC;
         CRBFCenterNetwork* rbfNW;
-        CQFunction * qData;
+        CAbstractQFunction * qData;
         
         int sptype = -1;
 		if ( args.hasArgument("statespace") )
@@ -520,7 +522,7 @@ int main(int argc, const char *argv[])
                     
                     CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(&gm);
                     CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
-                    qData->setVFunction(*acIt, vFunction);
+                    static_cast<CQFunction*>(qData)->setVFunction(*acIt, vFunction);
                     
                 }
                 
@@ -528,19 +530,28 @@ int main(int argc, const char *argv[])
             else {
                 if (sptype==0) {
                     discState = classifierContinous->getStateSpace(featnum);
+					agentContinous->addStateModifier(discState);
+					qData = new CFeatureQFunction(agentContinous->getActions(), discState);					
                 }
                 else if (sptype==1) {
                     discState = classifierContinous->getStateSpaceRBF(featnum);
+					agentContinous->addStateModifier(discState);
+					qData = new CFeatureQFunction(agentContinous->getActions(), discState);					
                 }
                 else if (sptype==3) {
                     discState = classifierContinous->getStateSpaceRBFAdaptiveCenters(featnum, &rbfFC, &rbfNW);
+					agentContinous->addStateModifier(discState);
+					qData = new CFeatureQFunction(agentContinous->getActions(), discState);					
                 }
+				else if (sptype==4) {
+					discState = classifierContinous->getStateSpaceForRBFQFunction(featnum);
+					agentContinous->addStateModifier(discState);
+					qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
+				}
                 else {
                     cout << "unkown statespcae" << endl;
                 }
                 
-                agentContinous->addStateModifier(discState);
-                qData = new CFeatureQFunction(agentContinous->getActions(), discState);
                 
                 
                 // optimistic intial values
@@ -807,7 +818,7 @@ int main(int argc, const char *argv[])
                     //                cout << endl;                    
                 }
 
-                if (bres.acc > bestAcc) {
+                if ((bres.acc > bestAcc)&&(sptype!=4)) {
                     bestEpNumber = i;
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
@@ -838,7 +849,10 @@ int main(int argc, const char *argv[])
 //                    rbfWeights << endl << endl;
                     
                 }
-            
+                if ((bres.acc > bestAcc)&&(sptype==4)) {
+					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
+				}
+					
 				cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
 				cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
 				cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;

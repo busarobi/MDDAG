@@ -14,6 +14,8 @@
 #include "cstateproperties.h"
 #include "clinearfafeaturecalculator.h"
 #include "crbftrees.h"
+#include "RBFBasedQFunction.h"
+#include "RBFStateModifier.h"
 
 #include <math.h> // for exp
 
@@ -379,5 +381,14 @@ namespace MultiBoost {
 		_outputStream << bres.iterNumber << " " <<  bres.origAcc << " " << bres.acc << " " << bres.usedClassifierAvg << " " << bres.avgReward << " " << bres.TP << " " << bres.TN << endl;
 	}
 	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------	
+	CStateModifier* AdaBoostMDPClassifierContinousBinary::getStateSpaceForRBFQFunction(int numOfFeatures)
+	{
+		int numClasses = getNumClasses();
+		CStateModifier* retVal = new RBFStateModifier(numOfFeatures, numClasses-1, _data->getIterationNumber()+1 );
+		return retVal;
+	}
 	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	
 } // end of namespace MultiBoost
