@@ -414,10 +414,10 @@ int main(int argc, const char *argv[])
 	string gridworldFileName = "Gridworld_10x10.txt";
 	
 	// Console Input Processing
-	if (verbose>4)
+	if (verbose>5)
 	{
 		char *debugFile = "debug.txt";
-//		DebugInit("debug.txt", "+", false);
+		DebugInit("debug.txt", "+", false);
 	}
 	
 	if (args.hasArgument("gridworldfilename"))
@@ -547,6 +547,11 @@ int main(int argc, const char *argv[])
 					discState = classifierContinous->getStateSpaceForRBFQFunction(featnum);
 					agentContinous->addStateModifier(discState);
 					qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
+                    
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(0.3) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0.3) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0.3) ;
+
 				}
                 else {
                     cout << "unkown statespcae" << endl;
@@ -603,13 +608,13 @@ int main(int argc, const char *argv[])
         
         //gradient stuff !!!
         CDiscreteResidual* residualFunction = new CDiscreteResidual(0.95);
-//        CConstantBetaCalculator* betaCalculator = new CConstantBetaCalculator(0.8);
-        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.9) ; //mu and maxBeta
+        CConstantBetaCalculator* betaCalculator = new CConstantBetaCalculator(1);
+//        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.99) ; //mu and maxBeta
         CResidualBetaFunction* residualGradient = new CResidualBetaFunction(betaCalculator, residualFunction);
         
 
 //        CTDGradientLearner *qFunctionLearner = new CTDGradientLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient);
-//        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient, betaCalculator);
+//        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, dynamic_cast<CGradientQFunction*>(qData), agentContinous, residualFunction, residualGradient, betaCalculator);
 
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
