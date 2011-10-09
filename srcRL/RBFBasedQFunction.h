@@ -200,121 +200,27 @@ public:
         }
     }
     
-//	CAbstractQETraces* getStandardETraces()
-//	{
-//		return new RBFQETraces(this);
-//	}
-	
     //TODO:saveQTable and saveQActionTable
 	virtual void saveQTable( const char* fname )
 	{
-//		FILE* outFile = fopen( fname, "w" );
-//		
-//		for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
-//		{
-////TMP			fprintf(outFile,"%d ", dynamic_cast<CAdaBoostAction>(*it)->getMode() );
-//		}
-//		fprintf(outFile,"\n");
-//		
-//		for(int i=0; i<_rbfs.size(); ++i)
-//		{
-//			for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
-//			{
-//			}
-//		}
-//				
-//		fclose( outFile );
-	}
-    
-    void getWeights(double *weights)
-    {
-        double *offset = weights;
-
-        CActionSet::iterator it=(*actions).begin();
-        for(;it!=(*actions).end(); ++it )
-        {				
-            int iterationNumber = _rbfs[*it].size();
-            for( int i=0; i<iterationNumber; ++i)
-            {                
-                int numFeat = _rbfs[*it][i].size();
-				for (int j = 0; j < numFeat; ++j) {
-                    offset[j] = _rbfs[*it][i][j].getAlpha();
-                }
-                offset += numFeat;
+		FILE* outFile = fopen( fname, "w" );
+		
+		for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
+		{
+			fprintf(outFile,"%d ", dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode() );
+		}
+		fprintf(outFile,"\n");
+		
+		for(int i=0; i<_rbfs.size(); ++i)
+		{
+			for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
+			{
 			}
 		}
-    }
-    
-    void setWeights(double *weights)
-    {
-        double *offset = weights;
-        
-        CActionSet::iterator it=(*actions).begin();
-        for(;it!=(*actions).end(); ++it )
-        {				
-            int iterationNumber = _rbfs[*it].size();
-            for( int i=0; i<iterationNumber; ++i)
-            {                
-                int numFeat = _rbfs[*it][i].size();
-				for (int j = 0; j < numFeat; ++j) {
-                    _rbfs[*it][i][j].setAlpha(offset[j]);
-                }
-                offset += numFeat;
-			}
-		}        
-    }
-    
-    void getGradient(CStateCollection *stateCol, CAction *action, CActionData *data, CFeatureList *gradientFeatures)
-    {    
-        CState* state = stateCol->getState();
-        int currIter = state->getDiscreteState(0);
-
-//        int numIterations = _rbfs[action].size();
-        vector<RBF>& rbfs = _rbfs[action][currIter];
-        int numCenters = rbfs.size();
-        
-        for (int i = 0; i < numCenters; ++i) {
-            
-            double alpha = rbfs[i].getAlpha();
-            gradientFeatures->update(i, alpha);
-        }
-        
-        int offset = 0;
-        CActionSet::iterator it=(*actions).begin();
-        for(;it!=(*actions).end(); ++it )
-        {				
-            if ( *it == action) {
-                break;
-            }
-            
-            int numIt = _rbfs[*it].size();
-            for (int i=0; i < numIt; ++i) {
-                offset += _rbfs[*it][i].size();
-            }
-        }
-        
-        gradientFeatures->addIndexOffset(offset);
-    }
-    
-    void updateWeights(CFeatureList *features)
-    {
-        CFeatureList::iterator itFeat = features->begin();
-//        int offset = 0;
-        CActionSet::iterator it=(*actions).begin();
-        for(;it!=(*actions).end(); ++it )
-		{
-            int iterationNumber = _rbfs[*it].size();
-            for( int i=0; i<iterationNumber; ++i)
-			{
-                int numCenters = _rbfs[*it][i].size();
-                for (int j=0; j<numCenters; ++j) {
-                    _rbfs[*it][i][j].setAlpha( (*itFeat)->factor );
-                    ++itFeat;
-                }
-            }
-        }
-    }
-
+				
+		fclose( outFile );
+	}
+    	
 	CAbstractQETraces* getStandardETraces()
 	{
 		//return new RBFQETraces(this);
