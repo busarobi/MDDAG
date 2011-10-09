@@ -44,7 +44,7 @@ public:
 };
 
 
-class RBFBasedQFunctionBinary : public CGradientQFunction // CAbstractQFunction
+class RBFBasedQFunctionBinary : public CAbstractQFunction // CAbstractQFunction
 {
 protected:
 //	vector< map< CAction*, vector<RBF> > >	_rbfs;
@@ -57,11 +57,11 @@ protected:
     double _muMean;
     double _muSigma;
 public:
-	RBFBasedQFunctionBinary(CActionSet *actions, CStateModifier* statemodifier ) : CGradientQFunction(actions)
+	RBFBasedQFunctionBinary(CActionSet *actions, CStateModifier* statemodifier ) : CAbstractQFunction(actions)
 	{
         //CGradientQFunction ancestor init
-        addType(GRADIENTQFUNCTION);        
-        this->localGradientQFunctionFeatures = new CFeatureList();
+        //addType(GRADIENTQFUNCTION);        
+        //this->localGradientQFunctionFeatures = new CFeatureList();
         
 		// the statemodifier must be RBFStateModifier
 		RBFStateModifier* smodifier = dynamic_cast<RBFStateModifier*>( statemodifier );
@@ -172,8 +172,6 @@ public:
 	virtual void updateValue(CStateCollection *state, CAction *action, double td, CActionData * = NULL)
     // notes : never called by the gradient learner...
     {
-        cout << "Ah! Shouldn't be called !!!";
-        exit(-1);
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
 		double margin = currState->getContinuousState(0);
@@ -316,6 +314,12 @@ public:
             }
         }
     }
+
+	CAbstractQETraces* getStandardETraces()
+	{
+		//return new RBFQETraces(this);
+		return new RBFQETraces(this);
+	}
     
 };
 
