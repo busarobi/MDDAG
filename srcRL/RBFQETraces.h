@@ -72,7 +72,7 @@ public:
 		vector<CAction*>::reverse_iterator invitAction = _actions.rbegin();
 		for (; invitState != _states.rend(); ++invitState, ++invitAction )
 		{
-			CStateCollectionnt* currentState = *invitState;
+			CStateCollection* currentState = *invitState;
 			CAction* currentAction = *invitAction;
 			qFunction->updateValue(currentState, currentAction, td, NULL);
 		}
