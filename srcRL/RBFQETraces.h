@@ -13,6 +13,7 @@
 
 #include "cqetraces.h"
 #include "AdaBoostMDPClassifierAdv.h"
+#include "RBFBasedQFunction.h"
 #include <vector>
 #include <list>
 
@@ -70,7 +71,9 @@ public:
         int i = 0;
         while (eIt != _eTraces.end())
         {
-            (*eIt) = (*eIt) * mult;
+            //double gradient = qFunction->getGradient(*stateIt, action);
+            
+//            (*eIt) = (*eIt) * mult + gradient;
             if (fabs(*eIt) < treshold)
             {
                 _eTraces.erase(eIt, _eTraces.end());
@@ -115,7 +118,12 @@ public:
 		{
 			CStateCollection* currentState = *invitState;
 			CAction* currentAction = *invitAction;
-			qFunction->updateValue(currentState, currentAction, td, NULL);
+            
+            vector<vector<double> > eTraces;
+            RBFBasedQFunctionBinary* function; //= dynamic_cast<RBFBasedQFunctionBinary* >(qFunction);
+            //( qFunction )->getGradient(currentState, currentAction, &eTraces);
+            
+			qFunction->updateValue(currentState, currentAction, (*invitTrace)*td, NULL);
 		}
 	}	
 };

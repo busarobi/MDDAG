@@ -38,9 +38,16 @@ public:
 	
 	virtual double getValue( double x ) 
 	{ 
-		double retVal = _alpha * exp( - (( x-_mean )*( x-_mean ))/(2*_sigma*_sigma));
+		double retVal = _alpha * getActivationFactor(x);
 		return retVal;
 	}
+    
+    virtual double getActivationFactor( double x ) 
+	{ 
+		double retVal = exp( - (( x-_mean )*( x-_mean ))/(2*_sigma*_sigma));
+		return retVal;
+	}
+    
 };
 
 
@@ -169,8 +176,7 @@ public:
 //	}
 	
 //    void adaptCenters(CStateCollection *state, CAction *action) {
-	virtual void updateValue(CStateCollection *state, CAction *action, double td, CActionData * = NULL)
-    // notes : never called by the gradient learner...
+	virtual void updateValue(CStateCollection *state, CAction *action, vector<double>& eTraces)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -179,6 +185,8 @@ public:
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
         
+        assert(numCenters = eTraces.size());
+        
         for (int i = 0; i < numCenters; ++i) {
             
             double alpha = rbfs[i].getAlpha();
@@ -186,7 +194,7 @@ public:
             double sigma = rbfs[i].getSigma();
 
             double distance = margin - mean;
-            double rbfValue = rbfs[i].getValue(margin);
+            double rbfValue = rbfs[i].getActivationFactor(margin);
 //            double qValue = this->getValue(state, action);
             
             double alphaGrad = rbfValue;
@@ -194,9 +202,41 @@ public:
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
             
             //update the center and shape
-            rbfs[i].setAlpha(alpha + _muAlpha * alphaGrad);
-            rbfs[i].setMean(mean + _muMean * meanGrad);
-            rbfs[i].setSigma(sigma + _muSigma * sigmaGrad);
+            rbfs[i].setAlpha(alpha + eTraces[i] * _muAlpha );
+            rbfs[i].setMean(mean + eTraces[i] * _muMean );
+            rbfs[i].setSigma(sigma + eTraces[i] * _muSigma );
+        }
+    }
+    
+    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& eTraces)
+    {
+        CState* currState = state->getState();
+        int currIter = currState->getDiscreteState(0);
+		double margin = currState->getContinuousState(0);
+        
+        vector<RBF>& rbfs = _rbfs[action][currIter];
+        int numCenters = rbfs.size();//_rbfs[currIter][action].size();
+        
+        eTraces.clear();
+        eTraces.resize(numCenters);
+        
+        for (int i = 0; i < numCenters; ++i) {
+            
+            double alpha = rbfs[i].getAlpha();
+            double mean = rbfs[i].getMean();
+            double sigma = rbfs[i].getSigma();
+            
+            double distance = margin - mean;
+            double rbfValue = rbfs[i].getActivationFactor(margin);
+
+            double alphaGrad = rbfValue;
+            double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
+            double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
+            
+            eTraces[i].resize(3);
+            eTraces[i][0] = alphaGrad;
+            eTraces[i][1] = meanGrad;
+            eTraces[i][2] = sigmaGrad;
         }
     }
     
