@@ -109,7 +109,9 @@ public:
 	
 	/// Interface function for updating the Q-Values of all State-Action Pairs in the ETraces
 	virtual void updateQFunction(double td) 
-	{
+	{		
+		qFunction->updateValue(*_states.rbegin(), *_actions.rbegin(), td, NULL);
+		/*
 		list<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
 		list<CAction*>::reverse_iterator invitAction = _actions.rbegin();
         list<double>::reverse_iterator invitTrace = _eTraces.rbegin();
@@ -120,11 +122,12 @@ public:
 			CAction* currentAction = *invitAction;
             
             vector<vector<double> > eTraces;
-            RBFBasedQFunctionBinary* function; //= dynamic_cast<RBFBasedQFunctionBinary* >(qFunction);
+            //RBFBasedQFunctionBinary* function; //= dynamic_cast<RBFBasedQFunctionBinary* >(qFunction);
             //( qFunction )->getGradient(currentState, currentAction, &eTraces);
             
 			qFunction->updateValue(currentState, currentAction, (*invitTrace)*td, NULL);
 		}
+		*/
 	}	
 };
 

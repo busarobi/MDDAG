@@ -54,22 +54,18 @@ public:
 class RBFBasedQFunctionBinary : public CAbstractQFunction // CAbstractQFunction
 {
 protected:
-//	vector< map< CAction*, vector<RBF> > >	_rbfs;
+
 	map< CAction*, vector<vector<RBF> > > 	_rbfs;
 	int _featureNumber;	
 	CActionSet* _actions;
 	int _numberOfActions;
+	double _gradCoeff;
     
-    double _muAlpha;
-    double _muMean;
-    double _muSigma;
 public:
+    //-----------------------------------------------------
+    //-----------------------------------------------------			
 	RBFBasedQFunctionBinary(CActionSet *actions, CStateModifier* statemodifier ) : CAbstractQFunction(actions)
 	{
-        //CGradientQFunction ancestor init
-        //addType(GRADIENTQFUNCTION);        
-        //this->localGradientQFunctionFeatures = new CFeatureList();
-        
 		// the statemodifier must be RBFStateModifier
 		RBFStateModifier* smodifier = dynamic_cast<RBFStateModifier*>( statemodifier );
 		
@@ -93,8 +89,11 @@ public:
                 _rbfs[*it][i].resize(_featureNumber);
 			}
 		}
+		
+		_gradCoeff = 0.3;
 	}
-    
+    //-----------------------------------------------------
+    //-----------------------------------------------------	
     void uniformInit()
     {
         CActionSet::iterator it=_actions->begin();
@@ -113,25 +112,17 @@ public:
 //                    }
 
                     
-                    _rbfs[*it][i][j].setSigma(1./ (2*numFeat));
+                    _rbfs[*it][i][j].setSigma(1.0 / (2*numFeat));
                 }
             }
         }           
     }
-    
-    virtual double getMuAlpha() { return _muAlpha; }
-	virtual double getMuMean() { return _muMean; }
-	virtual double getMuSigma() { return _muSigma; }
-	
-	virtual void setMuMean( double m ) { _muMean=m; }
-	virtual void setMuSigma( double s ) { _muSigma = s; }
-	virtual void setMuAlpha( double a ) { _muAlpha = a; }
-    
-		
+    //-----------------------------------------------------
+    //-----------------------------------------------------	        		
 	virtual ~RBFBasedQFunctionBinary() {}
     
-    virtual void resetData() {}
-    
+    //-----------------------------------------------------
+    //-----------------------------------------------------	    
     virtual int getNumWeights()
     {
         int num = 0;
@@ -148,7 +139,8 @@ public:
         return num;
     }
     
-	
+    //-----------------------------------------------------
+    //-----------------------------------------------------		
 	/// Interface for getting a Q-Value
 	virtual double getValue(CStateCollection *state, CAction *action, CActionData *data = NULL) 
 	{
@@ -175,8 +167,9 @@ public:
 //		
 //	}
 	
-//    void adaptCenters(CStateCollection *state, CAction *action) {
-	virtual void updateValue(CStateCollection *state, CAction *action, vector<double>& eTraces)
+    //-----------------------------------------------------
+    //-----------------------------------------------------		
+	virtual void updateValue(CStateCollection *state, CAction *action, double td, CActionData * = NULL)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -185,7 +178,6 @@ public:
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
         
-        assert(numCenters = eTraces.size());
         
         for (int i = 0; i < numCenters; ++i) {
             
@@ -202,13 +194,13 @@ public:
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
             
             //update the center and shape
-            rbfs[i].setAlpha(alpha + eTraces[i] * _muAlpha );
-            rbfs[i].setMean(mean + eTraces[i] * _muMean );
-            rbfs[i].setSigma(sigma + eTraces[i] * _muSigma );
+            rbfs[i].setAlpha(alpha + td * alphaGrad );
+            rbfs[i].setMean(mean + td * meanGrad );
+            rbfs[i].setSigma(sigma + td * sigmaGrad );
         }
     }
     
-    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& eTraces)
+    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& gradient)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -217,8 +209,8 @@ public:
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
         
-        eTraces.clear();
-        eTraces.resize(numCenters);
+        gradient.clear();
+        gradient.resize(numCenters);
         
         for (int i = 0; i < numCenters; ++i) {
             
@@ -233,10 +225,10 @@ public:
             double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
             
-            eTraces[i].resize(3);
-            eTraces[i][0] = alphaGrad;
-            eTraces[i][1] = meanGrad;
-            eTraces[i][2] = sigmaGrad;
+            gradient[i].resize(3);
+            gradient[i][0] = alphaGrad;
+            gradient[i][1] = meanGrad;
+            gradient[i][2] = sigmaGrad;
         }
     }
     
@@ -251,10 +243,19 @@ public:
 		}
 		fprintf(outFile,"\n");
 		
-		for(int i=0; i<_rbfs.size(); ++i)
+		for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)		
 		{
-			for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
-			{
+			vector<vector<RBF> >& currentRBFs = _rbfs[*it];
+			for(int i=0; i<currentRBFs.size(); ++i)
+			{				
+				fprintf( outFile, "%d ", i );
+				for(int j=0; j<currentRBFs[i].size(); ++j )
+				{
+					fprintf( outFile, "%g %g %g ", currentRBFs[i][j].getAlpha(),
+												   currentRBFs[i][j].getMean(), 
+												   currentRBFs[i][j].getSigma() );
+				}
+				fprintf( outFile, "\n" );
 			}
 		}
 				
@@ -262,11 +263,40 @@ public:
 	}
     	
 	CAbstractQETraces* getStandardETraces()
-	{
-		//return new RBFQETraces(this);
+	{		
 		return new RBFQETraces(this);
 	}
     
+    //-----------------------------------------------------
+    //-----------------------------------------------------	
+    void exploreInit()
+    {
+        CActionSet::iterator it=_actions->begin();
+        for(;it!=_actions->end(); ++it )
+        {				
+			int mode = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+			
+            int iterationNumber = _rbfs[*it].size();
+            for( int i=0; i<iterationNumber; ++i)
+            {                
+                int numFeat = _rbfs[*it][i].size();
+				for (int j = 0; j < numFeat; ++j) {
+					if (mode == 0) {
+						_rbfs[*it][i][j].setMean((j+1) * 1./(numFeat+1));
+						_rbfs[*it][i][j].setSigma(1.0 / (2*numFeat));
+						_rbfs[*it][i][j].setAlpha(100.0);
+					}
+                    else {
+						_rbfs[*it][i][j].setMean((j+1) * 1./(numFeat+1));
+						_rbfs[*it][i][j].setSigma(1.0 / (2*numFeat));
+						_rbfs[*it][i][j].setAlpha(1.0);
+                    }
+                }
+            }
+        }           
+    }
+	
+	
 };
 
 #endif

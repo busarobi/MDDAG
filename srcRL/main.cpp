@@ -548,12 +548,8 @@ int main(int argc, const char *argv[])
 					agentContinous->addStateModifier(discState);
 					qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
                     
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit();
-                    
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(0.1) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0.05) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0.05) ;
-
+                    //dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit();
+					dynamic_cast<RBFBasedQFunctionBinary*>( qData )->exploreInit();
 				}
                 else {
                     cout << "unkown statespcae" << endl;
@@ -857,7 +853,13 @@ int main(int argc, const char *argv[])
                     
                 }
                 if ((bres.acc > bestAcc)&&(sptype==4)) {
-					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
+                    bestEpNumber = i;
+                    bestAcc = bres.acc;
+                    bestWhypNumber = bres.usedClassifierAvg;
+					
+					char qtablefname[512];
+					sprintf( qtablefname, "./qtable/qtable_%d.txt", i );
+					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(qtablefname);
 				}
 					
 				cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
