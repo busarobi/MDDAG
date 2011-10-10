@@ -14,9 +14,11 @@
 #include "cgradientfunction.h"
 #include "cstatemodifier.h"
 #include "RBFStateModifier.h"
-#include "RBFQETraces.h"
+//#include "RBFQETraces.h"
 #include "AdaBoostMDPClassifierAdv.h"
 #include "cfeaturefunction.h"
+
+class RBFQETraces;
 
 class RBF {
 protected:
@@ -176,7 +178,7 @@ public:
 //	}
 	
 //    void adaptCenters(CStateCollection *state, CAction *action) {
-	virtual void updateValue(CStateCollection *state, CAction *action, vector<double>& eTraces)
+	virtual void updateValue(CStateCollection *state, CAction *action, double td, vector<double>& eTraces)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -202,13 +204,45 @@ public:
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
             
             //update the center and shape
-            rbfs[i].setAlpha(alpha + eTraces[i] * _muAlpha );
-            rbfs[i].setMean(mean + eTraces[i] * _muMean );
-            rbfs[i].setSigma(sigma + eTraces[i] * _muSigma );
+            rbfs[i].setAlpha(alpha + eTraces[i] * td * _muAlpha );
+            rbfs[i].setMean(mean + eTraces[i] * td * _muMean );
+            rbfs[i].setSigma(sigma + eTraces[i] * td * _muSigma );
         }
     }
     
-    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& eTraces)
+//    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& eTraces)
+//    {
+//        CState* currState = state->getState();
+//        int currIter = currState->getDiscreteState(0);
+//		double margin = currState->getContinuousState(0);
+//        
+//        vector<RBF>& rbfs = _rbfs[action][currIter];
+//        int numCenters = rbfs.size();//_rbfs[currIter][action].size();
+//        
+//        eTraces.clear();
+//        eTraces.resize(numCenters);
+//        
+//        for (int i = 0; i < numCenters; ++i) {
+//            
+//            double alpha = rbfs[i].getAlpha();
+//            double mean = rbfs[i].getMean();
+//            double sigma = rbfs[i].getSigma();
+//            
+//            double distance = margin - mean;
+//            double rbfValue = rbfs[i].getActivationFactor(margin);
+//
+//            double alphaGrad = rbfValue;
+//            double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
+//            double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
+//            
+//            eTraces[i].resize(3);
+//            eTraces[i][0] = alphaGrad;
+//            eTraces[i][1] = meanGrad;
+//            eTraces[i][2] = sigmaGrad;
+//        }
+//    }
+
+    virtual void getGradient(CStateCollection *state, CAction *action, vector<double >& gradient)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -217,26 +251,11 @@ public:
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
         
-        eTraces.clear();
-        eTraces.resize(numCenters);
+        gradient.clear();
+        gradient.resize(numCenters);
         
         for (int i = 0; i < numCenters; ++i) {
-            
-            double alpha = rbfs[i].getAlpha();
-            double mean = rbfs[i].getMean();
-            double sigma = rbfs[i].getSigma();
-            
-            double distance = margin - mean;
-            double rbfValue = rbfs[i].getActivationFactor(margin);
-
-            double alphaGrad = rbfValue;
-            double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
-            double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
-            
-            eTraces[i].resize(3);
-            eTraces[i][0] = alphaGrad;
-            eTraces[i][1] = meanGrad;
-            eTraces[i][2] = sigmaGrad;
+            gradient[i] = rbfs[i].getActivationFactor(margin);
         }
     }
     
@@ -261,12 +280,7 @@ public:
 		fclose( outFile );
 	}
     	
-	CAbstractQETraces* getStandardETraces()
-	{
-		//return new RBFQETraces(this);
-		return new RBFQETraces(this);
-	}
-    
+	CAbstractQETraces* getStandardETraces();    
 };
 
 #endif

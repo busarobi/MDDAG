@@ -13,10 +13,11 @@
 
 #include "cqetraces.h"
 #include "AdaBoostMDPClassifierAdv.h"
-#include "RBFBasedQFunction.h"
+//#include "RBFBasedQFunction.h"
 #include <vector>
 #include <list>
 
+class RBFBasedQFunctionBinary;
 using namespace std;
 
 //TODO: this structure supposes that we never come back to a state. It's fine for now.
@@ -27,7 +28,7 @@ protected:
     // and we need to remove items that have a small etrace
 	list<CStateCollection*> _states;
 	list<CAction*> _actions;
-    list<double> _eTraces;
+    list<vector<double> > _eTraces; //strange ETrace struture, due to our peculiar state representation
 
 public:
 	RBFQETraces(CAbstractQFunction *qFunction) : CAbstractQETraces(qFunction) {
@@ -36,6 +37,7 @@ public:
     
 	virtual ~RBFQETraces() {};
 	
+    //TODO: adapt to the new structure of _eTraces
 	/// Interface function for reseting the ETraces
 	virtual void resetETraces() 
 	{
@@ -55,6 +57,7 @@ public:
         
         _eTraces.clear();
 	}
+    
 	/// Interface function for updating the ETraces
 	/**
 	 I.e. all stored ETraces-factors get multiplied by lambda * gamma, gamma is taken from the Q-Function. 
@@ -63,7 +66,7 @@ public:
 	virtual void updateETraces(CAction *action, CActionData *data = NULL) 
 	{
         double mult = getParameter("Lambda") * getParameter("DiscountFactor");
-        list<double>::iterator eIt = _eTraces.begin();
+        list<vector<double> >::iterator eIt = _eTraces.begin();
         list<CStateCollection*>::iterator stateIt = _states.begin();
 		list<CAction*>::iterator actionIt = _actions.begin();
         
@@ -71,25 +74,30 @@ public:
         int i = 0;
         while (eIt != _eTraces.end())
         {
-            //double gradient = qFunction->getGradient(*stateIt, action);
+            vector<double> gradient;
             
-//            (*eIt) = (*eIt) * mult + gradient;
-            if (fabs(*eIt) < treshold)
-            {
-                _eTraces.erase(eIt, _eTraces.end());
-                _states.erase(stateIt, _states.end());
-                _actions.erase(actionIt, _actions.end());
-                
-                eIt = _eTraces.begin();
-                for (int j = 0; j < i; j++, eIt++);
+            dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*stateIt, *actionIt, gradient);
+            
+            for (int j = 0; j < (*eIt).size(); ++j) {
+                (*eIt)[j] = (*eIt)[j] * mult + gradient[j];
             }
-            else
-            {
-                i++;
-                ++eIt;
-                ++stateIt;
-                ++actionIt;
-            }
+            
+//            if (fabs(*eIt) < treshold)
+//            {
+//                _eTraces.erase(eIt, _eTraces.end());
+//                _states.erase(stateIt, _states.end());
+//                _actions.erase(actionIt, _actions.end());
+//                
+//                eIt = _eTraces.begin();
+//                for (int j = 0; j < i; j++, eIt++);
+//            }
+//            else
+//            {
+//                i++;
+//                ++eIt;
+//                ++stateIt;
+//                ++actionIt;
+//            }
         }
 	}
     
@@ -104,7 +112,8 @@ public:
 		//currentAction = new MultiBoost::CAdaBoostAction( mode );
 		_actions.push_back( action );
         
-        _eTraces.push_back(factor);
+        vector<double> factors(3, factor);
+        _eTraces.push_back(factors);
 	}
 	
 	/// Interface function for updating the Q-Values of all State-Action Pairs in the ETraces
@@ -112,18 +121,14 @@ public:
 	{
 		list<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
 		list<CAction*>::reverse_iterator invitAction = _actions.rbegin();
-        list<double>::reverse_iterator invitTrace = _eTraces.rbegin();
+        list<vector<double> >::reverse_iterator invitTrace = _eTraces.rbegin();
         
 		for (; invitState != _states.rend(); ++invitState, ++invitAction )
 		{
 			CStateCollection* currentState = *invitState;
 			CAction* currentAction = *invitAction;
             
-            vector<vector<double> > eTraces;
-            RBFBasedQFunctionBinary* function; //= dynamic_cast<RBFBasedQFunctionBinary* >(qFunction);
-            //( qFunction )->getGradient(currentState, currentAction, &eTraces);
-            
-			qFunction->updateValue(currentState, currentAction, (*invitTrace)*td, NULL);
+			dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(currentState, currentAction, td, *invitTrace);
 		}
 	}	
 };
