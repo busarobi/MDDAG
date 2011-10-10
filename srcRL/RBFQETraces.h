@@ -67,19 +67,29 @@ public:
 		list<CAction*>::iterator actionIt = _actions.begin();
         
         double treshold = getParameter("ETraceTreshold");
-        
-        for (; eIt != _eTraces.end(); ++eIt, ++stateIt, ++actionIt)
+        int i = 0;
+        while (eIt != _eTraces.end())
         {
             (*eIt) = (*eIt) * mult;
-            if (*eIt < treshold)
+            if (fabs(*eIt) < treshold)
             {
                 _eTraces.erase(eIt, _eTraces.end());
                 _states.erase(stateIt, _states.end());
                 _actions.erase(actionIt, _actions.end());
-                // ? break;
+                
+                eIt = _eTraces.begin();
+                for (int j = 0; j < i; j++, eIt++);
             }
-        }        
+            else
+            {
+                i++;
+                ++eIt;
+                ++stateIt;
+                ++actionIt;
+            }
+        }
 	}
+    
 	/// Interface function for adding a State-Action pair with the given factor to the ETraces
 	virtual void addETrace(CStateCollection *state, CAction *action, double factor = 1.0, CActionData *data = NULL) 
 	{
