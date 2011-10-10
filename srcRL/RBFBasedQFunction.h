@@ -189,7 +189,7 @@ public:
             double rbfValue = rbfs[i].getValue(margin);
 //            double qValue = this->getValue(state, action);
             
-            double alphaGrad = rbfValue / sigma;
+            double alphaGrad = rbfValue;
             double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
             

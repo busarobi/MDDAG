@@ -550,9 +550,9 @@ int main(int argc, const char *argv[])
                     
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit();
                     
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(0.3) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0.3) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0.3) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(0.1) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0.05) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0.05) ;
 
 				}
                 else {

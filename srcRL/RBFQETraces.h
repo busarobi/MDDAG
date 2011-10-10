@@ -14,17 +14,25 @@
 #include "cqetraces.h"
 #include "AdaBoostMDPClassifierAdv.h"
 #include <vector>
+#include <list>
 
 using namespace std;
 
+//TODO: this structure supposes that we never come back to a state. It's fine for now.
 class RBFQETraces : public CAbstractQETraces 
 {
 protected:
-	vector<CStateCollection*> _states;
-	vector<CAction*> _actions;
+    //@robi : a list is more appropriate since we always iterate, never direct access
+    // and we need to remove items that have a small etrace
+	list<CStateCollection*> _states;
+	list<CAction*> _actions;
+    list<double> _eTraces;
 
 public:
-	RBFQETraces(CAbstractQFunction *qFunction) : CAbstractQETraces(qFunction) {}
+	RBFQETraces(CAbstractQFunction *qFunction) : CAbstractQETraces(qFunction) {
+        addParameter("ETraceTreshold", 0.001);
+    }
+    
 	virtual ~RBFQETraces() {};
 	
 	/// Interface function for reseting the ETraces
@@ -42,7 +50,9 @@ public:
 //			CAction* tmpAction = _actions[i];
 //			if (tmpAction) delete tmpAction;
 //		}
-		_actions.clear();				
+		_actions.clear();
+        
+        _eTraces.clear();
 	}
 	/// Interface function for updating the ETraces
 	/**
@@ -51,7 +61,24 @@ public:
 	 */
 	virtual void updateETraces(CAction *action, CActionData *data = NULL) 
 	{
-		
+        double mult = getParameter("Lambda") * getParameter("DiscountFactor");
+        list<double>::iterator eIt = _eTraces.begin();
+        list<CStateCollection*>::iterator stateIt = _states.begin();
+		list<CAction*>::iterator actionIt = _actions.begin();
+        
+        double treshold = getParameter("ETraceTreshold");
+        
+        for (; eIt != _eTraces.end(); ++eIt, ++stateIt, ++actionIt)
+        {
+            (*eIt) = (*eIt) * mult;
+            if (*eIt < treshold)
+            {
+                _eTraces.erase(eIt, _eTraces.end());
+                _states.erase(stateIt, _states.end());
+                _actions.erase(actionIt, _actions.end());
+                // ? break;
+            }
+        }        
 	}
 	/// Interface function for adding a State-Action pair with the given factor to the ETraces
 	virtual void addETrace(CStateCollection *state, CAction *action, double factor = 1.0, CActionData *data = NULL) 
@@ -63,13 +90,17 @@ public:
 		//int mode = dynamic_cast<MultiBoost::CAdaBoostAction*>(action)->getMode();
 		//currentAction = new MultiBoost::CAdaBoostAction( mode );
 		_actions.push_back( action );
+        
+        _eTraces.push_back(factor);
 	}
 	
 	/// Interface function for updating the Q-Values of all State-Action Pairs in the ETraces
 	virtual void updateQFunction(double td) 
 	{
-		vector<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
-		vector<CAction*>::reverse_iterator invitAction = _actions.rbegin();
+		list<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
+		list<CAction*>::reverse_iterator invitAction = _actions.rbegin();
+        list<double>::reverse_iterator invitTrace = _eTraces.rbegin();
+        
 		for (; invitState != _states.rend(); ++invitState, ++invitAction )
 		{
 			CStateCollection* currentState = *invitState;
