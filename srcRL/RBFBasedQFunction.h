@@ -61,6 +61,7 @@ protected:
 	int _featureNumber;	
 	CActionSet* _actions;
 	int _numberOfActions;
+    int _numberOfIterations;
     
     double _muAlpha;
     double _muMean;
@@ -80,7 +81,8 @@ public:
 		const int numOfClasses = smodifier->getNumOfClasses();
 		
 		_featureNumber = featureNumber;
-		
+		_numberOfIterations = iterationNumber;
+        
 		assert(numOfClasses==1);
 		
 		_actions = actions;
@@ -178,7 +180,7 @@ public:
 //	}
 	
 //    void adaptCenters(CStateCollection *state, CAction *action) {
-	virtual void updateValue(CStateCollection *state, CAction *action, double td, vector<double>& eTraces)
+	virtual void updateValue(CStateCollection *state, CAction *action, double td, vector<vector<double> >& eTraces)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -187,7 +189,7 @@ public:
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
         
-        assert(numCenters = eTraces.size());
+//        assert(numCenters = eTraces.size());
         
         for (int i = 0; i < numCenters; ++i) {
             
@@ -195,18 +197,10 @@ public:
             double mean = rbfs[i].getMean();
             double sigma = rbfs[i].getSigma();
 
-            double distance = margin - mean;
-            double rbfValue = rbfs[i].getActivationFactor(margin);
-//            double qValue = this->getValue(state, action);
-            
-            double alphaGrad = rbfValue;
-            double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
-            double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
-            
             //update the center and shape
-            rbfs[i].setAlpha(alpha + eTraces[i] * td * _muAlpha );
-            rbfs[i].setMean(mean + eTraces[i] * td * _muMean );
-            rbfs[i].setSigma(sigma + eTraces[i] * td * _muSigma );
+            rbfs[i].setAlpha(alpha + eTraces[i][0] * td * _muAlpha );
+            rbfs[i].setMean(mean + eTraces[i][1] * td * _muMean );
+            rbfs[i].setSigma(sigma + eTraces[i][2] * td * _muSigma );
         }
     }
     
@@ -242,7 +236,7 @@ public:
 //        }
 //    }
 
-    virtual void getGradient(CStateCollection *state, CAction *action, vector<double >& gradient)
+    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& gradient)
     {
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
@@ -255,7 +249,21 @@ public:
         gradient.resize(numCenters);
         
         for (int i = 0; i < numCenters; ++i) {
-            gradient[i] = rbfs[i].getActivationFactor(margin);
+            double alpha = rbfs[i].getAlpha();
+            double mean = rbfs[i].getMean();
+            double sigma = rbfs[i].getSigma();
+            
+            double distance = margin - mean;
+            double rbfValue = rbfs[i].getActivationFactor(margin);
+
+            double alphaGrad = rbfValue;
+            double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
+            double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
+            
+            gradient[i].resize(3);
+            gradient[i][0] = alphaGrad;
+            gradient[i][1] = meanGrad;
+            gradient[i][2] = sigmaGrad;
         }
     }
     
@@ -280,7 +288,53 @@ public:
 		fclose( outFile );
 	}
     	
-	CAbstractQETraces* getStandardETraces();    
+	CAbstractQETraces* getStandardETraces();
+    
+    void saveActionValueTable(FILE* stream)
+    {
+        fprintf(stream, "Q-FeatureActionValue Table\n");
+        CActionSet::iterator it;
+        
+        for (int i = 0; i < _featureNumber; ++i) {
+            for (int j = 0; j < _numberOfIterations; ++j) {
+                fprintf(stream,"Feature %d: ", i);
+                for(it =_actions->begin(); it!=_actions->end(); ++it ) {
+                    fprintf(stream,"%f %f %f ", _rbfs[*it][j][i].getAlpha(), _rbfs[*it][j][i].getMean(), _rbfs[*it][j][i].getSigma());
+                }
+                fprintf(stream, "\n");
+            }
+        }
+    }
+    
+    void saveActionTable(FILE* stream)
+    {
+        fprintf(stream, "Q-FeatureAction Table\n");
+        double max = 0.0;
+        int maxIndex = 0;
+        
+        CActionSet::iterator it;
+        for (int i = 0; i < _featureNumber; ++i) {
+            for (int j = 0; j < _numberOfIterations; ++j) {
+                fprintf(stream,"Feature %d: ", i);
+                
+                it =_actions->begin();
+                max = _rbfs[*it][j][i].getAlpha();
+                maxIndex = 0;
+                ++it;
+                
+                for(; it!=_actions->end(); ++it ) {
+                    double v = _rbfs[*it][j][i].getAlpha();
+                    if (max < v) {
+                        max = v;
+                        maxIndex = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+                    }
+                }
+                
+                fprintf(stream,"%f ", maxIndex);
+                fprintf(stream, "\n");
+            }
+        }
+    }
 };
 
 #endif

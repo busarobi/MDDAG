@@ -20,6 +20,11 @@
 class RBFBasedQFunctionBinary;
 using namespace std;
 
+
+typedef vector<vector<double> > OneIterETrace;
+typedef list<OneIterETrace > CustomETrace;
+typedef CustomETrace::iterator ETIterator;
+typedef CustomETrace::reverse_iterator ETReverseIterator;
 //TODO: this structure supposes that we never come back to a state. It's fine for now.
 class RBFQETraces : public CAbstractQETraces 
 {
@@ -28,7 +33,7 @@ protected:
     // and we need to remove items that have a small etrace
 	list<CStateCollection*> _states;
 	list<CAction*> _actions;
-    list<vector<double> > _eTraces; //strange ETrace struture, due to our peculiar state representation
+    CustomETrace _eTraces; //strange ETrace struture, due to our peculiar state representation
 
 public:
 	RBFQETraces(CAbstractQFunction *qFunction) : CAbstractQETraces(qFunction) {
@@ -66,7 +71,7 @@ public:
 	virtual void updateETraces(CAction *action, CActionData *data = NULL) 
 	{
         double mult = getParameter("Lambda") * getParameter("DiscountFactor");
-        list<vector<double> >::iterator eIt = _eTraces.begin();
+        ETIterator eIt = _eTraces.begin();
         list<CStateCollection*>::iterator stateIt = _states.begin();
 		list<CAction*>::iterator actionIt = _actions.begin();
         
@@ -74,13 +79,14 @@ public:
         int i = 0;
         while (eIt != _eTraces.end())
         {
-            vector<double> gradient;
-            
-            dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*stateIt, *actionIt, gradient);
-            
-            for (int j = 0; j < (*eIt).size(); ++j) {
-                (*eIt)[j] = (*eIt)[j] * mult + gradient[j];
+            OneIterETrace & oneItEtrace = *eIt;
+            for (int j = 0; j < oneItEtrace.size(); ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    oneItEtrace[j][k] = oneItEtrace[j][k] * mult ;
+                }
             }
+            
+            eIt++;
             
 //            if (fabs(*eIt) < treshold)
 //            {
@@ -111,9 +117,16 @@ public:
 		//int mode = dynamic_cast<MultiBoost::CAdaBoostAction*>(action)->getMode();
 		//currentAction = new MultiBoost::CAdaBoostAction( mode );
 		_actions.push_back( action );
+
+        CState* currState = state->getState();
+        int currIter = currState->getDiscreteState(0);
+		double margin = currState->getContinuousState(0);
         
-        vector<double> factors(3, factor);
-        _eTraces.push_back(factors);
+        OneIterETrace gradient;
+        dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(state, action, gradient);
+            
+        _eTraces.push_back(gradient);
+                        
 	}
 	
 	/// Interface function for updating the Q-Values of all State-Action Pairs in the ETraces
@@ -121,14 +134,15 @@ public:
 	{
 		list<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
 		list<CAction*>::reverse_iterator invitAction = _actions.rbegin();
-        list<vector<double> >::reverse_iterator invitTrace = _eTraces.rbegin();
+        ETReverseIterator invitTrace = _eTraces.rbegin();
         
-		for (; invitState != _states.rend(); ++invitState, ++invitAction )
+		for (; invitState != _states.rend(); ++invitState, ++invitAction, ++invitTrace)
 		{
 			CStateCollection* currentState = *invitState;
 			CAction* currentAction = *invitAction;
+            OneIterETrace& currentETrace = *invitTrace;
             
-			dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(currentState, currentAction, td, *invitTrace);
+			dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(currentState, currentAction, td, currentETrace);
 		}
 	}	
 };

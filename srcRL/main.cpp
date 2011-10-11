@@ -550,9 +550,9 @@ int main(int argc, const char *argv[])
                     
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit();
                     
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(0.1) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0.05) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0.05) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(1) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(1) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(1) ;
 
 				}
                 else {
@@ -857,7 +857,23 @@ int main(int argc, const char *argv[])
                     
                 }
                 if ((bres.acc > bestAcc)&&(sptype==4)) {
-					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
+                    bestEpNumber = i;
+                    bestAcc = bres.acc;
+                    bestWhypNumber = bres.usedClassifierAvg;
+                    
+                    FILE* qTableFile = fopen("QTable.dta", "w");
+                    dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionValueTable(qTableFile);
+                    fclose(qTableFile);
+                    
+                    FILE* actionTableFile = fopen("ActionTable.dta", "w");
+                    dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionTable(actionTableFile);
+                    fclose(actionTableFile);
+                    
+                    FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
+                    fprintf(improvementLogFile, "%i\n", i);
+                    fclose(improvementLogFile);
+                    
+                    //					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
 				}
 					
 				cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
