@@ -80,19 +80,19 @@ public:
         while (eIt != _eTraces.end())
         {
             OneIterETrace & oneItEtrace = *eIt;
-			OneIterETrace gradient;
-			dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*stateIt, *actionIt, gradient);
-			
-			
+            OneIterETrace gradient;
+            dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*stateIt, *actionIt, gradient);
+            
             for (int j = 0; j < oneItEtrace.size(); ++j) {
                 for (int k = 0; k < oneItEtrace[j].size(); ++k) {
-                    oneItEtrace[j][k] = oneItEtrace[j][k] * mult + gradient[j][k];
+                    oneItEtrace[j][k] = oneItEtrace[j][k] * mult ;
+                    oneItEtrace[j][k] += + gradient[j][k];
                 }
             }
             
             ++eIt;
-			++stateIt;
-			++actionIt;
+            ++stateIt;
+            ++actionIt;
             
 //            if (fabs(*eIt) < treshold)
 //            {
@@ -124,7 +124,8 @@ public:
 		//currentAction = new MultiBoost::CAdaBoostAction( mode );
 		_actions.push_back( action );
 
-        CState* currState = state->getState();        	
+        CState* currState = state->getState();
+        
         OneIterETrace gradient;
         dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(state, action, gradient);
             
@@ -138,13 +139,7 @@ public:
 		list<CStateCollection*>::reverse_iterator invitState = _states.rbegin();
 		list<CAction*>::reverse_iterator invitAction = _actions.rbegin();
         ETReverseIterator invitTrace = _eTraces.rbegin();
-       
-		// without E-Traces		
-//		OneIterETrace currentEtrace;
-//		dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*_states.rbegin(), *_actions.rbegin(), currentEtrace);
-//		dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(*_states.rbegin(), *_actions.rbegin(), td, currentEtrace);
-		
-		
+        
 		for (; invitState != _states.rend(); ++invitState, ++invitAction, ++invitTrace)
 		{
 			CStateCollection* currentState = *invitState;
@@ -153,7 +148,6 @@ public:
             
 			dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(currentState, currentAction, td, currentETrace);
 		}
-		
 	}	
 };
 

@@ -99,11 +99,18 @@ public:
 		}
 	}
     
-    void uniformInit()
+    void uniformInit(double* init=NULL)
     {
         CActionSet::iterator it=_actions->begin();
         for(;it!=_actions->end(); ++it )
-        {				
+        {	
+            double initAlpha = 0;
+            if (init != NULL) {
+                //warning  : no check on the bounds of init
+                int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+                initAlpha = init[index];
+            }
+            
             int iterationNumber = _rbfs[*it].size();
             for( int i=0; i<iterationNumber; ++i)
             {                
@@ -116,7 +123,7 @@ public:
 //                        _rbfs[*it][i][j].setMean(j * 1./numFeat);   
 //                    }
 
-                    
+                    _rbfs[*it][i][j].setAlpha(initAlpha);
                     _rbfs[*it][i][j].setSigma(1./ (2*numFeat));
                 }
             }
@@ -330,7 +337,7 @@ public:
                     }
                 }
                 
-                fprintf(stream,"%f ", maxIndex);
+                fprintf(stream,"%d ", maxIndex);
                 fprintf(stream, "\n");
             }
         }
