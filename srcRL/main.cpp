@@ -283,6 +283,8 @@ void setBasicOptions(nor_utils::Args& args)
 	args.declareArgument("succrewartdtype", "The mode of the reward calculation", 1, "<mode>" );
 	args.declareArgument("statespace", "The statespace representation", 1, "<mode>" );
 	args.declareArgument("numoffeat", "The number of feature in statespace representation", 1, "<featnum>" );
+    args.declareArgument("optimistic", "Set the initial values of the Q function", 3, "<real> <real> <real>" );
+    args.declareArgument("etrace", "Lambda parameter", 1, "<real>" );
 	
 }
 
@@ -300,7 +302,7 @@ int main(int argc, const char *argv[])
 	int steps = 0;
     int ges_failed = 0, ges_succeeded = 0, last_succeeded = 0;	
     int totalSteps = 0;
-
+    
 	// Initialize the random generator 
 	srand((unsigned int) time(NULL));
 	
@@ -454,7 +456,9 @@ int main(int argc, const char *argv[])
 	int qRateDivisor = 1;
 	double currentAlpha = 0.2;
 	double currentEpsilon = 0.1;
-				
+    
+    double lambdaParam = 0.95;
+    
 	if ( datahandler->getClassNumber() <= 2 )
 	{
 		cout << "*****Binary mode******" << endl << flush;
@@ -484,8 +488,13 @@ int main(int argc, const char *argv[])
 		// simple discretized state space
 		//CStateModifier* discState = classifierContinous->getStateSpace();
 		int featnum = 11;
-		if ( args.hasArgument("numoffeat") ) featnum = args.getValue<int>("numoffeat", 0);			
-			
+		if ( args.hasArgument("numoffeat") ) 
+            featnum = args.getValue<int>("numoffeat", 0);
+        
+		if ( args.hasArgument("etrace") ) 
+            lambdaParam = args.getValue<double>("etrace", 0);
+        
+        
         
 		CRBFCenterFeatureCalculator* rbfFC;
         CRBFCenterNetwork* rbfNW;
@@ -508,11 +517,11 @@ int main(int argc, const char *argv[])
                 
                 for (; acIt != actionSet->end(); ++acIt) {
                     
-//                    MLP * gm = new MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
+                    //                    MLP * gm = new MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
                     Linear layer1(2, featnum);
                     LogRBF layer2(featnum, featnum);
                     Linear layer3(featnum, 1);
-
+                    
                     ConnectedMachine gm;
                     gm.addFCL(&layer1);
                     gm.addFCL(&layer2);
@@ -549,12 +558,20 @@ int main(int argc, const char *argv[])
 					qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
                     
                     double initRBFs[] = {100,0,0};
+                    if ( args.hasArgument("optimistic") )
+                    {
+                        assert(args.getNumValues("optimistic") == 3);
+                        initRBFs[0] = args.getValue<double>("optimistic", 0);	
+                        initRBFs[1] = args.getValue<double>("optimistic", 1);	
+                        initRBFs[2] = args.getValue<double>("optimistic", 2);	
+                    }
+                    
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit(initRBFs);
                     
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(1) ;
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0) ;
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0) ;
-
+                    
 				}
                 else {
                     cout << "unkown statespcae" << endl;
@@ -563,14 +580,14 @@ int main(int argc, const char *argv[])
                 
                 
                 // optimistic intial values
-//                const int numWeights = qData->getNumWeights();
-//                double weights[numWeights];
-//                qData->getWeights(weights);
-//                
-//                for (int i = numWeights/3; i < numWeights*2/3; ++i) {
-//                    weights[i] = 0;//2000;
-//                }
-//                qData->setWeights(weights);
+                //                const int numWeights = qData->getNumWeights();
+                //                double weights[numWeights];
+                //                qData->getWeights(weights);
+                //                
+                //                for (int i = numWeights/3; i < numWeights*2/3; ++i) {
+                //                    weights[i] = 0;//2000;
+                //                }
+                //                qData->setWeights(weights);
                 
             }
 		} else {
@@ -582,7 +599,7 @@ int main(int argc, const char *argv[])
 		//CFeatureCalculator* discState = classifierContinous->getStateSpaceRBF(5);
 		// add the discrete state to the agent's state modifier
 		// discState must not be modified (e.g. with a State-Substitution) by now
-//		agentContinous->addStateModifier(discState);
+        //		agentContinous->addStateModifier(discState);
 		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -600,48 +617,48 @@ int main(int argc, const char *argv[])
 		// SARSA Q-Learning starts here	
 		// Create our Q-Function, we will use a Feature Q-Function, which is table-like representation of the Q-Function.
 		// The Q-Function needs to know which actions and which state it has to use
-
-//		CFeatureQFunction *qData = new CFeatureQFunction(agentContinous->getActions(), discState);
-
+        
+        //		CFeatureQFunction *qData = new CFeatureQFunction(agentContinous->getActions(), discState);
+        
         //obsolete
-//        CQFunctionFromGradientFunction *qData = new CQFunctionFromGradientFunction(new CContinuousAction(new CContinuousActionProperties(0)), torchGradientFunction, agentContinous->getActions(), classifierContinous->getStateProperties());
-
-
+        //        CQFunctionFromGradientFunction *qData = new CQFunctionFromGradientFunction(new CContinuousAction(new CContinuousActionProperties(0)), torchGradientFunction, agentContinous->getActions(), classifierContinous->getStateProperties());
+        
+        
 		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
         
         //gradient stuff !!!
         CDiscreteResidual* residualFunction = new CDiscreteResidual(0.95);
         CConstantBetaCalculator* betaCalculator = new CConstantBetaCalculator(1);
-//        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.99) ; //mu and maxBeta
+        //        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.99) ; //mu and maxBeta
         CResidualBetaFunction* residualGradient = new CResidualBetaFunction(betaCalculator, residualFunction);
         
-
-//        CTDGradientLearner *qFunctionLearner = new CTDGradientLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient);
-//        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, dynamic_cast<CGradientQFunction*>(qData), agentContinous, residualFunction, residualGradient, betaCalculator);
-
+        
+        //        CTDGradientLearner *qFunctionLearner = new CTDGradientLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient);
+        //        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, dynamic_cast<CGradientQFunction*>(qData), agentContinous, residualFunction, residualGradient, betaCalculator);
+        
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
-
+        
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
 		qFunctionLearner->setParameter("Lambda", 0.95);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
-//        CVFunctionFromGradientFunction* vFunctionAB = new CVFunctionFromGradientFunction(torchGradientFunction,  nnStateModifier); //classifierContinous->getStateProperties()
-//        CVFunctionLearner *vFunctionLearnerAB = new CVFunctionLearner(rewardFunctionContinous, vFunctionAB);
-//        CAgentController *vLearnerPolicyAB = new CVMStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(1.0), vFunctionAB, classifierContinous, rewardFunctionContinous, agentContinous->getStateModifiers() );
-//        vFunctionLearnerAB->setParameter("ReplacingETraces", 1.0);
-//        vFunctionLearnerAB->setParameter("Lambda", 0.95);
-//        vFunctionLearnerAB->setParameter("DiscountFactor", 1.0);
-
+        //        CVFunctionFromGradientFunction* vFunctionAB = new CVFunctionFromGradientFunction(torchGradientFunction,  nnStateModifier); //classifierContinous->getStateProperties()
+        //        CVFunctionLearner *vFunctionLearnerAB = new CVFunctionLearner(rewardFunctionContinous, vFunctionAB);
+        //        CAgentController *vLearnerPolicyAB = new CVMStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(1.0), vFunctionAB, classifierContinous, rewardFunctionContinous, agentContinous->getStateModifiers() );
+        //        vFunctionLearnerAB->setParameter("ReplacingETraces", 1.0);
+        //        vFunctionLearnerAB->setParameter("Lambda", 0.95);
+        //        vFunctionLearnerAB->setParameter("DiscountFactor", 1.0);
+        
 		
 		// Add the learner to the agent listener list, so he can learn from the agent's steps.
 		agentContinous->addSemiMDPListener(qFunctionLearner);
 		agentContinous->setController(policy);        
         
-//        agentContinous->addSemiMDPListener(vFunctionLearnerAB);
-//        agentContinous->setController(vLearnerPolicyAB);
+        //        agentContinous->addSemiMDPListener(vFunctionLearnerAB);
+        //        agentContinous->setController(vLearnerPolicyAB);
         
         
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -745,7 +762,7 @@ int main(int argc, const char *argv[])
 				epsDivisor++;
 				currentEpsilon =  0.1 / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
-
+                
 			}
 			if ((i>2)&&((i%10000)==0)) 
 			{
@@ -766,21 +783,21 @@ int main(int argc, const char *argv[])
 				// set the policy as controller of the agent
 				agentContinous->setController(greedypolicy);
 				
-//#ifdef LOGQTABLE				
-//				cout << "####### BEGIN QTABLE" << endl;
-//				qData->printValues();
-//				cout << "####### END QTABLE" << endl;
-//#endif
-                                
+                //#ifdef LOGQTABLE				
+                //				cout << "####### BEGIN QTABLE" << endl;
+                //				qData->printValues();
+                //				cout << "####### END QTABLE" << endl;
+                //#endif
+                
 				
 				char logfname[4096];
 				/*
-				sprintf( logfname, "./%s/qfunction_%d.txt", logDirContinous.c_str(), i );
-				FILE *vFuncFileAB = fopen(logfname,"w");
-				qData->saveData(vFuncFileAB);				
-				fclose(vFuncFileAB);
-				*/
-			
+                 sprintf( logfname, "./%s/qfunction_%d.txt", logDirContinous.c_str(), i );
+                 FILE *vFuncFileAB = fopen(logfname,"w");
+                 qData->saveData(vFuncFileAB);				
+                 fclose(vFuncFileAB);
+                 */
+                
 				// TRAIN			
 				classifierContinous->setCurrentDataToTrain();
 				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTrain( agentContinous, rewardFunctionContinous );
@@ -796,7 +813,7 @@ int main(int argc, const char *argv[])
 				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
 				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
 				
-//                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+                //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
 				classifierContinous->outPutStatistic( bres );
 				
@@ -825,36 +842,40 @@ int main(int argc, const char *argv[])
                     //                }
                     //                cout << endl;                    
                 }
-
+                
                 if ((bres.acc > bestAcc)&&(sptype!=4)) {
                     bestEpNumber = i;
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
                     
-                    FILE* qTableFile = fopen("QTable.dta", "w");
+                    std::stringstream ss;
+                    ss << "qtables/QTable_" << i << ".dta";
+                    FILE* qTableFile = fopen(ss.str().c_str(), "w");
                     dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
                     fclose(qTableFile);
                     
-                    FILE* actionTableFile = fopen("ActionTable.dta", "w");
+                    ss.clear();
+                    ss << "qtables/ActionTable_" << i << ".dta";
+                    FILE* actionTableFile = fopen(ss.str().c_str(), "w");
                     dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionTable(actionTableFile);
                     fclose(actionTableFile);
                     
                     FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
                     fprintf(improvementLogFile, "%i\n", i);
                     fclose(improvementLogFile);
-//TMP                    FILE* rbfDataFile = fopen("RBF.dta", "w");
-//TMP                    dynamic_cast<CFeatureQFunction*>(qData)->saveParameters(rbfDataFile);
-//TMP                    fclose(rbfDataFile);
-
-//                    const int numWeights = qData->getNumWeights();
-//                    double weights[numWeights];
-//                    qData->getWeights(weights);
-//                    ofstream rbfWeights;
-//                    rbfWeights.open("RBF.dta");
-//                    for (int w = 0; w < qData->getNumWeights(); ++w) {
-//                        rbfWeights << weights[w] << " ";
-//                    }
-//                    rbfWeights << endl << endl;
+                    //TMP                    FILE* rbfDataFile = fopen("RBF.dta", "w");
+                    //TMP                    dynamic_cast<CFeatureQFunction*>(qData)->saveParameters(rbfDataFile);
+                    //TMP                    fclose(rbfDataFile);
+                    
+                    //                    const int numWeights = qData->getNumWeights();
+                    //                    double weights[numWeights];
+                    //                    qData->getWeights(weights);
+                    //                    ofstream rbfWeights;
+                    //                    rbfWeights.open("RBF.dta");
+                    //                    for (int w = 0; w < qData->getNumWeights(); ++w) {
+                    //                        rbfWeights << weights[w] << " ";
+                    //                    }
+                    //                    rbfWeights << endl << endl;
                     
                 }
                 if ((bres.acc > bestAcc)&&(sptype==4)) {
@@ -876,7 +897,7 @@ int main(int argc, const char *argv[])
                     
                     //					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
 				}
-					
+                
 				cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
 				cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
 				cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
@@ -889,7 +910,7 @@ int main(int argc, const char *argv[])
                 //ss << "rbf/centers_" << i << ".txt";
                 //FILE* pFile = fopen(ss.str().c_str(),"w");
                 //rbfFC->saveData(pFile);
-
+                
 				
 				//sprintf( logfname, "./%s/qfunction_%d_2.txt", logDirContinous.c_str(), i );
 				//FILE *vFuncFileAB2 = fopen(logfname,"w");
@@ -1017,7 +1038,7 @@ int main(int argc, const char *argv[])
 		
 		// Set some options of the Etraces which are not default
 		qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", 0.95);
+		qFunctionLearner->setParameter("Lambda", lambdaParam);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
 		
 		// Add the learner to the agent listener list, so he can learn from the agent's steps.
@@ -1146,11 +1167,11 @@ int main(int argc, const char *argv[])
 			{				
 				char logfname[4096];
 				/*
-				sprintf( logfname, "./%s/qfunction_%d.txt", logDirContinous.c_str(), i );
-				FILE *vFuncFileAB = fopen(logfname,"w");
-				qData->saveData(vFuncFileAB);
-				fclose(vFuncFileAB);
-				*/
+                 sprintf( logfname, "./%s/qfunction_%d.txt", logDirContinous.c_str(), i );
+                 FILE *vFuncFileAB = fopen(logfname,"w");
+                 qData->saveData(vFuncFileAB);
+                 fclose(vFuncFileAB);
+                 */
 				agentContinous->removeSemiMDPListener(qFunctionLearner);
 				
 				// Create the learners controller from the Q-Function, we use a SoftMaxPolicy
@@ -1197,11 +1218,11 @@ int main(int argc, const char *argv[])
 				classifierContinous->setCurrentDataToTrain();
 				
 				/*
-				sprintf( logfname, "./%s/qfunction_%d_2.txt", logDirContinous.c_str(), i );
-				FILE *vFuncFileAB2 = fopen(logfname,"w");
-				qData->saveData(vFuncFileAB2);
-				fclose(vFuncFileAB2);
-				*/
+                 sprintf( logfname, "./%s/qfunction_%d_2.txt", logDirContinous.c_str(), i );
+                 FILE *vFuncFileAB2 = fopen(logfname,"w");
+                 qData->saveData(vFuncFileAB2);
+                 fclose(vFuncFileAB2);
+                 */
 				
 				agentContinous->addSemiMDPListener(qFunctionLearner);
 			}
