@@ -25,7 +25,7 @@ protected:
 	double _mean;
 	double _sigma;
 	double _alpha;
-	
+	string _ID;
 public:
 	RBF() : _mean(0), _sigma(0), _alpha(0) {}
 	virtual ~RBF() {}
@@ -50,6 +50,8 @@ public:
 		return retVal;
 	}
     
+	virtual string& getID() { return _ID;}
+	virtual void setID( const string ID ) { _ID = ID; }
 };
 
 
@@ -104,10 +106,11 @@ public:
         CActionSet::iterator it=_actions->begin();
         for(;it!=_actions->end(); ++it )
         {	
+			int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+			
             double initAlpha = 0;
             if (init != NULL) {
-                //warning  : no check on the bounds of init
-                int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+                //warning  : no check on the bounds of init                
                 initAlpha = init[index];
             }
             
@@ -125,6 +128,10 @@ public:
 
                     _rbfs[*it][i][j].setAlpha(initAlpha);
                     _rbfs[*it][i][j].setSigma(1./ (2*numFeat));
+					
+					stringstream tmpString("");
+					tmpString << "[ac_" << index << "|it_" << i << "|fn_" << j << "]";
+					_rbfs[*it][i][j].setID( tmpString.str() );
                 }
             }
         }           
@@ -170,9 +177,10 @@ public:
 		
 		double retVal = 0.0;
 		
+		vector<RBF>& currRBFs = _rbfs[action][currIter];		
 		for( int i=0; i<_featureNumber; ++i )
 		{
-			retVal += _rbfs[action][currIter][i].getValue(margin);  // lehet, hogy eggyet hozza kell adni a currIter-hez
+			retVal += currRBFs[i].getValue(margin);  // lehet, hogy eggyet hozza kell adni a currIter-hez
 		}		
 		return retVal;
 	}
@@ -205,10 +213,13 @@ public:
             double sigma = rbfs[i].getSigma();
 
             //update the center and shape
-            rbfs[i].setAlpha(alpha + eTraces[i][0] * td * _muAlpha );
-            rbfs[i].setMean(mean + eTraces[i][1] * td * _muMean );
-            rbfs[i].setSigma(sigma + eTraces[i][2] * td * _muSigma );
-        }
+			vector<double>& currentGradient = eTraces[i];
+            rbfs[i].setAlpha(alpha + currentGradient[0] * td * _muAlpha );
+            rbfs[i].setMean(mean + currentGradient[1] * td * _muMean );
+            rbfs[i].setSigma(sigma + currentGradient[2] * td * _muSigma );
+			
+			//cout << rbfs[i].getID() << " ";
+        }		
     }
     
 //    virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& eTraces)
@@ -248,6 +259,15 @@ public:
         CState* currState = state->getState();
         int currIter = currState->getDiscreteState(0);
 		double margin = currState->getContinuousState(0);
+		
+        getGradient(margin, currIter, action, gradient);
+    }
+
+    virtual void getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient)
+    {
+//        CState* currState = state->getState();
+//        int currIter = currState->getDiscreteState(0);
+//		double margin = currState->getContinuousState(0);
         
         vector<RBF>& rbfs = _rbfs[action][currIter];
         int numCenters = rbfs.size();//_rbfs[currIter][action].size();
@@ -262,7 +282,7 @@ public:
             
             double distance = margin - mean;
             double rbfValue = rbfs[i].getActivationFactor(margin);
-
+			
             double alphaGrad = rbfValue;
             double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
             double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
@@ -274,6 +294,7 @@ public:
         }
     }
     
+	
     //TODO:saveQTable and saveQActionTable
 	virtual void saveQTable( const char* fname )
 	{

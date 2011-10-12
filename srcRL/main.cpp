@@ -557,7 +557,7 @@ int main(int argc, const char *argv[])
 					agentContinous->addStateModifier(discState);
 					qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
                     
-                    double initRBFs[] = {100,0,0};
+                    double initRBFs[] = {1.0,1.0,1.0};
                     if ( args.hasArgument("optimistic") )
                     {
                         assert(args.getNumValues("optimistic") == 3);
@@ -568,9 +568,9 @@ int main(int argc, const char *argv[])
                     
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->uniformInit(initRBFs);
                     
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(1) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(0) ;
-                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuAlpha(1.0) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuMean(1.0) ;
+                    dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(1.0) ;
                     
 				}
                 else {
@@ -641,7 +641,7 @@ int main(int argc, const char *argv[])
         
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", 0.95);
+		qFunctionLearner->setParameter("Lambda", 0.4);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
