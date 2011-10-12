@@ -641,7 +641,7 @@ int main(int argc, const char *argv[])
         
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", 0.4);
+		qFunctionLearner->setParameter("Lambda", lambdaParam);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
@@ -895,6 +895,18 @@ int main(int argc, const char *argv[])
                     fprintf(improvementLogFile, "%i\n", i);
                     fclose(improvementLogFile);
                     
+                    std::stringstream ss;
+                    ss << "qtables/QTable_" << i << ".dta";
+                    FILE *qTableFile2 = fopen(ss.str().c_str(), "w");
+                    dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionValueTable(qTableFile);
+                    fclose(qTableFile2);
+                    		                    
+                    ss.clear();
+                    ss << "qtables/ActionTable_" << i << ".dta";
+                    FILE *actionTableFile2 = fopen(ss.str().c_str(), "w");
+                    dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionTable(actionTableFile);
+                    fclose(actionTableFile2);
+
                     //					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
 				}
                 
