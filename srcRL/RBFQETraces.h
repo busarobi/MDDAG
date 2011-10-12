@@ -192,6 +192,7 @@ public:
 #ifdef RBFDEB					
 			cout << "N:" << dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getValue(artificialState, currentAction) << ")" << endl << flush;
 #endif			
+			delete artificialState;
 		}
 #ifdef RBFDEB				
 		cout << endl;
