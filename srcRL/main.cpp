@@ -641,7 +641,7 @@ int main(int argc, const char *argv[])
         
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", 0.4);
+		qFunctionLearner->setParameter("Lambda", lambdaParam);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
