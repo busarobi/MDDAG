@@ -625,17 +625,7 @@ int main(int argc, const char *argv[])
         
         
 		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
-        
-        //gradient stuff !!!
-        CDiscreteResidual* residualFunction = new CDiscreteResidual(0.95);
-        CConstantBetaCalculator* betaCalculator = new CConstantBetaCalculator(1);
-        //        CVariableBetaCalculator * betaCalculator = new CVariableBetaCalculator(0.1, 0.99) ; //mu and maxBeta
-        CResidualBetaFunction* residualGradient = new CResidualBetaFunction(betaCalculator, residualFunction);
-        
-        
-        //        CTDGradientLearner *qFunctionLearner = new CTDGradientLearner(rewardFunctionContinous, qData, agentContinous, residualFunction, residualGradient);
-        //        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, dynamic_cast<CGradientQFunction*>(qData), agentContinous, residualFunction, residualGradient, betaCalculator);
-        
+
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
         
@@ -645,14 +635,6 @@ int main(int argc, const char *argv[])
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
-        //        CVFunctionFromGradientFunction* vFunctionAB = new CVFunctionFromGradientFunction(torchGradientFunction,  nnStateModifier); //classifierContinous->getStateProperties()
-        //        CVFunctionLearner *vFunctionLearnerAB = new CVFunctionLearner(rewardFunctionContinous, vFunctionAB);
-        //        CAgentController *vLearnerPolicyAB = new CVMStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(1.0), vFunctionAB, classifierContinous, rewardFunctionContinous, agentContinous->getStateModifiers() );
-        //        vFunctionLearnerAB->setParameter("ReplacingETraces", 1.0);
-        //        vFunctionLearnerAB->setParameter("Lambda", 0.95);
-        //        vFunctionLearnerAB->setParameter("DiscountFactor", 1.0);
-        
-		
 		// Add the learner to the agent listener list, so he can learn from the agent's steps.
 		agentContinous->addSemiMDPListener(qFunctionLearner);
 		agentContinous->setController(policy);        
@@ -850,9 +832,10 @@ int main(int argc, const char *argv[])
                     
                     std::stringstream ss;
                     ss << "qtables/QTable_" << i << ".dta";
-                    FILE* qTableFile = fopen(ss.str().c_str(), "w");
-                    dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
-                    fclose(qTableFile);
+                    //FILE* qTableFile = fopen(ss.str().c_str(), "w");
+					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(ss.str().c_str());
+                    //dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
+                    //fclose(qTableFile);
                     
                     ss.clear();
                     ss << "qtables/ActionTable_" << i << ".dta";
@@ -878,11 +861,20 @@ int main(int argc, const char *argv[])
                     //                    rbfWeights << endl << endl;
                     
                 }
-                if ((bres.acc > bestAcc)&&(sptype==4)) {
+                if ((bres.acc >= bestAcc)&&(sptype==4)) {
                     bestEpNumber = i;
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
                     
+					
+                    std::stringstream ss;
+                    ss << "qtables/QTable_" << i << ".dta";
+                    //FILE* qTableFile = fopen(ss.str().c_str(), "w");
+					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(ss.str().c_str());
+                    //dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
+                    //fclose(qTableFile);
+					
+					
                     FILE* qTableFile = fopen("QTable.dta", "w");
                     dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionValueTable(qTableFile);
                     fclose(qTableFile);
