@@ -873,9 +873,8 @@ int main(int argc, const char *argv[])
 					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(ss.str().c_str());
                     //dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
                     //fclose(qTableFile);
-					
-					
-                    FILE* qTableFile = fopen("QTable.dta", "w");
+															
+					FILE* qTableFile = fopen("QTable.dta", "w");
                     dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionValueTable(qTableFile);
                     fclose(qTableFile);
                     

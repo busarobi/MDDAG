@@ -111,7 +111,9 @@ void RBFQETraces::updateQFunction(double td)
 		artificialState->setDiscreteState(0, currIter);
 		
 #ifdef RBFDEB					
-		cout << "(A:" << dynamic_cast<MultiBoost::CAdaBoostAction* >(*(invitAction))->getMode() << "," << flush;    			
+		cout << "(A:" << dynamic_cast<MultiBoost::CAdaBoostAction* >(*(invitAction))->getMode() << "," << flush; 
+		cout << "M: " << currMargin << ",";
+		cout << "I: " << currIter << ",";
 		cout << "O:" << dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getValue(artificialState, currentAction)<< "," << flush;
 #endif			
 		dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(artificialState, currentAction, td, currentETrace);

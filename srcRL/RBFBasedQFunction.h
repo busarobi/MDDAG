@@ -98,7 +98,7 @@ public:
     
 	//clacluates the gradient
     virtual void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& gradient);
-    virtual void getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient);
+    virtual void getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient, bool isNorm = false );
 	
     	
 	// creates an Etrace object

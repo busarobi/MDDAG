@@ -12,11 +12,7 @@ CAbstractQETraces* RBFBasedQFunctionBinary::getStandardETraces()
 //------------------------------------------------------
 //------------------------------------------------------    
 RBFBasedQFunctionBinary::RBFBasedQFunctionBinary(CActionSet *actions, CStateModifier* statemodifier ) : CAbstractQFunction(actions)
-{
-	//CGradientQFunction ancestor init
-	//addType(GRADIENTQFUNCTION);        
-	//this->localGradientQFunctionFeatures = new CFeatureList();
-	
+{	
 	// the statemodifier must be RBFStateModifier
 	RBFStateModifier* smodifier = dynamic_cast<RBFStateModifier*>( statemodifier );
 	
@@ -58,7 +54,7 @@ double RBFBasedQFunctionBinary::getValue(CStateCollection *state, CAction *actio
 	vector<RBF>& currRBFs = _rbfs[action][currIter];		
 	for( int i=0; i<_featureNumber; ++i )
 	{
-		retVal += currRBFs[i].getValue(margin);  // lehet, hogy eggyet hozza kell adni a currIter-hez
+		retVal += currRBFs[i].getValue(margin); 
 	}		
 	return retVal;
 }
@@ -107,13 +103,13 @@ void RBFBasedQFunctionBinary::getGradient(CStateCollection *state, CAction *acti
 
 //------------------------------------------------------
 //------------------------------------------------------    
-void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient)
+void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient, bool isNorm )
 {
 	vector<RBF>& rbfs = _rbfs[action][currIter];
 	int numCenters = rbfs.size();//_rbfs[currIter][action].size();
 	
 	gradient.clear();
-	gradient.resize(numCenters);
+	gradient.resize(numCenters);		
 	
 	for (int i = 0; i < numCenters; ++i) {
 		double alpha = rbfs[i].getAlpha();
@@ -130,8 +126,26 @@ void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *
 		gradient[i].resize(3);
 		gradient[i][0] = alphaGrad;
 		gradient[i][1] = meanGrad;
-		gradient[i][2] = sigmaGrad;
+		gradient[i][2] = sigmaGrad;		
 	}
+	
+	if (isNorm)
+	{
+		double lengthScale = 0.0;
+		for (int i = 0; i < numCenters; ++i) {
+			lengthScale += (gradient[i][0]*gradient[i][0]);
+			lengthScale += (gradient[i][1]*gradient[i][1]);
+			lengthScale += (gradient[i][2]*gradient[i][2]);			
+		}
+		lengthScale = sqrt(lengthScale);
+		if ( ! nor_utils::is_zero(lengthScale))
+		for (int i = 0; i < numCenters; ++i) {
+			gradient[i][0] /= lengthScale;
+			gradient[i][1] /= lengthScale;
+			gradient[i][2] /= lengthScale;			
+		}
+		
+	}	
 }
 
 //------------------------------------------------------
