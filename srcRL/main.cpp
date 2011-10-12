@@ -455,7 +455,7 @@ int main(int argc, const char *argv[])
 	int epsDivisor = 1;
 	int qRateDivisor = 1;
 	double currentAlpha = 0.2;
-	double currentEpsilon = 0.1;
+	double currentEpsilon = 0.4;
     
     double lambdaParam = 0.95;
     

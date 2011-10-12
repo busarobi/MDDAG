@@ -217,8 +217,9 @@ public:
             rbfs[i].setAlpha(alpha + currentGradient[0] * td * _muAlpha );
             rbfs[i].setMean(mean + currentGradient[1] * td * _muMean );
             rbfs[i].setSigma(sigma + currentGradient[2] * td * _muSigma );
-			
-			//cout << rbfs[i].getID() << " ";
+#ifdef RBFDEB			
+			cout << rbfs[i].getID() << " ";
+#endif
         }		
     }
     
