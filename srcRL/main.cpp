@@ -30,7 +30,7 @@
 #include "LogRBF.h"
 #include "Linear.h"
 #include "Tanh.h"
-#include "RBFBasedQFunction.h"
+#include "ArrayBasedQFunctionBinary.h"
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -842,10 +842,11 @@ int main(int argc, const char *argv[])
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
                     
-                    std::stringstream ss;
-                    ss << "qtables/QTable_" << i << ".dta";
-					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(ss.str().c_str());
+                    //std::stringstream ss;
+                    //ss << "qtables/QTable_" << i << ".dta";
+					//dynamic_cast<CFeatureQFunction*>(qData)->saveQTable(ss.str().c_str());
                     
+					std::stringstream ss;
                     ss << "qtables/QTable_" << i << ".dta";
                     FILE* qTableFile = fopen(ss.str().c_str(), "w");					
                     dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);

@@ -1,6 +1,6 @@
 #include "RBFBasedQFunction.h"
 #include "RBFQETraces.h"
-	
+#include "ArrayBasedQETraces.h"	
 
 //------------------------------------------------------
 //------------------------------------------------------    
@@ -255,10 +255,3 @@ void RBFBasedQFunctionBinary::uniformInit(double* init)
 //------------------------------------------------------    
 //------------------------------------------------------
 //------------------------------------------------------    
-template< typename T >
-CAbstractQETraces* ArrayBasedQFunctionBinary<T>::getStandardETraces()
-{
-	return new RBFQETraces(this);
-}
-
-template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray>::getStandardETraces();
