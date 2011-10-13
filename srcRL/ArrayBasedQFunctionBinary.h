@@ -174,7 +174,7 @@ public:
 	
 	virtual void updateParameters( vector< vector< double > >& updates )
 	{
-		double th=0.01;
+		double th=0.001;
 		assert(this->_size == updates.size());
 		for( int i=0; i<this->_size; ++i )
 		{
