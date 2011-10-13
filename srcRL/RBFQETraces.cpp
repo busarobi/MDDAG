@@ -47,7 +47,7 @@ void RBFQETraces::updateETraces(CAction *action, CActionData *data)
 		OneIterETrace & oneItEtrace = *eIt;
 		OneIterETrace gradient;
 		
-		dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(*itMargin, *itIters, *actionIt, gradient);
+		dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qFunction)->getGradient(*itMargin, *itIters, *actionIt, gradient);
 		
 		for (int j = 0; j < oneItEtrace.size(); ++j) {
 			for (int k = 0; k < oneItEtrace[j].size(); ++k) {
@@ -70,7 +70,7 @@ void RBFQETraces::addETrace(CStateCollection *state, CAction *action, double fac
 	_actions.push_back( action );
 	
 	OneIterETrace gradient;
-	dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getGradient(state, action, gradient);
+	dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qFunction)->getGradient(state, action, gradient);
 	
 	_eTraces.push_back(gradient);
 	
@@ -114,11 +114,11 @@ void RBFQETraces::updateQFunction(double td)
 		cout << "(A:" << dynamic_cast<MultiBoost::CAdaBoostAction* >(*(invitAction))->getMode() << "," << flush; 
 		cout << "M: " << currMargin << ",";
 		cout << "I: " << currIter << ",";
-		cout << "O:" << dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getValue(artificialState, currentAction)<< "," << flush;
+		cout << "O:" << dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>** >(qFunction)->getValue(artificialState, currentAction)<< "," << flush;
 #endif			
-		dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->updateValue(artificialState, currentAction, td, currentETrace);
+		dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qFunction)->updateValue(artificialState, currentAction, td, currentETrace);
 #ifdef RBFDEB					
-		cout << "N:" << dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getValue(artificialState, currentAction) << ")" << endl << flush;
+		cout << "N:" << dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>** >(qFunction)->getValue(artificialState, currentAction) << ")" << endl << flush;
 #endif			
 		delete artificialState;
 	}

@@ -80,16 +80,16 @@ void RBFBasedQFunctionBinary::updateValue(CStateCollection *state, CAction *acti
 		
 		//update the center and shape
 		vector<double>& currentGradient = eTraces[i];
-		double alphaStep = currentGradient[0] * td * _muAlpha;
+		double alphaStep = currentGradient[0] * td;
 		
 		rbfs[i].setAlpha(alpha + alphaStep );
 		
-		double meanStep = currentGradient[1] * td * _muMean;
+		double meanStep = currentGradient[1] * td;
 		meanStep = (meanStep>th) ?  th : meanStep;		
 		meanStep = (meanStep<-th) ? -th : meanStep;				
 		rbfs[i].setMean(mean + meanStep );
 		
-		double sigmaStep = currentGradient[2] * td * _muSigma;
+		double sigmaStep = currentGradient[2] * td;
 		sigmaStep = (sigmaStep>th) ?  th : sigmaStep;
 		sigmaStep = (sigmaStep<-th) ? -th : sigmaStep;
 		rbfs[i].setSigma(sigma + sigmaStep );
@@ -113,7 +113,7 @@ void RBFBasedQFunctionBinary::getGradient(CStateCollection *state, CAction *acti
 
 //------------------------------------------------------
 //------------------------------------------------------    
-void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient, bool isNorm )
+void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient )
 {
 	vector<RBF>& rbfs = _rbfs[action][currIter];
 	int numCenters = rbfs.size();//_rbfs[currIter][action].size();
@@ -122,40 +122,8 @@ void RBFBasedQFunctionBinary::getGradient(double margin, int currIter, CAction *
 	gradient.resize(numCenters);		
 	
 	for (int i = 0; i < numCenters; ++i) {
-		double alpha = rbfs[i].getAlpha();
-		double mean = rbfs[i].getMean();
-		double sigma = rbfs[i].getSigma();
-		
-		double distance = margin - mean;
-		double rbfValue = rbfs[i].getActivationFactor(margin);
-		
-		double alphaGrad = rbfValue;
-		double meanGrad = rbfValue * alpha * distance / (sigma*sigma);
-		double sigmaGrad = rbfValue * alpha * distance * distance / (sigma*sigma*sigma);        
-		
-		gradient[i].resize(3);
-		gradient[i][0] = alphaGrad;
-		gradient[i][1] = meanGrad;
-		gradient[i][2] = sigmaGrad;		
+		rbfs[i].getGradient( margin, gradient[i] );
 	}
-	
-	if (isNorm)
-	{
-		double lengthScale = 0.0;
-		for (int i = 0; i < numCenters; ++i) {
-			lengthScale += (gradient[i][0]*gradient[i][0]);
-			lengthScale += (gradient[i][1]*gradient[i][1]);
-			lengthScale += (gradient[i][2]*gradient[i][2]);			
-		}
-		lengthScale = sqrt(lengthScale);
-		if ( ! nor_utils::is_zero(lengthScale))
-		for (int i = 0; i < numCenters; ++i) {
-			gradient[i][0] /= lengthScale;
-			gradient[i][1] /= lengthScale;
-			gradient[i][2] /= lengthScale;			
-		}
-		
-	}	
 }
 
 //------------------------------------------------------
@@ -277,3 +245,20 @@ void RBFBasedQFunctionBinary::uniformInit(double* init)
 }
 //------------------------------------------------------
 //------------------------------------------------------    
+//------------------------------------------------------
+//------------------------------------------------------    
+//------------------------------------------------------
+//------------------------------------------------------    
+//------------------------------------------------------
+//------------------------------------------------------    
+//------------------------------------------------------
+//------------------------------------------------------    
+//------------------------------------------------------
+//------------------------------------------------------    
+template< typename T >
+CAbstractQETraces* ArrayBasedQFunctionBinary<T>::getStandardETraces()
+{
+	return new RBFQETraces(this);
+}
+
+template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray>::getStandardETraces();
