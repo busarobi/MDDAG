@@ -201,7 +201,7 @@ public:
 			ss << this->_data[i].getMean() << " ";
 			ss << this->_data[i].getSigma() << " ";
 		}				
-		ss.str( str );
+		str=ss.str();
 	}	
 	
 };
