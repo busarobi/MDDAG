@@ -14,7 +14,7 @@
 #include "cstateproperties.h"
 #include "clinearfafeaturecalculator.h"
 #include "crbftrees.h"
-#include "RBFBasedQFunction.h"
+//#include "RBFBasedQFunction.h"
 #include "RBFStateModifier.h"
 
 #include <math.h> // for exp
