@@ -15,7 +15,7 @@
 
 #include "cqetraces.h"
 #include "AdaBoostMDPClassifierAdv.h"
-#include "RBFBasedQFunction.h"
+#include "ArrayBasedQFunctionBinary.h"
 #include <vector>
 #include <list>
 

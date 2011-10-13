@@ -285,8 +285,6 @@ public:
 		vector< vector< double > > updateSteps( numCenters );		
 		for (int i = 0; i < numCenters; ++i) 
 		{
-			double th = 0.01;
-			
 			//update the center and shape
 			vector<double>& currentETrace = eTraces[i];
 			updateSteps[i].resize( currentETrace.size());
