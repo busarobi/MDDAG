@@ -35,6 +35,7 @@
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+typedef RBFArray<RBFLogScaled> FUNCTIONTYPE;
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -563,7 +564,7 @@ int main(int argc, const char *argv[])
 					discState = classifierContinous->getStateSpaceForRBFQFunction(featnum);
 					agentContinous->addStateModifier(discState);
 					//qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
-                    qData = new ArrayBasedQFunctionBinary<RBFArray>(agentContinous->getActions(), discState);
+                    qData = new ArrayBasedQFunctionBinary<FUNCTIONTYPE>(agentContinous->getActions(), discState);
                     vector<double> initRBFs(3, 1.0);
                     if ( args.hasArgument("optimistic") )
                     {
@@ -573,7 +574,7 @@ int main(int argc, const char *argv[])
                         initRBFs[2] = args.getValue<double>("optimistic", 2);	
                     }
                     
-                    dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >( qData )->uniformInit(initRBFs);                                        
+                    dynamic_cast<ArrayBasedQFunctionBinary<FUNCTIONTYPE>* >( qData )->uniformInit(initRBFs);                                        
 				}
                 else {
                     cout << "unkown statespcae" << endl;
@@ -873,16 +874,16 @@ int main(int argc, const char *argv[])
                     std::stringstream ss;
                     ss << "qtables/QTable_" << i << ".dta";
                     //FILE* qTableFile = fopen(ss.str().c_str(), "w");
-					dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qData)->saveQTable(ss.str().c_str());
+					dynamic_cast<ArrayBasedQFunctionBinary<FUNCTIONTYPE>* >(qData)->saveQTable(ss.str().c_str());
                     //dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
                     //fclose(qTableFile);
 															
 					FILE* qTableFile = fopen("QTable.dta", "w");
-                    dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qData)->saveActionValueTable(qTableFile);
+                    dynamic_cast<ArrayBasedQFunctionBinary<FUNCTIONTYPE>* >(qData)->saveActionValueTable(qTableFile);
                     fclose(qTableFile);
                     
                     FILE* actionTableFile = fopen("ActionTable.dta", "w");
-                    dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qData)->saveActionTable(actionTableFile);
+                    dynamic_cast<ArrayBasedQFunctionBinary<FUNCTIONTYPE>* >(qData)->saveActionTable(actionTableFile);
                     fclose(actionTableFile);
                     
                     FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");

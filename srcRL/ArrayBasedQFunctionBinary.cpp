@@ -15,4 +15,5 @@ CAbstractQETraces* ArrayBasedQFunctionBinary<T>::getStandardETraces()
 	return new ArrayBasedQETraces<T>(this);
 }
 
-template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray>::getStandardETraces();
+template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray<RBF> >::getStandardETraces();
+template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray<RBFLogScaled> >::getStandardETraces();

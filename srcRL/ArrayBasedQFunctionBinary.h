@@ -22,8 +22,8 @@
 
 using namespace std;
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 class RBF {
 protected:
 	double _mean;
@@ -77,8 +77,35 @@ public:
 	}
 };
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+class RBFLogScaled : public RBF
+{   
+public:
+    virtual double getActivationFactor( double x ) const
+	{ 
+		double retVal = exp( - (( x-_mean )*( x-_mean ))/(2*exp(_sigma)*exp(_sigma)));
+		return retVal;
+	}
+
+	virtual void getGradient( double x, vector<double>& gradient )
+	{		
+		double distance = x - _mean;
+		double rbfValue = this->getActivationFactor(x);
+		
+		double alphaGrad = rbfValue;
+		double meanGrad = rbfValue * _alpha * distance / (exp(_sigma)*exp(_sigma));
+		double sigmaGrad = rbfValue * _alpha * distance * distance / (2*exp(_sigma*_sigma)*exp(_sigma*_sigma));        
+		
+		gradient.resize(3);
+		gradient[0] = alphaGrad;
+		gradient[1] = meanGrad;
+		gradient[2] = sigmaGrad;						
+	}
+};
+
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 template <typename T>
 class AbstractArrayFunction
 {
@@ -102,34 +129,35 @@ public:
 	
 };
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-class RBFArray : public AbstractArrayFunction<RBF>
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+template< typename TF = RBF >
+class RBFArray : public AbstractArrayFunction<TF>
 {
 protected:	
 	
 public:
-	RBFArray() : AbstractArrayFunction<RBF>() {}
+	RBFArray() : AbstractArrayFunction<TF>() {}
 	
 	virtual ~RBFArray() {}
 	
 	virtual void initUniformly( double coeff )
 	{
-		for (int j = 0; j < _size; ++j) 
+		for (int j = 0; j < this->_size; ++j) 
 		{
-			_data[j].setAlpha( coeff );
-			_data[j].setMean((j+1) * 1.0/(_size+1));			
-			_data[j].setSigma(1./ (2*_size));
+			this->_data[j].setAlpha( coeff );
+			this->_data[j].setMean((j+1) * 1.0/(this->_size+1));			
+			this->_data[j].setSigma(1./ (2*this->_size));
 			
 		}
 	}
 	
 	virtual void getGradient( double x, vector<vector< double > >& gradient )
 	{
-		gradient.resize(_size);
-		for(int i=0; i < _size; ++i )
+		gradient.resize(this->_size);
+		for(int i=0; i < this->_size; ++i )
 		{
-			_data[i].getGradient( x, gradient[i] );
+			this->_data[i].getGradient( x, gradient[i] );
 		}
 	}
 	
@@ -137,9 +165,9 @@ public:
 	{
 		double retVal = 0.0;
 		
-		for( int i=0; i<_size; ++i )
+		for( int i=0; i<this->_size; ++i )
 		{
-			retVal += _data[i].getValue(x); 
+			retVal += this->_data[i].getValue(x); 
 		}		
 		return retVal;		
 	}
@@ -147,31 +175,31 @@ public:
 	virtual void updateParameters( vector< vector< double > >& updates )
 	{
 		double th=0.01;
-		assert(_size == updates.size());
-		for( int i=0; i<_size; ++i )
+		assert(this->_size == updates.size());
+		for( int i=0; i<this->_size; ++i )
 		{
-			_data[i].addAlpha(updates[i][0]);
+			this->_data[i].addAlpha(updates[i][0]);
 
 			double step = updates[i][1];
 			step = (step>th) ?  th : step;		
 			step = (step<-th) ? -th : step;		
-			_data[i].addMean(step);
+			this->_data[i].addMean(step);
 
 			step = updates[i][2];
 			step = (step>th) ?  th : step;		
 			step = (step<-th) ? -th : step;					
-			_data[i].addSigma(step);
+			this->_data[i].addSigma(step);
 		}		
 	}
 	
 	virtual void toString( string& str )
 	{
 		stringstream ss("");
-		for( int i=0; i<_size; ++i )
+		for( int i=0; i<this->_size; ++i )
 		{
-			ss << _data[i].getAlpha() << " ";
-			ss << _data[i].getMean() << " ";
-			ss << _data[i].getSigma() << " ";
+			ss << this->_data[i].getAlpha() << " ";
+			ss << this->_data[i].getMean() << " ";
+			ss << this->_data[i].getSigma() << " ";
 		}				
 		ss.str( str );
 	}	
@@ -180,8 +208,9 @@ public:
 
 
 
-
-template< typename T=RBFArray >
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+template< typename T=RBFArray<RBF> >
 class ArrayBasedQFunctionBinary : public CAbstractQFunction // CAbstractQFunction
 {
 protected:	
@@ -338,6 +367,8 @@ public:
 	void saveActionValueTable(FILE* stream){}
 	void saveActionTable(FILE* stream){}		
 };
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 
 
 #endif

@@ -154,7 +154,7 @@ public:
 			cout << "I: " << currIter << ",";
 			cout << "O:" << dynamic_cast<ArrayBasedQFunctionBinary<T>** >(qFunction)->getValue(artificialState, currentAction)<< "," << flush;
 #endif			
-			dynamic_cast<ArrayBasedQFunctionBinary<RBFArray>* >(qFunction)->updateValue(artificialState, currentAction, td, currentETrace);
+			dynamic_cast<ArrayBasedQFunctionBinary<T>* >(qFunction)->updateValue(artificialState, currentAction, td, currentETrace);
 #ifdef RBFDEB					
 			cout << "N:" << dynamic_cast<ArrayBasedQFunctionBinary<T>** >(qFunction)->getValue(artificialState, currentAction) << ")" << endl << flush;
 #endif			
