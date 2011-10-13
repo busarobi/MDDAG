@@ -73,16 +73,26 @@ void RBFBasedQFunctionBinary::updateValue(CStateCollection *state, CAction *acti
 	//        assert(numCenters = eTraces.size());
 	
 	for (int i = 0; i < numCenters; ++i) {
-		
+		double th = 0.01;
 		double alpha = rbfs[i].getAlpha();
 		double mean = rbfs[i].getMean();
 		double sigma = rbfs[i].getSigma();
 		
 		//update the center and shape
 		vector<double>& currentGradient = eTraces[i];
-		rbfs[i].setAlpha(alpha + currentGradient[0] * td * _muAlpha );
-		rbfs[i].setMean(mean + currentGradient[1] * td * _muMean );
-		rbfs[i].setSigma(sigma + currentGradient[2] * td * _muSigma );
+		double alphaStep = currentGradient[0] * td * _muAlpha;
+		
+		rbfs[i].setAlpha(alpha + alphaStep );
+		
+		double meanStep = currentGradient[1] * td * _muMean;
+		meanStep = (meanStep>th) ?  th : meanStep;		
+		meanStep = (meanStep<-th) ? -th : meanStep;				
+		rbfs[i].setMean(mean + meanStep );
+		
+		double sigmaStep = currentGradient[2] * td * _muSigma;
+		sigmaStep = (sigmaStep>th) ?  th : sigmaStep;
+		sigmaStep = (sigmaStep<-th) ? -th : sigmaStep;
+		rbfs[i].setSigma(sigma + sigmaStep );
 #ifdef RBFDEB			
 		cout << rbfs[i].getID() << " ";
 #endif
@@ -154,18 +164,19 @@ void RBFBasedQFunctionBinary::saveQTable( const char* fname )
 {
 	FILE* outFile = fopen( fname, "w" );
 	
-	for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
-	{
-		fprintf(outFile,"%d ", dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode() );
-	}
-	fprintf(outFile,"\n");
+//	for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)
+//	{
+//		fprintf(outFile,"%d ", dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode() );
+//	}
+//	fprintf(outFile,"\n");
 	
 	for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)		
 	{
 		vector<vector<RBF> >& currentRBFs = _rbfs[*it];
+		//cout << currentRBFs.size() << endl;
 		for(int i=0; i<currentRBFs.size(); ++i)
 		{				
-			fprintf( outFile, "%d ", i );
+			fprintf( outFile, "%d ", i );			
 			for(int j=0; j<currentRBFs[i].size(); ++j )
 			{
 				fprintf( outFile, "%g %g %g ", currentRBFs[i][j].getAlpha(),
@@ -175,6 +186,8 @@ void RBFBasedQFunctionBinary::saveQTable( const char* fname )
 			fprintf( outFile, "\n" );
 		}
 	}
+	
+	fclose( outFile );
 }
 //------------------------------------------------------
 //------------------------------------------------------    

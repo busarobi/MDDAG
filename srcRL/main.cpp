@@ -454,10 +454,19 @@ int main(int argc, const char *argv[])
 	
 	int epsDivisor = 1;
 	int qRateDivisor = 1;
-	double currentAlpha = 0.2;
-	double currentEpsilon = 0.4;
+	int lambdaRateDivisor = 1;
+
+	double initAlpha = 0.2;
+	double initEps = 0.4;
+	
+	double currentAlpha = initAlpha;
+	double currentEpsilon = initEps;
     
-    double lambdaParam = 0.95;
+	double initLambda = 0.95;
+	if ( args.hasArgument("etrace") ) 
+		initLambda = args.getValue<double>("etrace", 0);
+	double currentLambda = initLambda;
+    
     
 	if ( datahandler->getClassNumber() <= 2 )
 	{
@@ -491,8 +500,6 @@ int main(int argc, const char *argv[])
 		if ( args.hasArgument("numoffeat") ) 
             featnum = args.getValue<int>("numoffeat", 0);
         
-		if ( args.hasArgument("etrace") ) 
-            lambdaParam = args.getValue<double>("etrace", 0);
         
         
         
@@ -631,7 +638,7 @@ int main(int argc, const char *argv[])
         
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", lambdaParam);
+		qFunctionLearner->setParameter("Lambda",currentLambda );
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         
@@ -730,11 +737,12 @@ int main(int argc, const char *argv[])
 			{
 				
 				cout << "----------------------------------------------------------" << endl;
-				cout << "Episode number: " << '\t' << i << endl;		
+				cout << "Episode number   :" << '\t' << i << endl;		
 				cout << "Current Accuracy :" << '\t' << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
 				cout << "Used Classifier  :" << '\t' << ((float)usedClassifierNumber / 1000.0) << endl;						
-				cout << "Current alpha: " << currentAlpha << endl;
-				cout << "Current Epsilon: " << currentEpsilon << endl;
+				cout << "Current alpha    :" << '\t' << currentAlpha << endl;
+				cout << "Current Epsilon  :" << '\t' << currentEpsilon << endl;
+				cout << "Current lambda   :" << '\t' << currentLambda << endl;
 				usedClassifierNumber = 0;
 			}
 			
@@ -742,16 +750,25 @@ int main(int argc, const char *argv[])
 			if ((i>2)&&((i%10000)==0))
 			{	
 				epsDivisor++;
-				currentEpsilon =  0.1 / epsDivisor;
+				currentEpsilon =  initEps / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
                 
 			}
 			if ((i>2)&&((i%10000)==0)) 
 			{
 				qRateDivisor++;
-				//currentAlpha = 0.2 / qRateDivisor;
-				//qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
+				currentAlpha = initAlpha / qRateDivisor;
+				qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
 			}
+			
+			if ((i>2)&&((i%10000)==0)) 
+			{
+				lambdaRateDivisor++;
+				currentLambda = initLambda / qRateDivisor;				
+				qFunctionLearner->setParameter("Lambda", currentLambda);
+			}
+			
+			
 			
 			if ((i>2)&&((i%evalTestIteration)==0))
 				//if ((i>2)&&((i%100)==0))
@@ -832,11 +849,14 @@ int main(int argc, const char *argv[])
                     
                     std::stringstream ss;
                     ss << "qtables/QTable_" << i << ".dta";
-                    //FILE* qTableFile = fopen(ss.str().c_str(), "w");
 					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable(ss.str().c_str());
-                    //dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
-                    //fclose(qTableFile);
                     
+                    ss << "qtables/QTable_" << i << ".dta";
+                    FILE* qTableFile = fopen(ss.str().c_str(), "w");					
+                    dynamic_cast<CFeatureQFunction*>(qData)->saveFeatureActionValueTable(qTableFile);
+                    fclose(qTableFile);
+                    
+					
                     ss.clear();
                     ss << "qtables/ActionTable_" << i << ".dta";
                     FILE* actionTableFile = fopen(ss.str().c_str(), "w");
@@ -846,22 +866,9 @@ int main(int argc, const char *argv[])
                     FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
                     fprintf(improvementLogFile, "%i\n", i);
                     fclose(improvementLogFile);
-                    //TMP                    FILE* rbfDataFile = fopen("RBF.dta", "w");
-                    //TMP                    dynamic_cast<CFeatureQFunction*>(qData)->saveParameters(rbfDataFile);
-                    //TMP                    fclose(rbfDataFile);
-                    
-                    //                    const int numWeights = qData->getNumWeights();
-                    //                    double weights[numWeights];
-                    //                    qData->getWeights(weights);
-                    //                    ofstream rbfWeights;
-                    //                    rbfWeights.open("RBF.dta");
-                    //                    for (int w = 0; w < qData->getNumWeights(); ++w) {
-                    //                        rbfWeights << weights[w] << " ";
-                    //                    }
-                    //                    rbfWeights << endl << endl;
                     
                 }
-                if ((bres.acc >= bestAcc)&&(sptype==4)) {
+				if ((bres.acc >= bestAcc)&&(sptype==4)) {
                     bestEpNumber = i;
                     bestAcc = bres.acc;
                     bestWhypNumber = bres.usedClassifierAvg;
@@ -1029,7 +1036,7 @@ int main(int argc, const char *argv[])
 		
 		// Set some options of the Etraces which are not default
 		qFunctionLearner->setParameter("ReplacingETraces", 1.0);
-		qFunctionLearner->setParameter("Lambda", lambdaParam);
+		qFunctionLearner->setParameter("Lambda", initLambda);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
 		
 		// Add the learner to the agent listener list, so he can learn from the agent's steps.
