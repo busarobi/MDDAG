@@ -91,7 +91,7 @@ public:
 			for (int j = 0; j < oneItEtrace.size(); ++j) {
 				for (int k = 0; k < oneItEtrace[j].size(); ++k) {
 					oneItEtrace[j][k] = oneItEtrace[j][k] * mult ;
-					oneItEtrace[j][k] +=  gradient[j][k];
+					//oneItEtrace[j][k] +=  gradient[j][k];
 				}
 			}
 			
