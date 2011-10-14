@@ -214,9 +214,11 @@ template< typename T=RBFArray<RBF> >
 class ArrayBasedQFunctionBinary : public CAbstractQFunction // CAbstractQFunction
 {
 protected:	
-	map< CAction*, vector<T> > 	_data;
+	//map< CAction*, vector<T> > 	_data;
+	map<int, vector<T> > 	_data;
 	
 	int _featureNumber;	
+	vector<int> _actionIndices;
 	CActionSet* _actions;
 	int _numberOfActions;
     int _numberOfIterations;	
@@ -241,10 +243,11 @@ public:
 		CActionSet::iterator it=(*actions).begin();
 		for(;it!=(*actions).end(); ++it )
 		{			
-			_data[*it].resize( iterationNumber );
+			int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(*it)->getMode();
+			_data[currentActionIndex].resize( iterationNumber );
 			for( int i=0; i<iterationNumber; ++i)
 			{
-				_data[*it][i].resize(_featureNumber);
+				_data[currentActionIndex][i].resize(_featureNumber);
 			}
 		}
 		
@@ -261,11 +264,12 @@ public:
 	double getValue(CStateCollection *state, CAction *action, CActionData *data) 
 	{
 		CState* currState = state->getState();
+		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
 		
 		int currIter = currState->getDiscreteState(0);
 		double margin = currState->getContinuousState(0);
 		
-		double retVal = _data[action][currIter].getValue(margin);		
+		double retVal = _data[currentActionIndex][currIter].getValue(margin);		
 		return retVal;
 	}
 	
@@ -274,6 +278,8 @@ public:
 	void updateValue(CStateCollection *state, CAction *action, double td, vector<vector<double> >& eTraces)
 	{
 		CState* currState = state->getState();
+		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
+		
 		int currIter = currState->getDiscreteState(0);
 		double margin = currState->getContinuousState(0);
 		
@@ -295,7 +301,7 @@ public:
 				updateSteps[i][j]=step;
 			}
 		}
-		_data[action][currIter].updateParameters( updateSteps );
+		_data[currentActionIndex][currIter].updateParameters( updateSteps );
 	}
 	//------------------------------------------------------
 	//------------------------------------------------------    
@@ -313,7 +319,8 @@ public:
 	//------------------------------------------------------    
 	void getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient )
 	{		
-		_data[action][currIter].getGradient( margin, gradient );		
+		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
+		_data[currentActionIndex][currIter].getGradient( margin, gradient );		
 	}
 	
 	//------------------------------------------------------
@@ -323,7 +330,8 @@ public:
 		FILE* outFile = fopen( fname, "w" );		
 		for (CActionSet::iterator it=_actions->begin(); it != _actions->end(); ++it)		
 		{
-			vector<T> currentData = _data[*it];
+			int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(*it)->getMode();
+			vector<T> currentData = _data[currentActionIndex];
 			//cout << currentRBFs.size() << endl;
 			for(int i=0; i<currentData.size(); ++i)
 			{				
@@ -341,9 +349,11 @@ public:
 	//------------------------------------------------------    
 	void uniformInit(vector<double>& init)
 	{
-		CActionSet::iterator it=_actions->begin();
+		CActionSet::iterator it=_actions->begin();		
+		
 		for(;it!=_actions->end(); ++it )
 		{	
+			int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(*it)->getMode();
 			int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
 			
 			double initAlpha = 0;
@@ -352,10 +362,10 @@ public:
 				initAlpha = init[index];
 			}
 			
-			int iterationNumber = _data[*it].size();
+			int iterationNumber = _data[currentActionIndex].size();
 			for( int i=0; i<iterationNumber; ++i)
 			{                
-				_data[*it][i].initUniformly(initAlpha);
+				_data[currentActionIndex][i].initUniformly(initAlpha);
 			}
 		}           
 	}
