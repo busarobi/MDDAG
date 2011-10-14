@@ -11,6 +11,7 @@
 
 #include "cstate.h"
 #include "cstateproperties.h"
+#include "RBFStateModifier.h"
 
 using namespace std;
 
@@ -261,5 +262,14 @@ namespace MultiBoost {
 	}
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------	
+	CStateModifier* AdaBoostMDPClassifierContinousMH::getStateSpaceForRBFQFunction(int numOfFeatures)
+	{
+		int numClasses = getNumClasses();
+		CStateModifier* retVal = new RBFStateModifier(numOfFeatures, numClasses, _data->getIterationNumber()+1 );
+		return retVal;
+	}
+	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------	
+	
 	
 } // end of namespace MultiBoost

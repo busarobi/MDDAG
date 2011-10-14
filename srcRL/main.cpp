@@ -36,8 +36,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 //typedef RBFArray<RBFLogScaled> FUNCTIONTYPE;
-typedef RBFArray<RBF> FUNCTIONTYPE;
-
+//typedef RBFArray<RBF> FUNCTIONTYPE;
+typedef MultiDimRBFArraySingleSigma<MultiDimRBFSingleSigma> FUNCTIONTYPE;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 // for multiboost
@@ -959,41 +959,39 @@ int main(int argc, const char *argv[])
 		if ( args.hasArgument("numoffeat") ) featnum = args.getValue<int>("numoffeat", 0);			
 		
 		CRBFCenterFeatureCalculator* rbfFC;
-        CQFunction * qData;
+        CAbstractQFunction * qData;
         
 		if ( args.hasArgument("statespace") )
 		{
 			int sptype = args.getValue<int>("statespace", 0);
 			
             if (sptype == 2 ) {
-                CStateModifier * nnStateModifier = classifierContinous->getStateSpaceNN();
-                
-                agentContinous->addStateModifier(nnStateModifier);
-                
-                qData = new CQFunction(agentContinous->getActions());
-                
-                CActionSet * actionSet = agentContinous->getActions();
-                CActionSet::iterator acIt = actionSet->begin();
-                
-                for (; acIt != actionSet->end(); ++acIt) {
-                    
-                    Torch::MLP * gm = new Torch::MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
-                    CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(gm);
-                    CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
-                    qData->setVFunction(*acIt, vFunction);
-                    
-                }
-                
             }
             else {
                 if (sptype==0) discState = classifierContinous->getStateSpaceExp(featnum,2.0);
                 else if (sptype==1) discState = classifierContinous->getStateSpaceRBF(featnum);
+				else if (sptype==4) {
+					discState = classifierContinous->getStateSpaceForRBFQFunction(featnum);
+					agentContinous->addStateModifier(discState);
+					//qData = new RBFBasedQFunctionBinary(agentContinous->getActions(), discState);
+                    qData = new ArrayBasedQFunctionBinary<FUNCTIONTYPE>(agentContinous->getActions(), discState);
+                    vector<double> initRBFs(3, 1.0);
+                    if ( args.hasArgument("optimistic") )
+                    {
+                        assert(args.getNumValues("optimistic") == 3);
+                        initRBFs[0] = args.getValue<double>("optimistic", 0);	
+                        initRBFs[1] = args.getValue<double>("optimistic", 1);	
+                        initRBFs[2] = args.getValue<double>("optimistic", 2);	
+                    }
+                    
+                    dynamic_cast<ArrayBasedQFunctionBinary<FUNCTIONTYPE>* >( qData )->uniformInit(initRBFs);                                        
+				}				
                 else {
                     cout << "unkown statespcae" << endl;
                 }
                 
-                agentContinous->addStateModifier(discState);
-                qData = new CFeatureQFunction(agentContinous->getActions(), discState);
+                //agentContinous->addStateModifier(discState);
+                //qData = new CFeatureQFunction(agentContinous->getActions(), discState);
             }
 		} else {
 			cout << "No state space resresantion is given, the default is used" << endl;
@@ -1134,11 +1132,12 @@ int main(int argc, const char *argv[])
 			{
 				
 				cout << "----------------------------------------------------------" << endl;
-				cout << "Episode number: " << '\t' << i << endl;		
+				cout << "Episode number   :" << '\t' << i << endl;		
 				cout << "Current Accuracy :" << '\t' << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
 				cout << "Used Classifier  :" << '\t' << ((float)usedClassifierNumber / 1000.0) << endl;						
-				cout << "Current alpha: " << currentAlpha << endl;
-				cout << "Current Epsilon: " << currentEpsilon << endl;
+				cout << "Current alpha    :" << '\t' << currentAlpha << endl;
+				cout << "Current Epsilon  :" << '\t' << currentEpsilon << endl;
+				cout << "Current lambda   :" << '\t' << currentLambda << endl;
 				usedClassifierNumber = 0;
 			}
 			
@@ -1146,15 +1145,22 @@ int main(int argc, const char *argv[])
 			if ((i>2)&&((i%10000)==0))
 			{	
 				epsDivisor++;
-				currentEpsilon =  0.1 / epsDivisor;
+				currentEpsilon =  initEps / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
-				
+                
 			}
 			if ((i>2)&&((i%10000)==0)) 
 			{
 				qRateDivisor++;
-				//currentAlpha = 0.2 / qRateDivisor;
-				//qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
+				currentAlpha = initAlpha / qRateDivisor;
+				qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
+			}
+			
+			if ((i>2)&&((i%10000)==0)) 
+			{
+				lambdaRateDivisor++;
+				currentLambda = initLambda / qRateDivisor;				
+				qFunctionLearner->setParameter("Lambda", currentLambda);
 			}
 			
 			

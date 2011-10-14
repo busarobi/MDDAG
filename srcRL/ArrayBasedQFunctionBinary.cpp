@@ -17,3 +17,4 @@ CAbstractQETraces* ArrayBasedQFunctionBinary<T>::getStandardETraces()
 
 template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray<RBF> >::getStandardETraces();
 template CAbstractQETraces* ArrayBasedQFunctionBinary<RBFArray<RBFLogScaled> >::getStandardETraces();
+template CAbstractQETraces* ArrayBasedQFunctionBinary<MultiDimRBFArraySingleSigma<MultiDimRBFSingleSigma> >::getStandardETraces();

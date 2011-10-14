@@ -84,9 +84,9 @@ public:
 		while (eIt != _eTraces.end())
 		{
 			OneIterETrace & oneItEtrace = *eIt;
-			OneIterETrace gradient;
+			//OneIterETrace gradient;
 			
-			dynamic_cast<ArrayBasedQFunctionBinary<T>* >(qFunction)->getGradient(*itMargin, *itIters, *actionIt, gradient);
+			//dynamic_cast<ArrayBasedQFunctionBinary<T>* >(qFunction)->getGradient(*itMargin, *itIters, *actionIt, gradient);
 			
 			for (int j = 0; j < oneItEtrace.size(); ++j) {
 				for (int k = 0; k < oneItEtrace[j].size(); ++k) {

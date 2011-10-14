@@ -45,13 +45,15 @@ public:
 	virtual void addMean( double m ) { _mean += m; }
 	virtual void addSigma( double s ) { _sigma += s; }
 	virtual void addAlpha( double a ) { _alpha += a; }	
-	
+
+	virtual double getValue( vector<double>& x ) const { return getValue(x[0]); }	
 	virtual double getValue( double x ) const
 	{ 
 		double retVal = _alpha * getActivationFactor(x);
 		return retVal;
 	}
     
+	virtual double getActivationFactor( vector<double>&  x ) const { return getActivationFactor(x[0]); }
     virtual double getActivationFactor( double x ) const
 	{ 
 		double retVal = exp( - (( x-_mean )*( x-_mean ))/(2*_sigma*_sigma));
@@ -63,12 +65,12 @@ public:
 	
 	virtual void getGradient( double x, vector<double>& gradient )
 	{		
-		double distance = x - _mean;
+		double diff = x - _mean;
 		double rbfValue = this->getActivationFactor(x);
 		
 		double alphaGrad = rbfValue;
-		double meanGrad = rbfValue * _alpha * distance / (_sigma*_sigma);
-		double sigmaGrad = rbfValue * _alpha * distance * distance / (_sigma*_sigma*_sigma);        
+		double meanGrad = rbfValue * _alpha * diff / (_sigma*_sigma);
+		double sigmaGrad = rbfValue * _alpha * diff * diff / (_sigma*_sigma*_sigma);        
 		
 		gradient.resize(3);
 		gradient[0] = alphaGrad;
@@ -76,6 +78,111 @@ public:
 		gradient[2] = sigmaGrad;						
 	}
 };
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+class MultiDimRBFSingleSigma
+{
+protected:
+	vector<double> _mean;
+	vector<double> _sigma;
+	double _alpha;
+	string _ID;	
+public:	
+	MultiDimRBFSingleSigma() : _mean(0), _sigma(0), _alpha(0) {}
+	virtual ~MultiDimRBFSingleSigma() {}
+	
+	virtual vector<double>& getMean() { return _mean; }
+	virtual vector<double>& getSigma() { return _sigma; }
+	virtual double getAlpha() { return _alpha; }
+	
+	virtual void setMean( vector<double>& m ) 
+	{
+		_mean.resize(m.size());
+		copy( _mean.begin(), _mean.end(), m.begin() ); 
+	}
+	
+	virtual void setSigma( vector<double>& s )
+	{
+		_sigma.resize(s.size());
+		copy( _sigma.begin(), _sigma.end(), s.begin() ); 
+	}
+	
+	virtual void setAlpha( double a ) { _alpha = a; }
+	
+	virtual void addMean( vector<double>& m ) 
+	{ 
+		for(int i=0; i< _mean.size(); ++i ) _mean[i] += m[i]; 
+	}
+	virtual void addSigma( vector<double>& s )
+	{ 
+		for(int i=0; i< _sigma.size(); ++i ) _sigma[i] += s[i]; 
+	}
+	
+	virtual void addAlpha( double a ) { _alpha += a; }	
+	
+	virtual double getValue( vector<double>& x )
+	{ 
+		double retVal = _alpha * getActivationFactor(x);
+		return retVal;
+	}
+    virtual double getValue( double x )
+	{
+		cout << "getValue: Multidimensional RBF is called with a single values" << endl;
+		exit(-1);
+	}
+	
+	virtual double getActivationFactor( double x ) const
+	{
+		cout << "getActivationFactor: Multidimensional RBF is called with a single values" << endl;
+		exit(-1);
+	}
+	
+	virtual double getActivationFactor( vector<double>&  x ) const
+	{ 
+		double retVal = 0.0;
+		for(int i=0; i< _mean.size(); ++i ) retVal += ((_mean[i] - x[i])*(_mean[i] - x[i]) / (2*_sigma[0]*_sigma[0]) ); 
+		retVal = exp( - retVal);
+		return retVal;
+	}
+    
+	virtual string& getID() { return _ID;}
+	virtual void setID( const string ID ) { _ID = ID; }
+	
+	virtual void getGradient( double x, vector<double>& gradient )
+	{
+		cout << "getGradient: Multidimensional RBF is called with a single values" << endl;
+		exit(-1);
+	}
+	
+	virtual void getGradient( vector<double>& x, vector<double>& gradient )
+	{		
+
+		double dsquare = 0.0;
+		for(int i=0; i< _mean.size(); ++i )
+		{
+			dsquare += ((_mean[i] - x[i])*(_mean[i] - x[i]));
+		}
+		
+		double rbfValue = this->getActivationFactor(x);
+		
+		double alphaGrad = rbfValue;
+		
+		vector<double> meanGrad(_mean.size());
+		for (int i=0; i<_mean.size(); ++i )
+		{
+			meanGrad[i] = rbfValue * _alpha * (x[i]-_mean[i]) / (_sigma[0]*_sigma[0]);
+		}
+		
+		double sigmaGrad = rbfValue * _alpha * dsquare / (_sigma[0]*_sigma[0]*_sigma[0]);        
+		
+		gradient.resize(_mean.size()+2);
+		gradient[0] = alphaGrad;
+		for (int i=0; i<_mean.size(); ++i ) gradient[i+1] = meanGrad[i];
+		gradient[meanGrad.size()+1] = sigmaGrad;						
+	}
+	
+};
+
 
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
@@ -112,6 +219,7 @@ class AbstractArrayFunction
 protected:
 	vector<T> _data;
 	int _size;
+	int _dimension;
 public:
 	AbstractArrayFunction() : _data(0), _size(0) {}
 	
@@ -121,12 +229,26 @@ public:
 		_size = size;				
 	}
 	
+	virtual int getDimension() const { return _dimension; }
+	virtual void setDimension( int dim ) { _dimension = dim; }
+	
+	
 	virtual void initUniformly( double coeff ) = 0;
 	virtual double getValue( double x ) = 0;	
+	virtual double getValue( vector<double>& x ) = 0;		
 	virtual void getGradient( double x, vector<vector< double > >& gradient ) = 0;
+	virtual void getGradient( vector<double>& x, vector<vector< double > >& gradient ) = 0;
 	virtual void updateParameters( vector< vector< double > >& updates ) = 0;	
 	virtual void toString( string& str ) = 0;
 	
+};
+
+template <typename T>
+class MultiDimAbstractArrayFunction : virtual public AbstractArrayFunction<T>
+{
+public:
+	virtual double getValue( double x ) { exit(-1); }
+	virtual void getGradient( double x, vector<vector< double > >& gradient ) {exit(-1); }
 };
 
 //-----------------------------------------------------------------------------------------------
@@ -152,6 +274,11 @@ public:
 		}
 	}
 	
+	virtual void getGradient( vector<double>& x, vector<vector< double > >& gradient )
+	{
+		getGradient( x[0], gradient );
+	}
+	
 	virtual void getGradient( double x, vector<vector< double > >& gradient )
 	{
 		gradient.resize(this->_size);
@@ -160,6 +287,8 @@ public:
 			this->_data[i].getGradient( x, gradient[i] );
 		}
 	}
+	
+	virtual double getValue( vector<double>& x ) { return getValue(x[0]); }
 	
 	virtual double getValue( double x )	
 	{
@@ -206,8 +335,106 @@ public:
 	
 };
 
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+template< typename TF = MultiDimRBFSingleSigma >
+class MultiDimRBFArraySingleSigma : virtual public  MultiDimAbstractArrayFunction<TF>
+{
+protected:	
+	
+public:
+	MultiDimRBFArraySingleSigma() : AbstractArrayFunction<TF>() {}
+	
+	virtual ~MultiDimRBFArraySingleSigma() {}
+	
+	virtual void initUniformly( double coeff )
+	{
+		for (int j = 0; j < this->_size; ++j) 
+		{
+			this->_data[j].setAlpha( coeff );
+			vector<double> mean(this->_dimension, 0.0);
+			for(int i=0; i< this->_dimension; ++i ) mean[i] = (double) rand() / (double) RAND_MAX;
+			this->_data[j].setMean(mean);	
+			vector<double> sigma(1,1./ (2*this->_size));
+			this->_data[j].setSigma(sigma);
+			
+		}
+	}
+	// i don't know why this function has to be redefined here
+	virtual double getValue( double x ) { exit(-1); }	
+	virtual void getGradient( double x, vector<vector< double > >& gradient ) {exit(-1); }
+	
+	
+	virtual void getGradient( vector<double>& x, vector<vector< double > >& gradient )
+	{
+		gradient.resize(this->_size);
+		for(int i=0; i < this->_size; ++i )
+		{
+			this->_data[i].getGradient( x, gradient[i] );
+		}
+	}
+	
+	virtual double getValue( vector<double>& x )
+	{
+		double retVal = 0.0;
+		
+		for( int i=0; i<this->_size; ++i )
+		{
+			retVal += this->_data[i].getValue(x); 
+		}		
+		return retVal;		
+	}
+	
+	virtual void updateParameters( vector< vector< double > >& updates )
+	{
+		double th=0.001;
+		assert(this->_size == updates.size());
+		for( int i=0; i<this->_size; ++i )
+		{
+			this->_data[i].addAlpha(updates[i][0]);
+			double step =0.0;
+			
+			vector<double> meanStep(this->_dimension);
+			for(int j=0; j < this->_dimension; ++j )
+			{
+				step = updates[i][j+1];
+				step = (step>th) ?  th : step;		
+				step = (step<-th) ? -th : step;		
+				meanStep[j] = step;
+			}	
+			this->_data[i].addMean(meanStep);
+			
+			step = updates[i][this->_dimension+1];
+			step = (step>th) ?  th : step;		
+			step = (step<-th) ? -th : step;	
+			
+			vector<double> sigmaStep(1,step);
+			this->_data[i].addSigma(sigmaStep);
+		}		
+	}
+	
+	virtual void toString( string& str )
+	{
+		stringstream ss("");
+		
+		for( int i=0; i<this->_size; ++i )
+		{			
+			ss << this->_data[i].getAlpha() << " ";
+			//vector<int>& mean = this->_data[i].getMean();
+			//for( int i=0; i<this->_size; ++i ) ss << mean[i] << " ";
+			//ss << this->_data[i].getSigma() << " ";
+		}				
+		str=ss.str();
+	}	
+	
+};
 
 
+
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
 template< typename T=RBFArray<RBF> >
@@ -221,12 +448,14 @@ protected:
 	vector<int> _actionIndices;
 	CActionSet* _actions;
 	int _numberOfActions;
-    int _numberOfIterations;	
+    int _numberOfIterations;
+	int _dimension;
 public:
 	ArrayBasedQFunctionBinary(CActionSet *actions, CStateModifier* statemodifier ) : CAbstractQFunction(actions)
 	{
 		// the statemodifier must be RBFStateModifier
 		RBFStateModifier* smodifier = dynamic_cast<RBFStateModifier*>( statemodifier );
+		_dimension = smodifier->getNumOfClasses();
 		
 		const int iterationNumber = smodifier->getNumOfIterations();
 		const int featureNumber = smodifier->getNumOfRBFsPerIteration();
@@ -235,7 +464,7 @@ public:
 		_featureNumber = featureNumber;
 		_numberOfIterations = iterationNumber;
 		
-		assert(numOfClasses==1);
+		//assert(numOfClasses==1);
 		
 		_actions = actions;
 		_numberOfActions = actions->size();
@@ -248,6 +477,7 @@ public:
 			for( int i=0; i<iterationNumber; ++i)
 			{
 				_data[currentActionIndex][i].resize(_featureNumber);
+				_data[currentActionIndex][i].setDimension( _dimension );
 			}
 		}
 		
@@ -265,11 +495,20 @@ public:
 	{
 		CState* currState = state->getState();
 		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
-		
+
 		int currIter = currState->getDiscreteState(0);
-		double margin = currState->getContinuousState(0);
+		double retVal = 0.0;
 		
-		double retVal = _data[currentActionIndex][currIter].getValue(margin);		
+		if (_dimension==1)
+		{				
+			double margin = currState->getContinuousState(0);		
+			retVal = _data[currentActionIndex][currIter].getValue(margin);		
+		} else {
+			vector<double> margins(_dimension);
+			for(int i=0; i<_dimension; ++i )
+				margins[i]= currState->getContinuousState(i);		
+			retVal = _data[currentActionIndex][currIter].getValue(margins);			
+		}
 		return retVal;
 	}
 	
@@ -281,7 +520,6 @@ public:
 		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
 		
 		int currIter = currState->getDiscreteState(0);
-		double margin = currState->getContinuousState(0);
 		
 		//AbstractArrayFunction<T>& currData = _data[action][currIter];
 		int numCenters = eTraces.size();//_rbfs[currIter][action].size();
@@ -308,21 +546,20 @@ public:
 	void getGradient(CStateCollection *state, CAction *action, vector<vector<double> >& gradient)
 	{
 		CState* currState = state->getState();
-		int currIter = currState->getDiscreteState(0);
-		double margin = currState->getContinuousState(0);
-		
-		getGradient(margin, currIter, action, gradient);
-	}
-	
-	
-	//------------------------------------------------------
-	//------------------------------------------------------    
-	void getGradient(double margin, int currIter, CAction *action, vector<vector<double> >& gradient )
-	{		
 		int currentActionIndex = dynamic_cast<MultiBoost::CAdaBoostAction* >(action)->getMode();
-		_data[currentActionIndex][currIter].getGradient( margin, gradient );		
+		int currIter = currState->getDiscreteState(0);
+		
+		if (this->_dimension==1)
+		{
+			double margin = currState->getContinuousState(0);		
+			_data[currentActionIndex][currIter].getGradient( margin, gradient );
+		} else {
+			vector<double> margins(this->_dimension);
+			for( int i=0; i<this->_dimension; ++i ) margins[i]=currState->getContinuousState(i);		
+			_data[currentActionIndex][currIter].getGradient( margins, gradient );
+		}
 	}
-	
+			
 	//------------------------------------------------------
 	//------------------------------------------------------    	
 	void saveQTable( const char* fname )
