@@ -72,7 +72,7 @@ namespace MultiBoost {
 		CStateModifier* getStateSpaceRBFAdaptiveCenters(unsigned int numberOfFeatures, CRBFCenterFeatureCalculator** rbfFC);
         CStateModifier* getStateSpaceNN();
 		
-		
+        CStateModifier* getStateSpaceForGSBNFQFunction( int numOfFeatures);
 	};
 	
 	

@@ -8,6 +8,8 @@
  */
 
 #include "AdaBoostMDPClassifierContinousMultiClass.h"
+#include "RBFBasedQFunction.h"
+#include "RBFStateModifier.h"
 
 #include "cstate.h"
 #include "cstateproperties.h"
@@ -261,5 +263,15 @@ namespace MultiBoost {
 	}
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------	
-	
+    
+    CStateModifier* AdaBoostMDPClassifierContinousMH::getStateSpaceForGSBNFQFunction( int numOfFeatures){
+        int numClasses = getNumClasses();
+		CStateModifier* retVal = new RBFStateModifier(numOfFeatures, numClasses, _data->getIterationNumber()+1 );
+		return retVal;
+        
+    }
+
+    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------	
+
 } // end of namespace MultiBoost
