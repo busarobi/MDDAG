@@ -32,8 +32,12 @@ RBFBasedQFunctionBinary::RBFBasedQFunctionBinary(CActionSet *actions, CStateModi
         }
     }
     
-    addParameter("InitRBFSigma", 0.02);
+    addParameter("InitRBFSigma", 0.01);
     addParameter("AddCenterOnError", 1.);
+    addParameter("MaxTDErrorDivFactor", 10);
+    addParameter("MinActivation", 0.3);
+    addParameter("QLearningRate", 0.2);
+    
 }
 
 CAbstractQETraces* RBFBasedQFunctionBinary::getStandardETraces()
@@ -122,7 +126,7 @@ double RBFBasedQFunctionBinary::addCenter(double tderror, double newCenter, int 
     double defaultSigma = getParameter("InitRBFSigma");
     double newSigma = defaultSigma;
     int index = 0;        
-    if (numCenters > 2) {        
+    if (numCenters > 10) {        
         for (int i = 0; i < rbfs.size(); ++i) {
             if (rbfs[i].getMean() >= newCenter) {
                 break; 
@@ -436,11 +440,12 @@ GSBNFBasedQFunction::GSBNFBasedQFunction(CActionSet *actions, CStateModifier* st
         }
     }
     
-    addParameter("InitRBFSigma", 0.02);
+    addParameter("InitRBFSigma", 0.01);
     addParameter("AddCenterOnError", 1.);
-    addParameter("NormalizedRBFs", 1.);
+    addParameter("NormalizedRBFs", 1);
     addParameter("MaxTDErrorDivFactor", 10);
     addParameter("MinActivation", 0.3);
+    addParameter("QLearningRate", 0.2);
 }
 
 
@@ -477,6 +482,7 @@ double GSBNFBasedQFunction::getValue(CStateCollection *state, CAction *action, C
 
     bool norm  = getParameter("NormalizedRBFs") > 0.5;
     if (norm) {
+        assert(false);
         retVal /= rbfSum;
     }
     
@@ -538,7 +544,7 @@ double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int 
     vector<MultiRBF>& rbfs = _rbfs[action][iter];
     
     double newSigma = getParameter("InitRBFSigma");
- 
+
     MultiRBF newRBF(_numDimensions);
     newRBF.setMean(newCenter);
     newRBF.setAlpha(tderror);
@@ -548,9 +554,10 @@ double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int 
     tmpString << "[ac_" << action << "|it_" << iter << "|fn_" << index << "]";
     newRBF.setId( tmpString.str() );
     
-#ifdef RBFDEB
+//#ifdef RBFDEB
     cout << "New center : " << newRBF.getId() << " at " << newCenter[0] << endl;
-#endif
+    cout << tderror << "\t" << newCenter[0] << "\t" << newSigma << endl ;
+//#endif
     
     rbfs.push_back( newRBF );
     
@@ -748,7 +755,7 @@ void GSBNFBasedQFunction::uniformInit(double* init)
                 //                    }
                 
                 _rbfs[index][i][j].setAlpha(initAlpha);
-                _rbfs[index][i][j].setSigma(1./ (2*numFeat + 0.1));
+                _rbfs[index][i][j].setSigma(1./ (2.2*numFeat));
                 
                 stringstream tmpString("");
                 tmpString << "[ac_" << index << "|it_" << i << "|fn_" << j << "]";

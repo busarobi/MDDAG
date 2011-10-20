@@ -589,10 +589,10 @@ int main(int argc, const char *argv[])
                     
                     qData->setParameter("AddCenterOnError", 1);
                     qData->setParameter("NormalizedRBFs", 0);
-                    qData->setParameter("InitRBFSigma", 0.02);
+                    qData->setParameter("InitRBFSigma", 0.01);
                     qData->setParameter("MaxTDErrorDivFactor", 10);
                     qData->setParameter("MinActivation", 0.3);
-//                    qData->setParameter("QLearningRate", 0.2);
+                    qData->setParameter("QLearningRate", 0.2);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
                     
@@ -862,11 +862,11 @@ int main(int argc, const char *argv[])
 				evalTest.classficationAccruacy(bres,logfname);			
 
                 if (sptype == 5) {
-                    std::stringstream ss;
-                    ss << "qtables/QTable_" << i << ".dta";
-                    FILE *qTableFile2 = fopen(ss.str().c_str(), "w");
-                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile2);
-                    fclose(qTableFile2);                    
+//                    std::stringstream ss;
+//                    ss << "qtables/QTable_" << i << ".dta";
+//                    FILE *qTableFile2 = fopen(ss.str().c_str(), "w");
+//                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile2);
+//                    fclose(qTableFile2);                    
                 }
                 
 //                ss.clear();
@@ -1024,7 +1024,12 @@ int main(int argc, const char *argv[])
 		if ( args.hasArgument("numoffeat") ) featnum = args.getValue<int>("numoffeat", 0);			
 		
 		CRBFCenterFeatureCalculator* rbfFC;
-        CQFunction * qData;
+//        CQFunction * qData;
+        
+        if ( args.hasArgument("etrace") ) 
+            lambdaParam = args.getValue<double>("etrace", 0);
+
+        CAbstractQFunction * qData;
         
 		if ( args.hasArgument("statespace") )
 		{
@@ -1045,24 +1050,63 @@ int main(int argc, const char *argv[])
                     Torch::MLP * gm = new Torch::MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
                     CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(gm);
                     CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
-                    qData->setVFunction(*acIt, vFunction);
+//TMP                    qData->setVFunction(*acIt, vFunction);
                     
                 }
                 
             }
             else {
-                if (sptype==0) discState = classifierContinous->getStateSpaceExp(featnum,2.0);
-                else if (sptype==1) discState = classifierContinous->getStateSpaceRBF(featnum);
+                if (sptype==0){
+                    agentContinous->addStateModifier(discState);
+                    qData = new CFeatureQFunction(agentContinous->getActions(), discState);
+                    discState = classifierContinous->getStateSpaceExp(featnum,2.0);
+                } 
+                else if (sptype==1) {
+                    discState = classifierContinous->getStateSpaceRBF(featnum);
+                    agentContinous->addStateModifier(discState);
+                    qData = new CFeatureQFunction(agentContinous->getActions(), discState);
+                }
+                
+                else if (sptype==5) {
+					discState = classifierContinous->getStateSpaceForGSBNFQFunction(featnum);
+					agentContinous->addStateModifier(discState);
+					qData = new GSBNFBasedQFunction(agentContinous->getActions(), discState);
+                    
+                    double initRBFs[] = {1.0,1.0,1.0};
+                    if ( args.hasArgument("optimistic") )
+                    {
+                        assert(args.getNumValues("optimistic") == 3);
+                        initRBFs[0] = args.getValue<double>("optimistic", 0);	
+                        initRBFs[1] = args.getValue<double>("optimistic", 1);	
+                        initRBFs[2] = args.getValue<double>("optimistic", 2);	
+                    }
+                    
+                    qData->setParameter("AddCenterOnError", 1);
+                    qData->setParameter("NormalizedRBFs", 0);
+                    qData->setParameter("InitRBFSigma", 0.01);
+                    qData->setParameter("MaxTDErrorDivFactor", 10);
+                    qData->setParameter("MinActivation", 0.3);
+                    qData->setParameter("QLearningRate", 0.2);
+                    
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
+                    
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuAlpha(1) ;
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuMean(0.000) ;
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuSigma(0.000) ;
+                    
+				}
+                
                 else {
                     cout << "unkown statespcae" << endl;
                 }
                 
-                agentContinous->addStateModifier(discState);
-                qData = new CFeatureQFunction(agentContinous->getActions(), discState);
             }
 		} else {
 			cout << "No state space resresantion is given, the default is used" << endl;
 			discState = classifierContinous->getStateSpace(featnum);
+            agentContinous->addStateModifier(discState);
+            qData = new CFeatureQFunction(agentContinous->getActions(), discState);
+
 		}
 		//CStateModifier* discState = classifierContinous->getStateSpace(100,0.01);
 		// RBF
@@ -1164,6 +1208,7 @@ int main(int argc, const char *argv[])
 		int qRateDivisor = 1;
         
         double bestAcc=0., bestWhypNumber=0.;
+        int bestEpNumber = 0;
 		// Learn for 500 Episodes
 		for (int i = 0; i < episodeNumber; i++)
 		{
@@ -1250,15 +1295,11 @@ int main(int argc, const char *argv[])
 				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
 				double sumRew = evalTrain.classficationAccruacy(acc,usedclassifierNumber,logfname);
                 
-                if (acc > bestAcc) {
-                    bestAcc = acc;
-                    bestWhypNumber = usedClassifierNumber;
-                }
                 
 				cout << "******** Overall Train accuracy by MDP: " << acc << "(" << ovaccTrain << ")" << endl;
 				cout << "******** Average Train classifier used: " << usedclassifierNumber << endl;
 				cout << "******** Sum of rewards on Train: " << sumRew << endl << endl;
-				cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl;
+//				cout << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl;
                 
 				classifierContinous->outPutStatistic( ovaccTrain, acc, usedclassifierNumber, sumRew );
 				
@@ -1269,11 +1310,18 @@ int main(int argc, const char *argv[])
 				
 				
 				sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );				
-				sumRew = evalTest.classficationAccruacy(acc,usedclassifierNumber,logfname);			
+				sumRew = evalTest.classficationAccruacy(acc,usedclassifierNumber,logfname);		
+                
+                if (acc > bestAcc) {
+                    bestAcc = acc;
+                    bestWhypNumber = usedClassifierNumber;
+                    bestEpNumber = i;
+                }
+                
 				cout << "******** Overall Test accuracy by MDP: " << acc << "(" << ovaccTest << ")" << endl;
 				cout << "******** Average Test classifier used: " << usedclassifierNumber << endl;
 				cout << "******** Sum of rewards on Test: " << sumRew << endl;
-				
+                cout << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl;
 				classifierContinous->outPutStatistic( ovaccTest, acc, usedclassifierNumber, sumRew );
 				
 				classifierContinous->setCurrentDataToTrain();
