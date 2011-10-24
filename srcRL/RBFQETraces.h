@@ -172,7 +172,7 @@ public:
 	{
         
         double tderror = td / _learningRate;
-        double activation = dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getActivation(_currentState, _actions.back());
+        double activation = dynamic_cast<RBFBasedQFunctionBinary* >(qFunction)->getMaxActivation(_currentState, _actions.back());
         
         int actionIndex = dynamic_cast<MultiBoost::CAdaBoostAction*>(_actions.back())->getMode();
         

@@ -118,6 +118,26 @@ double RBFBasedQFunctionBinary::getActivation(CStateCollection *state, CAction *
     return retVal;
 }
 
+double RBFBasedQFunctionBinary::getMaxActivation(CStateCollection *state, CAction *action, CActionData *data ) 
+{
+    CState* currState = state->getState();
+    
+    int currIter = currState->getDiscreteState(0);
+    double margin = currState->getContinuousState(0);
+    
+    double retVal = 0.0;
+    
+    vector<RBF>& currRBFs = _rbfs[action][currIter];		
+    for( int i=0; i<currRBFs.size(); ++i )
+    {
+        double act = currRBFs[i].getActivationFactor(margin);
+        if (retVal < act) {
+            retVal = act;
+        }
+    }		
+    return retVal;
+}
+
 double RBFBasedQFunctionBinary::addCenter(double tderror, double newCenter, int iter, CAction* action, double& maxError) 
 {
     vector<RBF>& rbfs = _rbfs[action][iter];
@@ -482,7 +502,6 @@ double GSBNFBasedQFunction::getValue(CStateCollection *state, CAction *action, C
 
     bool norm  = getParameter("NormalizedRBFs") > 0.5;
     if (norm) {
-        assert(false);
         retVal /= rbfSum;
     }
     
@@ -532,10 +551,15 @@ void GSBNFBasedQFunction::getActivationFactors(RBFParams& margin, int currIter, 
         factors[i] = currRBFs[i].getActivationFactor(margin); 
         sum += currRBFs[i].getActivationFactor(margin);
     }
-                   
-    for( int i=0; i<currRBFs.size(); ++i )
-    {
-        factors[i] /= sum;
+     
+    bool norm  = getParameter("NormalizedRBFs") > 0.5;
+    if (norm) {
+        
+        assert(false);
+        for( int i=0; i<currRBFs.size(); ++i )
+        {
+            factors[i] /= sum;
+        }
     }
 }
 

@@ -96,6 +96,8 @@ public:
     
     virtual double getActivation(CStateCollection *state, CAction *action, CActionData *data = NULL);
     
+    double getMaxActivation(CStateCollection *state, CAction *action, CActionData *data = NULL); 
+    
     virtual double addCenter(double tderror, double newCenter, int iter, CAction* action, double& maxError);    
 
 	virtual void updateValue(CStateCollection *state, CAction *action, double td, vector<vector<double> >& eTraces);
@@ -192,7 +194,7 @@ public:
         
         for (int i = 0; i < _mean.size(); ++i)
         {
-            factor += pow((x[i] - _mean[i]), 2) / _sigma[i];	
+            factor += (x[i] - _mean[i])*(x[i] - _mean[i]) / _sigma[i]*_sigma[i];	
         }
         factor = - factor / 2;
         return exp(factor);

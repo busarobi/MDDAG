@@ -829,21 +829,21 @@ int main(int argc, const char *argv[])
 				// TRAIN			
 				classifierContinous->setCurrentDataToTrain();
 				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTrain( agentContinous, rewardFunctionContinous );
-				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
-				
+//				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
+//				
 				BinaryResultStruct bres;
-				bres.origAcc = ovaccTrain;
-				bres.iterNumber=i;
-				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
-				evalTrain.classficationAccruacy(bres, logfname);
-                
-				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
-				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
-				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
+//				bres.origAcc = ovaccTrain;
+//				bres.iterNumber=i;
+//				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
+//				evalTrain.classficationAccruacy(bres, logfname);
+//                
+//				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
+//				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
+//				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
 				
                 //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
-				classifierContinous->outPutStatistic( bres );
+//				classifierContinous->outPutStatistic( bres );
 				
 				
 				// TEST
