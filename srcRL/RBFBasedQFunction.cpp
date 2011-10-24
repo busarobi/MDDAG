@@ -554,8 +554,6 @@ void GSBNFBasedQFunction::getActivationFactors(RBFParams& margin, int currIter, 
      
     bool norm  = getParameter("NormalizedRBFs") > 0.5;
     if (norm) {
-        
-        assert(false);
         for( int i=0; i<currRBFs.size(); ++i )
         {
             factors[i] /= sum;
@@ -578,10 +576,10 @@ double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int 
     tmpString << "[ac_" << action << "|it_" << iter << "|fn_" << index << "]";
     newRBF.setId( tmpString.str() );
     
-//#ifdef RBFDEB
+#ifdef RBFDEB
     cout << "New center : " << newRBF.getId() << " at " << newCenter[0] << endl;
     cout << tderror << "\t" << newCenter[0] << "\t" << newSigma << endl ;
-//#endif
+#endif
     
     rbfs.push_back( newRBF );
     
@@ -670,6 +668,17 @@ void GSBNFBasedQFunction::getGradient(CStateCollection *state, int action, vecto
 
 void GSBNFBasedQFunction::getGradient(RBFParams& margin, int currIter, int action, vector<vector<RBFParams> >& gradient)
 {
+
+//tmp
+//    for (int ac=0; ac < _numberOfActions; ++ac) 
+//    {
+//        for( int i=0; i<_numberOfIterations; ++i)
+//        {
+//            cout << _rbfs[ac][i].size() << " ";
+//        }
+//        cout << endl ;
+//    }
+    
     vector<MultiRBF>& rbfs = _rbfs[action][currIter];
     int numCenters = rbfs.size();
     gradient.clear();

@@ -139,7 +139,10 @@ public:
             _sigma[i] = 0.;
             _alpha[i] = 0.;
         }
-    }    
+    }
+    
+    MultiRBF() : _mean(0), _sigma(0), _alpha(0) 
+    {    }
     
     RBFParams& getMean() { return _mean; }
 	RBFParams& getSigma() { return _sigma; }
@@ -194,7 +197,7 @@ public:
         
         for (int i = 0; i < _mean.size(); ++i)
         {
-            factor += (x[i] - _mean[i])*(x[i] - _mean[i]) / _sigma[i]*_sigma[i];	
+            factor += (x[i] - _mean[i])*(x[i] - _mean[i]) / (_sigma[i]*_sigma[i]);	
         }
         factor = - factor / 2;
         return exp(factor);
