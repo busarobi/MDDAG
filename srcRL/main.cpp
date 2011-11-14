@@ -285,7 +285,12 @@ void setBasicOptions(nor_utils::Args& args)
 	args.declareArgument("numoffeat", "The number of feature in statespace representation", 1, "<featnum>" );
     args.declareArgument("optimistic", "Set the initial values of the Q function", 3, "<real> <real> <real>" );
     args.declareArgument("etrace", "Lambda parameter", 1, "<real>" );
-	
+    args.declareArgument("rbfbias", "Set the bias of the RBF network in the QTable representation", 3, "<real> <real> <real>" );
+    args.declareArgument("noaddcenter", "Disactivate adding centers on TD error", 0, "" );
+    args.declareArgument("normrbf", "Normalized RBFs", 0, "" );
+    args.declareArgument("rbfsigma", "Initialize RBF with a given sigma", 1, "<val>" );
+    args.declareArgument("maxtderr", "Max error on the TD value for adding a center. It is given by the inverse of the ratio of the max Q", 1, "<val>" );
+    args.declareArgument("minrbfact", "Min activation factor for adding a center", 1, "<val>" );
 }
 
 
@@ -441,8 +446,6 @@ int main(int argc, const char *argv[])
 		exit(-1);
 	}
 	
-	
-	
 	string logDirContinous="";
 	if (args.hasArgument("logdir"))
 	{
@@ -452,10 +455,10 @@ int main(int argc, const char *argv[])
 	DataReader* datahandler = new DataReader( args, verbose );
 	datahandler->setCurrentDataToTrain();
 	
-	int epsDivisor = 1;
+	double epsDivisor = 4.0;
 	int qRateDivisor = 1;
 	double currentAlpha = 0.2;
-	double currentEpsilon = 0.4;
+	double currentEpsilon = 0.25; //0.4
     
     double lambdaParam = 0.95;
     
@@ -586,12 +589,43 @@ int main(int argc, const char *argv[])
                         initRBFs[1] = args.getValue<double>("optimistic", 1);	
                         initRBFs[2] = args.getValue<double>("optimistic", 2);	
                     }
+
+                    vector<double> bias(3);
+                    if ( args.hasArgument("rbfbias") )
+                    {
+                        assert(args.getNumValues("rbfbias") == 3);
+                        bias[0] = args.getValue<double>("rbfbias", 0);	
+                        bias[1] = args.getValue<double>("rbfbias", 1);	
+                        bias[2] = args.getValue<double>("rbfbias", 2);	
+                    }
                     
-                    qData->setParameter("AddCenterOnError", 1);
-                    qData->setParameter("NormalizedRBFs", 0);
-                    qData->setParameter("InitRBFSigma", 0.01);
-                    qData->setParameter("MaxTDErrorDivFactor", 10);
-                    qData->setParameter("MinActivation", 0.3);
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setBias(bias);
+                    
+                    int addCenter = 1;
+                    if ( args.hasArgument("noaddcenter") )
+                        addCenter = 0;
+
+                    int normalizeRbf = 0;
+                    if ( args.hasArgument("normrbf") )
+                        normalizeRbf = 1;
+                    
+                    double initSigma = 0.01;
+                    if ( args.hasArgument("rbfsigma") )
+                        initSigma = args.getValue<double>("rbfsigma", 0);
+                    
+                    int maxtderr = 10;
+                    if ( args.hasArgument("maxtderr") )
+                        maxtderr = args.getValue<int>("maxtderr", 0);
+                    
+                    double minact = 0.4;
+                    if ( args.hasArgument("minrbfact") )
+                        minact = args.getValue<int>("minrbfact", 0);
+                    
+                    qData->setParameter("AddCenterOnError", addCenter);
+                    qData->setParameter("NormalizedRBFs", normalizeRbf);
+                    qData->setParameter("InitRBFSigma", initSigma); 
+                    qData->setParameter("MaxTDErrorDivFactor", maxtderr);
+                    qData->setParameter("MinActivation", minact);
                     qData->setParameter("QLearningRate", 0.2);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
@@ -651,8 +685,8 @@ int main(int argc, const char *argv[])
         //obsolete
         //        CQFunctionFromGradientFunction *qData = new CQFunctionFromGradientFunction(new CContinuousAction(new CContinuousActionProperties(0)), torchGradientFunction, agentContinous->getActions(), classifierContinous->getStateProperties());
         
-        
-		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
+        CTDLearner *qFunctionLearner = new CQLearner(classifierContinous, qData);
+//		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
         
         //gradient stuff !!!
         CDiscreteResidual* residualFunction = new CDiscreteResidual(0.95);
@@ -666,6 +700,9 @@ int main(int argc, const char *argv[])
         
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
+        
+        
+        
         
 		// Set some options of the Etraces which are not default
         qFunctionLearner->setParameter("ReplacingETraces", 1.0);
@@ -787,16 +824,19 @@ int main(int argc, const char *argv[])
 			
 			if ((i>2)&&((i%10000)==0))
 			{	
-				epsDivisor++;
-				currentEpsilon =  0.1 / epsDivisor;
+				epsDivisor += 0.1;
+//				currentEpsilon =  0.1 / epsDivisor;
+				currentEpsilon =  1. / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
                 
 			}
 			if ((i>2)&&((i%10000)==0)) 
 			{
 				qRateDivisor++;
-				//currentAlpha = 0.2 / qRateDivisor;
-				//qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
+//				currentAlpha = 0.2 / qRateDivisor;
+				currentAlpha = 1. / qRateDivisor;
+				qFunctionLearner->setParameter("QLearningRate", currentAlpha);
+                qData->setParameter("QLearningRate", currentAlpha);
 			}
 			
 			if ((i>2)&&((i%evalTestIteration)==0))
@@ -829,21 +869,21 @@ int main(int argc, const char *argv[])
 				// TRAIN			
 				classifierContinous->setCurrentDataToTrain();
 				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTrain( agentContinous, rewardFunctionContinous );
-//				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
-//				
+				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
+				
 				BinaryResultStruct bres;
-//				bres.origAcc = ovaccTrain;
-//				bres.iterNumber=i;
-//				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
-//				evalTrain.classficationAccruacy(bres, logfname);
-//                
-//				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
-//				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
-//				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
+				bres.origAcc = ovaccTrain;
+				bres.iterNumber=i;
+				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
+				evalTrain.classficationAccruacy(bres, logfname);
+                
+				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
+				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
+				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
 				
                 //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
-//				classifierContinous->outPutStatistic( bres );
+				classifierContinous->outPutStatistic( bres );
 				
 				
 				// TEST
@@ -884,6 +924,12 @@ int main(int argc, const char *argv[])
                     //                    cout << dynamic_cast<CRBFCenterNetworkSimpleSearch*> ( rbfFC )->getCenter(k)->getCenter()[0] << "   ";
                     //                }
                     //                cout << endl;                    
+                }
+                
+                if (bres.acc > bestAcc && sptype==0) {
+                    bestEpNumber = i;
+                    bestAcc = bres.acc;
+                    bestWhypNumber = bres.usedClassifierAvg;
                 }
                 
                 if ((bres.acc > bestAcc) && sptype==1) {

@@ -225,6 +225,8 @@ protected:
     double _muMean;
     double _muSigma;
     
+    vector<double> _bias;
+    
     double _maxSigma;
     
     int _numDimensions;
@@ -244,6 +246,7 @@ public:
         return _numDimensions;
     }
     void uniformInit(double* init);
+    void setBias(vector<double>& bias);
     double getValue(CStateCollection *state, CAction *action, CActionData *data);
     double getMaxActivation(CStateCollection *state, int action, CActionData *data=NULL);
     void getActivationFactors(RBFParams& margin, int currIter, int action, vector<double>& factors);

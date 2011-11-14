@@ -436,10 +436,11 @@ GSBNFBasedQFunction::GSBNFBasedQFunction(CActionSet *actions, CStateModifier* st
     _numberOfIterations = iterationNumber;
     _numDimensions = numOfClasses;
     
-    //    assert(numOfClasses==1);
-    
     _actions = actions;
     _numberOfActions = actions->size();
+    
+    //init the bias
+    _bias.resize(_numberOfActions, 0.0);
     
     _rbfs.clear();
     _rbfs.resize(_numberOfActions);
@@ -468,6 +469,66 @@ GSBNFBasedQFunction::GSBNFBasedQFunction(CActionSet *actions, CStateModifier* st
     addParameter("QLearningRate", 0.2);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GSBNFBasedQFunction::setBias(vector<double>& bias)
+{
+    assert(bias.size() == _numberOfActions);
+    for (int i = 0; i < _numberOfActions; ++i) {
+        _bias[i] = bias[i];
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GSBNFBasedQFunction::uniformInit(double* init)
+{
+    double initSigma = getParameter("InitRBFSigma");
+    
+    CActionSet::iterator it=_actions->begin();
+    for(;it!=_actions->end(); ++it )
+    {	
+        int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
+        
+        double initAlpha = 0;
+        if (init != NULL) {
+            //warning  : no check on the bounds of init                
+            initAlpha = init[index];
+        }
+                
+        int iterationNumber = _rbfs[index].size();
+        for( int i=0; i<iterationNumber; ++i)
+        {                
+            int numFeat = _rbfs[index][i].size();
+
+            double sigma = 1./ (2.2*numFeat);
+            
+            if (sigma > initSigma) {
+                sigma = initSigma;
+            }
+            
+            for (int j = 0; j < numFeat; ++j) {
+                //                    if (numFeat % 2 == 0) {
+                _rbfs[index][i][j].setMean((j+1) * 1./(numFeat+1));
+                //                    }
+                //                    else {
+                //                        _rbfs[*it][i][j].setMean(j * 1./numFeat);   
+                //                    }
+                
+                _rbfs[index][i][j].setAlpha(initAlpha);
+
+                _rbfs[index][i][j].setSigma(sigma);
+                
+                stringstream tmpString("");
+                tmpString << "[ac_" << index << "|it_" << i << "|fn_" << j << "]";
+                _rbfs[index][i][j].setId( tmpString.str() );
+            }
+        }
+    }           
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 double GSBNFBasedQFunction::getValue(CStateCollection *state, CAction *action, CActionData *data)
 {
@@ -479,15 +540,15 @@ double GSBNFBasedQFunction::getValue(CStateCollection *state, CAction *action, C
         margin[i] = currState->getContinuousState(i);
     }
     
-    double retVal = 0.0;
-    double rbfSum = 0.0;
-    
     int actionIndex = dynamic_cast<MultiBoost::CAdaBoostAction*>(action)->getMode();
     
     vector<MultiRBF>& currRBFs = _rbfs[actionIndex][currIter];		
-
+    double retVal = 0.0;
+    double rbfSum = 0.0;
+    double bias = _bias[actionIndex];
+    
     if (currRBFs.size() == 0) {
-        return  0;
+        return  bias;
     }
     
     for( int i=0; i<currRBFs.size(); ++i )
@@ -508,6 +569,8 @@ double GSBNFBasedQFunction::getValue(CStateCollection *state, CAction *action, C
     assert( retVal == retVal);
     return retVal;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double GSBNFBasedQFunction::getMaxActivation(CStateCollection *state, int action, CActionData *data )
 {
@@ -530,8 +593,10 @@ double GSBNFBasedQFunction::getMaxActivation(CStateCollection *state, int action
         }
     }		
     return maxVal;
+    cout << endl << "max activation " << maxVal << endl;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void GSBNFBasedQFunction::getActivationFactors(RBFParams& margin, int currIter, int action, vector<double>& factors)
 {
@@ -560,6 +625,8 @@ void GSBNFBasedQFunction::getActivationFactors(RBFParams& margin, int currIter, 
         }
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int iter, int action, double& maxError)
 {
@@ -592,6 +659,8 @@ double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int 
     //normalizeNetwork();
     
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void GSBNFBasedQFunction::updateValue(int currIter, RBFParams& margin, int action, double td, vector<vector<RBFParams> >& eTraces)
 {
@@ -653,6 +722,8 @@ void GSBNFBasedQFunction::updateValue(int currIter, RBFParams& margin, int actio
     }		
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void GSBNFBasedQFunction::getGradient(CStateCollection *state, int action, vector<vector<RBFParams> >& gradient)
 {
     CState* currState = state->getState();
@@ -665,6 +736,8 @@ void GSBNFBasedQFunction::getGradient(CStateCollection *state, int action, vecto
     
     getGradient(margin, currIter, action, gradient);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void GSBNFBasedQFunction::getGradient(RBFParams& margin, int currIter, int action, vector<vector<RBFParams> >& gradient)
 {
@@ -739,6 +812,8 @@ void GSBNFBasedQFunction::getGradient(RBFParams& margin, int currIter, int actio
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void GSBNFBasedQFunction::saveActionValueTable(FILE* stream, int dim)
 {
     fprintf(stream, "Q-FeatureActionValue Table\n");
@@ -756,45 +831,10 @@ void GSBNFBasedQFunction::saveActionValueTable(FILE* stream, int dim)
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 CAbstractQETraces* GSBNFBasedQFunction::getStandardETraces()
 {
     return new GSBNFQETraces(this);
-}
-
-
-void GSBNFBasedQFunction::uniformInit(double* init)
-{
-    CActionSet::iterator it=_actions->begin();
-    for(;it!=_actions->end(); ++it )
-    {	
-        int index = dynamic_cast<MultiBoost::CAdaBoostAction*>(*it)->getMode();
-        
-        double initAlpha = 0;
-        if (init != NULL) {
-            //warning  : no check on the bounds of init                
-            initAlpha = init[index];
-        }
-        
-        int iterationNumber = _rbfs[index].size();
-        for( int i=0; i<iterationNumber; ++i)
-        {                
-            int numFeat = _rbfs[index][i].size();
-            for (int j = 0; j < numFeat; ++j) {
-                //                    if (numFeat % 2 == 0) {
-                _rbfs[index][i][j].setMean((j+1) * 1./(numFeat+1));
-                //                    }
-                //                    else {
-                //                        _rbfs[*it][i][j].setMean(j * 1./numFeat);   
-                //                    }
-                
-                _rbfs[index][i][j].setAlpha(initAlpha);
-                _rbfs[index][i][j].setSigma(1./ (2.2*numFeat));
-                
-                stringstream tmpString("");
-                tmpString << "[ac_" << index << "|it_" << i << "|fn_" << j << "]";
-                _rbfs[index][i][j].setId( tmpString.str() );
-            }
-        }
-    }           
 }
 
