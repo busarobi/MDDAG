@@ -291,6 +291,8 @@ void setBasicOptions(nor_utils::Args& args)
     args.declareArgument("rbfsigma", "Initialize RBF with a given sigma", 1, "<val>" );
     args.declareArgument("maxtderr", "Max error on the TD value for adding a center. It is given by the inverse of the ratio of the max Q", 1, "<val>" );
     args.declareArgument("minrbfact", "Min activation factor for adding a center", 1, "<val>" );
+    args.declareArgument("positivelabel", "The name of positive label", 1, "<labelname>" );
+    args.declareArgument("failpenalties", "Negative rewards for misclassifying resp. positives and negatives", 2, "<pospenalty> <negpenalty>" );
 }
 
 
@@ -457,7 +459,7 @@ int main(int argc, const char *argv[])
 	
 	double epsDivisor = 4.0;
 	int qRateDivisor = 1;
-	double currentAlpha = 0.2;
+	double currentAlpha = 0.02;
 	double currentEpsilon = 0.25; //0.4
     
     double lambdaParam = 0.95;
@@ -619,14 +621,14 @@ int main(int argc, const char *argv[])
                     
                     double minact = 0.4;
                     if ( args.hasArgument("minrbfact") )
-                        minact = args.getValue<int>("minrbfact", 0);
+                        minact = args.getValue<double>("minrbfact", 0);
                     
                     qData->setParameter("AddCenterOnError", addCenter);
                     qData->setParameter("NormalizedRBFs", normalizeRbf);
                     qData->setParameter("InitRBFSigma", initSigma); 
                     qData->setParameter("MaxTDErrorDivFactor", maxtderr);
                     qData->setParameter("MinActivation", minact);
-                    qData->setParameter("QLearningRate", 0.2);
+                    qData->setParameter("QLearningRate", currentAlpha);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
                     
@@ -709,6 +711,7 @@ int main(int argc, const char *argv[])
 		qFunctionLearner->setParameter("Lambda", lambdaParam);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
+        qFunctionLearner->setParameter("QLearningRate", currentAlpha);
         
         //        CVFunctionFromGradientFunction* vFunctionAB = new CVFunctionFromGradientFunction(torchGradientFunction,  nnStateModifier); //classifierContinous->getStateProperties()
         //        CVFunctionLearner *vFunctionLearnerAB = new CVFunctionLearner(rewardFunctionContinous, vFunctionAB);
@@ -833,8 +836,8 @@ int main(int argc, const char *argv[])
 			if ((i>2)&&((i%10000)==0)) 
 			{
 				qRateDivisor++;
-//				currentAlpha = 0.2 / qRateDivisor;
-				currentAlpha = 1. / qRateDivisor;
+				currentAlpha = 0.02 / qRateDivisor;
+//				currentAlpha = 1. / qRateDivisor;
 				qFunctionLearner->setParameter("QLearningRate", currentAlpha);
                 qData->setParameter("QLearningRate", currentAlpha);
 			}
@@ -902,11 +905,11 @@ int main(int argc, const char *argv[])
 				evalTest.classficationAccruacy(bres,logfname);			
 
                 if (sptype == 5) {
-//                    std::stringstream ss;
-//                    ss << "qtables/QTable_" << i << ".dta";
-//                    FILE *qTableFile2 = fopen(ss.str().c_str(), "w");
-//                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile2);
-//                    fclose(qTableFile2);                    
+                    std::stringstream ss;
+                    ss << "qtables/QTable_" << i << ".dta";
+                    FILE *qTableFile2 = fopen(ss.str().c_str(), "w");
+                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile2);
+                    fclose(qTableFile2);                    
                 }
                 
 //                ss.clear();
@@ -1127,12 +1130,43 @@ int main(int argc, const char *argv[])
                         initRBFs[2] = args.getValue<double>("optimistic", 2);	
                     }
                     
-                    qData->setParameter("AddCenterOnError", 1);
-                    qData->setParameter("NormalizedRBFs", 0);
-                    qData->setParameter("InitRBFSigma", 0.01);
-                    qData->setParameter("MaxTDErrorDivFactor", 10);
-                    qData->setParameter("MinActivation", 0.3);
-                    qData->setParameter("QLearningRate", 0.2);
+                    vector<double> bias(3);
+                    if ( args.hasArgument("rbfbias") )
+                    {
+                        assert(args.getNumValues("rbfbias") == 3);
+                        bias[0] = args.getValue<double>("rbfbias", 0);	
+                        bias[1] = args.getValue<double>("rbfbias", 1);	
+                        bias[2] = args.getValue<double>("rbfbias", 2);	
+                    }
+                    
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setBias(bias);
+                    
+                    int addCenter = 1;
+                    if ( args.hasArgument("noaddcenter") )
+                        addCenter = 0;
+                    
+                    int normalizeRbf = 0;
+                    if ( args.hasArgument("normrbf") )
+                        normalizeRbf = 1;
+                    
+                    double initSigma = 0.01;
+                    if ( args.hasArgument("rbfsigma") )
+                        initSigma = args.getValue<double>("rbfsigma", 0);
+                    
+                    int maxtderr = 10;
+                    if ( args.hasArgument("maxtderr") )
+                        maxtderr = args.getValue<int>("maxtderr", 0);
+                    
+                    double minact = 0.4;
+                    if ( args.hasArgument("minrbfact") )
+                        minact = args.getValue<double>("minrbfact", 0);
+                    
+                    qData->setParameter("AddCenterOnError", addCenter);
+                    qData->setParameter("NormalizedRBFs", normalizeRbf);
+                    qData->setParameter("InitRBFSigma", initSigma); 
+                    qData->setParameter("MaxTDErrorDivFactor", maxtderr);
+                    qData->setParameter("MinActivation", minact);
+                    qData->setParameter("QLearningRate", currentAlpha);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
                     
@@ -1182,7 +1216,8 @@ int main(int argc, const char *argv[])
 		// Create the Q-Function learner, we will use a SarsaLearner
 		// The Sarsa Learner needs the reward function, the Q-Function and the agent.
 		// The agent is used to get the estimation policy, because Sarsa Learning is On-Policy learning.
-		CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
+		//CSarsaLearner *qFunctionLearner = new CSarsaLearner(rewardFunctionContinous, qData, agentContinous);
+        CTDLearner *qFunctionLearner = new CQLearner(classifierContinous, qData);
 		
 		// Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
@@ -1191,6 +1226,8 @@ int main(int argc, const char *argv[])
 		qFunctionLearner->setParameter("ReplacingETraces", 1.0);
 		qFunctionLearner->setParameter("Lambda", lambdaParam);
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
+        
+        qFunctionLearner->setParameter("QLearningRate", currentAlpha);
 		
 		// Add the learner to the agent listener list, so he can learn from the agent's steps.
 		agentContinous->addSemiMDPListener(qFunctionLearner);
@@ -1309,8 +1346,10 @@ int main(int argc, const char *argv[])
 			if ((i>2)&&((i%10000)==0)) 
 			{
 				qRateDivisor++;
-				//currentAlpha = 0.2 / qRateDivisor;
-				//qFunctionLearner->setParameter("QLearningRate", currentAlpha);			
+				currentAlpha = 0.02 / qRateDivisor;
+//				currentAlpha = 1. / qRateDivisor;
+				qFunctionLearner->setParameter("QLearningRate", currentAlpha);
+                qData->setParameter("QLearningRate", currentAlpha);
 			}
 			
 			
@@ -1360,14 +1399,15 @@ int main(int argc, const char *argv[])
                 
                 if (acc > bestAcc) {
                     bestAcc = acc;
-                    bestWhypNumber = usedClassifierNumber;
+                    bestWhypNumber = usedclassifierNumber;
                     bestEpNumber = i;
                 }
                 
 				cout << "******** Overall Test accuracy by MDP: " << acc << "(" << ovaccTest << ")" << endl;
 				cout << "******** Average Test classifier used: " << usedclassifierNumber << endl;
 				cout << "******** Sum of rewards on Test: " << sumRew << endl;
-                cout << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl;
+                cout << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl 
+                     << "----> Num of whyp used : " << bestWhypNumber << endl;
 				classifierContinous->outPutStatistic( ovaccTest, acc, usedclassifierNumber, sumRew );
 				
 				classifierContinous->setCurrentDataToTrain();

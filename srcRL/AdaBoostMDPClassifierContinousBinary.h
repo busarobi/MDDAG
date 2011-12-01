@@ -67,6 +67,11 @@ namespace MultiBoost {
 	class AdaBoostMDPClassifierContinousBinary : public AdaBoostMDPClassifierContinous
 	{
 	protected:
+        string _positiveLabelName;
+        int _positiveLabelIndex;
+        double _failOnPositivesPenalty;
+        double _failOnNegativesPenalty;
+        
 	public:
 		AdaBoostMDPClassifierContinousBinary( const nor_utils::Args& args, int verbose, DataReader* datareader);
 		virtual ~AdaBoostMDPClassifierContinousBinary() {}

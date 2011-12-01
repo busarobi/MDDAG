@@ -38,6 +38,24 @@ namespace MultiBoost {
 		//properties->setMaxValue(0,  1.0);
 		
 		_exampleResult = NULL;
+        
+        _positiveLabelIndex = 0;
+        if ( args.hasArgument("positivelabel") )
+		{
+			args.getValue("positivelabel", 0, _positiveLabelName);
+            const NameMap& namemap = datareader->getClassMap();
+            _positiveLabelIndex = namemap.getIdxFromName( _positiveLabelName );
+
+        }
+		
+        _failOnNegativesPenalty = _failOnPositivesPenalty = 0.0;
+        if ( args.hasArgument("failpenalties") )
+		{
+			args.getValue("failpenalties", 0, _failOnPositivesPenalty);
+            args.getValue("failpenalties", 1, _failOnNegativesPenalty);
+            
+            assert(_failOnNegativesPenalty <= 0 && _failOnPositivesPenalty <= 0);
+        }
 		
 		// set the dim of state space
 		properties->setDiscreteStateSize(0,datareader->getIterationNumber()+1);		
@@ -77,15 +95,18 @@ namespace MultiBoost {
 				if ( _data->currentClassifyingResult( _currentRandomInstance,  _exampleResult )  ) // classified correctly
 				{
 					failed = false;
-					if (hasithLabelCurrentElement(0))//is a negative element
+					if (hasithLabelCurrentElement(_positiveLabelIndex))
 						rew += _successReward;// /100.0;
-					else
+					else //is a negative element
 						rew += _successReward;
 				} else 
 				{
 					failed = true;
 					//rew += -_successReward;
-					rew += 0.0;
+                    if (hasithLabelCurrentElement(_positiveLabelIndex))
+                        rew += _failOnPositivesPenalty;
+                    else 
+                        rew += _failOnNegativesPenalty;
 				}
 			} else if (_succRewardMode==RT_EXP)
 			{

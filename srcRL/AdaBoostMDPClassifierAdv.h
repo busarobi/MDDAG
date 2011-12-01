@@ -77,6 +77,10 @@ namespace MultiBoost {
 		double getAccuracyOnCurrentDataSet();
 		
 		double getSumOfAlphas() const { return _sumAlphas; }
+        
+        inline const NameMap& getClassMap()
+		{ return _pCurrentData->getClassMap(); }
+
 	protected:
 		int						_verbose;		
 		double					_sumAlphas;
