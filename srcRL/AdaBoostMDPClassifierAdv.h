@@ -20,6 +20,7 @@
 #include "IO/OutputInfo.h"
 #include "Classifiers/AdaBoostMHClassifier.h"
 #include "Classifiers/ExampleResults.h"
+#include "bitset"
 
 //////////////////////////////////////////////////////////////////////
 // for RL toolbox
@@ -34,6 +35,14 @@
 
 
 using namespace std;
+
+#define MAX_NUM_OF_ITERATION 10000
+typedef vector<bitset<MAX_NUM_OF_ITERATION> >	vBitSet;
+typedef vector<bitset<MAX_NUM_OF_ITERATION> >*	pVBitSet;
+
+typedef vector<vector<char> >	vVecChar;
+typedef vector<vector<char> >*	pVVecChar;
+
 
 namespace MultiBoost {
 	
@@ -71,8 +80,14 @@ namespace MultiBoost {
 		int getTrainNumExamples() const { return _pTrainData->getNumExamples(); }
 		int getTestNumExamples() const { return _pTestData->getNumExamples(); }				
 		
-		void setCurrentDataToTrain() { _pCurrentData = _pTrainData; }
-		void setCurrentDataToTest() { _pCurrentData = _pTestData; }		
+		void setCurrentDataToTrain() { 
+			_pCurrentData = _pTrainData; 
+			if (_isDataStorageMatrix) _pCurrentMatrix = &_weakHypothesesMatrices[_pCurrentData];			
+		}
+		void setCurrentDataToTest() { 
+			_pCurrentData = _pTestData; 
+			if (_isDataStorageMatrix) _pCurrentMatrix = &_weakHypothesesMatrices[_pCurrentData];
+		}		
 		
 		double getAccuracyOnCurrentDataSet();
 		
@@ -82,6 +97,8 @@ namespace MultiBoost {
 		{ return _pCurrentData->getClassMap(); }
 
 	protected:
+		void calculateHypothesesMatrix();
+		
 		int						_verbose;		
 		double					_sumAlphas;
 		
@@ -93,7 +110,17 @@ namespace MultiBoost {
 		InputData*				_pTrainData;
 		InputData*				_pTestData;
 		
-		int						_numIterations;		
+		int						_numIterations;	
+		
+//		map< InputData*, vBitSet > _weakHypothesesMatrices;
+//		pVBitSet				   _pCurrentBitset;
+		map< InputData*, vVecChar > _weakHypothesesMatrices;
+		pVVecChar				   _pCurrentMatrix;
+		
+		
+		bool					_isDataStorageMatrix;
+		vector< vector< AlphaReal > > _vs;
+		vector< AlphaReal >			_alphas;
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////	

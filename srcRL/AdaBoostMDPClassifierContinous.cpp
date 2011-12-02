@@ -154,9 +154,12 @@ namespace MultiBoost {
 		_classifierNumber = 0;				
 		_currentSumAlpha = 0.0;
 		
-		if (_exampleResult==NULL) delete _exampleResult;
-		_exampleResult = new ExampleResults(_currentRandomInstance,_data->getClassNumber());		
+		if (_exampleResult==NULL) 
+			_exampleResult = new ExampleResults(_currentRandomInstance,_data->getClassNumber());		
 		
+		vector<AlphaReal>& currVotesVector = _exampleResult->getVotesVector();
+		
+		fill( currVotesVector.begin(), currVotesVector.end(), 0.0 );		
 		fill( _classifierUsed.begin(), _classifierUsed.end(), false );
 			
 	}

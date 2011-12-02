@@ -10,6 +10,8 @@
 #include "AdaBoostMDPClassifierAdv.h"
 #include "cstate.h"
 #include "cstateproperties.h"
+#include "FeaturewiseLearner.h"
+#include "AbstainableLearner.h"
 
 #include <math.h> // for exp
 
@@ -157,9 +159,7 @@ namespace MultiBoost {
 		string shypFileName = _args.getValue<string>("traintestmdp", 3);
 		_numIterations = _args.getValue<int>("traintestmdp", 2);				
 		
-		string tmpFname = _args.getValue<string>("traintestmdp", 4);
-		
-		
+		string tmpFname = _args.getValue<string>("traintestmdp", 4);		
 		
 		if (_verbose > 0)
 			cout << "Loading arff data for MDP learning..." << flush;
@@ -193,12 +193,64 @@ namespace MultiBoost {
 		for( it = _weakHypotheses.begin(); it != _weakHypotheses.end(); ++it )
 		{
 			BaseLearner* currBLearner = *it;
-			_sumAlphas += currBLearner->getAlpha();
+			_sumAlphas += currBLearner->getAlpha();			
 		}
+	
+		_isDataStorageMatrix = true;
 		
+		if (_isDataStorageMatrix)
+		{			
+			setCurrentDataToTrain();
+			calculateHypothesesMatrix();
+			setCurrentDataToTest();
+			calculateHypothesesMatrix();
+			
+			_vs.resize(_numIterations);
+			_alphas.resize(_numIterations);
+			for(int wHypInd = 0; wHypInd < _numIterations; ++wHypInd )
+			{								
+				AbstainableLearner* currWeakHyp = dynamic_cast<AbstainableLearner*>(_weakHypotheses[wHypInd]);
+				_alphas[wHypInd] =  currWeakHyp->getAlpha();
+				_vs[wHypInd] = currWeakHyp->_v;
+				for(int l=0; l<_vs[wHypInd].size(); ++l)
+				{
+					_vs[wHypInd][l] *= currWeakHyp->getAlpha();
+				}
+			}			
+		}
 	}
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
+	void DataReader::calculateHypothesesMatrix()
+	{		
+		cout << "Calculate weak hyp matrix ...";
+		const int numExamples = _pCurrentData->getNumExamples();
+
+		vVecChar& tmpOutput = _weakHypothesesMatrices[_pCurrentData];
+		tmpOutput.resize(numExamples);
+		
+		for( int i=0; i<numExamples; ++i )
+		{
+			tmpOutput[i].resize(_numIterations);
+		}		
+		
+		for(int wHypInd = 0; wHypInd < _numIterations; ++wHypInd )
+		{
+			AbstainableLearner* currWeakHyp = dynamic_cast<AbstainableLearner*>(_weakHypotheses[wHypInd]);
+			vector<AlphaReal> tmpv = currWeakHyp->_v;
+			
+			for( int i=0; i<numExamples; ++i )
+			{				
+				AlphaReal cl = currWeakHyp->classify( _pCurrentData, i, 0 );								
+				cl *= tmpv[0];
+				tmpOutput[i][wHypInd] = (cl<0.0) ? -1.0 : +1.0;
+//				if (cl>0.0) tmpBitSet[i].set(wHypInd,1); // +1
+//				else tmpBitSet[i].set(wHypInd,0); // -1
+			}
+		}
+								
+		cout << "Done" << endl;
+	}
 	
 	void DataReader::loadInputData(const string& dataFileName, const string& testDataFileName, const string& shypFileName)
 	{
@@ -260,17 +312,30 @@ namespace MultiBoost {
 		
 		if ( wHypInd >= _numIterations ) return -1.0; // indicating error						
 		
-		const int numClasses = _pCurrentData->getNumClasses();
-		
-		BaseLearner* currWeakHyp = _weakHypotheses[wHypInd];
-		float alpha = currWeakHyp->getAlpha();
+		const int numClasses = _pCurrentData->getNumClasses();				
 		
 		// a reference for clarity and speed
 		vector<AlphaReal>& currVotesVector = exampleResult->getVotesVector();
+		float alpha;
 		
 		// for every class
-		for (int l = 0; l < numClasses; ++l)
-			currVotesVector[l] += alpha * currWeakHyp->classify(_pCurrentData, instance, l);
+		if (_isDataStorageMatrix)
+		{
+			//vBitSet& cBitSet = _weakHypothesesMatrices[_pCurrentData];
+			//for (int l = 0; l < numClasses; ++l)
+				//currVotesVector[l] += alpha * _vs[wHypInd][l] * (_pCurrentBitset->at(instance)[wHypInd]? +1.0 : -1.0);
+			alpha = _alphas[wHypInd];
+			for (int l = 0; l < numClasses; ++l)
+				currVotesVector[l] += _vs[wHypInd][l] * (*_pCurrentMatrix)[instance][wHypInd];			
+			
+		} else
+		{
+			BaseLearner* currWeakHyp = _weakHypotheses[wHypInd];
+			alpha = currWeakHyp->getAlpha();
+
+			for (int l = 0; l < numClasses; ++l)
+				currVotesVector[l] += alpha * currWeakHyp->classify(_pCurrentData, instance, l);
+		}
 		
 		return alpha;
 	}
@@ -380,7 +445,6 @@ namespace MultiBoost {
 				// for every class
 				for (int l = 0; l < numClasses; ++l)
 					currVotesVector[l] += alpha * currWeakHyp->classify(_pCurrentData, i, l);
-				
 			}
 			
 			
