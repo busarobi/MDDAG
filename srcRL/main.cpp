@@ -293,6 +293,9 @@ void setBasicOptions(nor_utils::Args& args)
     args.declareArgument("minrbfact", "Min activation factor for adding a center", 1, "<val>" );
     args.declareArgument("positivelabel", "The name of positive label", 1, "<labelname>" );
     args.declareArgument("failpenalties", "Negative rewards for misclassifying resp. positives and negatives", 2, "<pospenalty> <negpenalty>" );
+    args.declareArgument("learningrate", "The learning rate", 3, "<numerator> <denominator> <denominator increment>" );
+    args.declareArgument("explorationrate", "The exploration rate", 3, "<numerator> <denominator> <denominator increment>" );
+    args.declareArgument("paramupdate", "The number of episodes required before updating the learning rate and the exploration rate.", 1, "<num>" );
 }
 
 
@@ -457,12 +460,40 @@ int main(int argc, const char *argv[])
 	DataReader* datahandler = new DataReader( args, verbose );
 	datahandler->setCurrentDataToTrain();
 	
+    
 	double epsDivisor = 4.0;
-	int qRateDivisor = 1;
-	double currentAlpha = 0.02;
-	double currentEpsilon = 0.25; //0.4
+    double epsIncrement = 0.1;
+    double epsNumerator = 1.;
+    
+	double qRateDivisor = 1.;
+    double qRateIncrement = 1;
+    double qRateNumerator = 0.2 ;
+    
+    if (args.hasArgument("learningrate"))
+	{
+		qRateNumerator = args.getValue<double>("learningrate", 0);
+		qRateDivisor = args.getValue<double>("learningrate", 1);
+        qRateIncrement = args.getValue<double>("learningrate", 2);
+	}
+
+    if (args.hasArgument("explorationrate"))
+	{
+		epsNumerator = args.getValue<double>("explorationrate", 0);
+		epsDivisor = args.getValue<double>("explorationrate", 1);
+		epsIncrement = args.getValue<double>("explorationrate", 2);
+	}
+    
+
+    double currentEpsilon = epsNumerator / epsDivisor;
+    double currentAlpha = qRateNumerator / qRateDivisor;
     
     double lambdaParam = 0.95;
+    
+    int paramUpdate = 10000;
+    if (args.hasArgument("paramupdate"))
+	{
+		paramUpdate = args.getValue<double>("paramupdate", 0);
+    }
     
 	if ( datahandler->getClassNumber() <= 2 )
 	{
@@ -712,6 +743,7 @@ int main(int argc, const char *argv[])
 		qFunctionLearner->setParameter("DiscountFactor", 1.0);
         
         qFunctionLearner->setParameter("QLearningRate", currentAlpha);
+        qData->setParameter("QLearningRate", currentAlpha);
         
         //        CVFunctionFromGradientFunction* vFunctionAB = new CVFunctionFromGradientFunction(torchGradientFunction,  nnStateModifier); //classifierContinous->getStateProperties()
         //        CVFunctionLearner *vFunctionLearnerAB = new CVFunctionLearner(rewardFunctionContinous, vFunctionAB);
@@ -825,19 +857,17 @@ int main(int argc, const char *argv[])
 			}
 			
 			
-			if ((i>2)&&((i%10000)==0))
+			if ((i>2)&&((i%paramUpdate)==0))
 			{	
-				epsDivisor += 0.1;
-//				currentEpsilon =  0.1 / epsDivisor;
-				currentEpsilon =  1. / epsDivisor;
+				epsDivisor += epsIncrement;
+				currentEpsilon =  epsNumerator / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
                 
 			}
-			if ((i>2)&&((i%10000)==0)) 
+			if ((i>2)&&((i%paramUpdate)==0)) 
 			{
-				qRateDivisor++;
-				currentAlpha = 0.02 / qRateDivisor;
-//				currentAlpha = 1. / qRateDivisor;
+				qRateDivisor += qRateIncrement;
+				currentAlpha = qRateNumerator / qRateDivisor;
 				qFunctionLearner->setParameter("QLearningRate", currentAlpha);
                 qData->setParameter("QLearningRate", currentAlpha);
 			}
@@ -1172,7 +1202,7 @@ int main(int argc, const char *argv[])
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuAlpha(1) ;
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuMean(0.000) ;
-                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuSigma(0.000) ;
+                    dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuSigma(0.0000) ;
                     
 				}
                 
@@ -1287,8 +1317,8 @@ int main(int argc, const char *argv[])
 		
 		cout << "Valid: " << ovaccTrain << " Test: " << ovaccTest << endl << flush;
 		
-		int epsDivisor = 1;
-		int qRateDivisor = 1;
+//		int epsDivisor = 1;
+//		int qRateDivisor = 1;
         
         double bestAcc=0., bestWhypNumber=0.;
         int bestEpNumber = 0;
@@ -1336,20 +1366,18 @@ int main(int argc, const char *argv[])
 			}
 			
 			
-			if ((i>2)&&((i%10000)==0))
+			if ((i>2)&&((i%paramUpdate)==0))
 			{	
-				epsDivisor++;
-				currentEpsilon =  0.1 / epsDivisor;
-				policy->setParameter("EpsilonGreedy", currentEpsilon);
-				
+				epsDivisor += epsIncrement;
+				currentEpsilon =  epsNumerator / epsDivisor;
+				policy->setParameter("EpsilonGreedy", currentEpsilon);				
 			}
-			if ((i>2)&&((i%10000)==0)) 
+			if ((i>2)&&((i%paramUpdate)==0)) 
 			{
-				qRateDivisor++;
-				currentAlpha = 0.02 / qRateDivisor;
-//				currentAlpha = 1. / qRateDivisor;
+				qRateDivisor += qRateIncrement;
+				currentAlpha = qRateNumerator / qRateDivisor;
 				qFunctionLearner->setParameter("QLearningRate", currentAlpha);
-                qData->setParameter("QLearningRate", currentAlpha);
+                qData->setParameter("QLearningRate", currentAlpha);                
 			}
 			
 			
