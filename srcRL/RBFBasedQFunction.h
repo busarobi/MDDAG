@@ -255,6 +255,7 @@ public:
     void getGradient(CStateCollection *state, int action, vector<vector<RBFParams> >& gradient);
     void getGradient(RBFParams& margin, int currIter, int action, vector<vector<RBFParams> >& gradient);
     void saveActionValueTable(FILE* stream, int dim=0);
+    void saveCentersNumber(FILE* stream);
     CAbstractQETraces* getStandardETraces();
 };
 

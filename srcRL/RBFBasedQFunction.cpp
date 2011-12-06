@@ -473,7 +473,7 @@ GSBNFBasedQFunction::GSBNFBasedQFunction(CActionSet *actions, CStateModifier* st
 
 void GSBNFBasedQFunction::setBias(vector<double>& bias)
 {
-    assert(bias.size() == _numberOfActions);
+//    assert(bias.size() == _numberOfActions);
     for (int i = 0; i < _numberOfActions; ++i) {
         _bias[i] = bias[i];
     }
@@ -828,6 +828,22 @@ void GSBNFBasedQFunction::saveActionValueTable(FILE* stream, int dim)
             fprintf(stream, "\n");
         }
         
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void GSBNFBasedQFunction::saveCentersNumber(FILE* stream)
+{
+    fprintf(stream, "GSNBF centers number\n");
+    //    CActionSet::iterator it;
+    
+    for (int j = 0; j < _numberOfIterations; ++j) {
+        fprintf(stream,"classifier %d:", j);
+        for (int k = 0; k < _numberOfActions; ++k) {
+            fprintf(stream," %d", _rbfs[k][j].size());
+        }
+        fprintf(stream, "\n");        
     }
 }
 

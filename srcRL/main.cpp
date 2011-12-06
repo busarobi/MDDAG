@@ -296,6 +296,7 @@ void setBasicOptions(nor_utils::Args& args)
     args.declareArgument("learningrate", "The learning rate", 3, "<numerator> <denominator> <denominator increment>" );
     args.declareArgument("explorationrate", "The exploration rate", 3, "<numerator> <denominator> <denominator increment>" );
     args.declareArgument("paramupdate", "The number of episodes required before updating the learning rate and the exploration rate.", 1, "<num>" );
+    args.declareArgument("withoutquitQ", "Take the quit action off.", 0, "" );
 }
 
 
@@ -517,8 +518,12 @@ int main(int argc, const char *argv[])
 		agentContinous->addAction(new CAdaBoostAction(0)); 
 		// classify
 		agentContinous->addAction(new CAdaBoostAction(1));
-		// jump to the end	
-		agentContinous->addAction(new CAdaBoostAction(2));
+        
+        if (!args.hasArgument("withoutquitQ"))
+        {
+            // jump to the end	
+    		agentContinous->addAction(new CAdaBoostAction(2));
+        }
 		
 		CStateModifier* discState = NULL;
 		// simple discretized state space
@@ -1092,14 +1097,18 @@ int main(int argc, const char *argv[])
 		agentContinous->addAction(new CAdaBoostAction(0)); 
 		// classify
 		agentContinous->addAction(new CAdaBoostAction(1));
-		// jump to the end	
-		agentContinous->addAction(new CAdaBoostAction(2));
 		
+        if (!args.hasArgument("withoutquitQ"))
+        {
+            // jump to the end	
+    		agentContinous->addAction(new CAdaBoostAction(2));
+        }
+        		
 		
 		CStateModifier* discState = NULL;
 		// simple discretized state space
 		//CStateModifier* discState = classifierContinous->getStateSpace();
-		int featnum = 11;
+		int featnum = 1;
 		if ( args.hasArgument("numoffeat") ) featnum = args.getValue<int>("numoffeat", 0);			
 		
 		CRBFCenterFeatureCalculator* rbfFC;
@@ -1363,6 +1372,7 @@ int main(int argc, const char *argv[])
 				cout << "Current alpha: " << currentAlpha << endl;
 				cout << "Current Epsilon: " << currentEpsilon << endl;
 				usedClassifierNumber = 0;
+                ges_failed = ges_succeeded = 0;
 			}
 			
 			
@@ -1408,6 +1418,13 @@ int main(int argc, const char *argv[])
 				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
 				double sumRew = evalTrain.classficationAccruacy(acc,usedclassifierNumber,logfname);
                 
+                
+                //save the number of centers per wc per action
+                std::stringstream ss;
+                ss << logDirContinous << "/rbfCenters_" << i << ".dta";
+                FILE* rbfCentersFile = fopen(ss.str().c_str(), "w");
+                dynamic_cast<GSBNFBasedQFunction*>(qData)->saveCentersNumber(rbfCentersFile);
+                fclose(rbfCentersFile);
                 
 				cout << "******** Overall Train accuracy by MDP: " << acc << "(" << ovaccTrain << ")" << endl;
 				cout << "******** Average Train classifier used: " << usedclassifierNumber << endl;
