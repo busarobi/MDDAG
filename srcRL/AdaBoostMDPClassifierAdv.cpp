@@ -10,8 +10,8 @@
 #include "AdaBoostMDPClassifierAdv.h"
 #include "cstate.h"
 #include "cstateproperties.h"
-#include "FeaturewiseLearner.h"
-#include "AbstainableLearner.h"
+#include "WeakLearners/FeaturewiseLearner.h"
+#include "WeakLearners/AbstainableLearner.h"
 
 #include <math.h> // for exp
 
