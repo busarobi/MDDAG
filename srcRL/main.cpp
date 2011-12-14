@@ -297,6 +297,8 @@ void setBasicOptions(nor_utils::Args& args)
     args.declareArgument("explorationrate", "The exploration rate", 3, "<numerator> <denominator> <denominator increment>" );
     args.declareArgument("paramupdate", "The number of episodes required before updating the learning rate and the exploration rate.", 1, "<num>" );
     args.declareArgument("withoutquitQ", "Take the quit action off.", 0, "" );
+    args.declareArgument("maxrbfnumber", "The maximum number of RBF per whyp per action.", 1, "<num>" );
+    args.declareArgument("incrementalrewardQ", "Give a reward after each evalation.", 0, "" );
 }
 
 
@@ -658,6 +660,10 @@ int main(int argc, const char *argv[])
                     double minact = 0.4;
                     if ( args.hasArgument("minrbfact") )
                         minact = args.getValue<double>("minrbfact", 0);
+
+                    int maxrbfnumber = 100;
+                    if ( args.hasArgument("maxrbfnumber") )
+                        maxrbfnumber = args.getValue<int>("MaxRBFNumber", 0);
                     
                     qData->setParameter("AddCenterOnError", addCenter);
                     qData->setParameter("NormalizedRBFs", normalizeRbf);
@@ -665,6 +671,7 @@ int main(int argc, const char *argv[])
                     qData->setParameter("MaxTDErrorDivFactor", maxtderr);
                     qData->setParameter("MinActivation", minact);
                     qData->setParameter("QLearningRate", currentAlpha);
+                    qData->setParameter("MaxRBFNumber", maxrbfnumber);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
                     
@@ -1200,12 +1207,17 @@ int main(int argc, const char *argv[])
                     if ( args.hasArgument("minrbfact") )
                         minact = args.getValue<double>("minrbfact", 0);
                     
+                    int maxrbfnumber = 100;
+                    if ( args.hasArgument("maxrbfnumber") )
+                        maxrbfnumber = args.getValue<int>("maxrbfnumber", 0);
+                    
                     qData->setParameter("AddCenterOnError", addCenter);
                     qData->setParameter("NormalizedRBFs", normalizeRbf);
                     qData->setParameter("InitRBFSigma", initSigma); 
                     qData->setParameter("MaxTDErrorDivFactor", maxtderr);
                     qData->setParameter("MinActivation", minact);
                     qData->setParameter("QLearningRate", currentAlpha);
+                    qData->setParameter("MaxRBFNumber", maxrbfnumber);
                     
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->uniformInit(initRBFs);
                     

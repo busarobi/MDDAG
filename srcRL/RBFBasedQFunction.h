@@ -250,7 +250,7 @@ public:
     double getValue(CStateCollection *state, CAction *action, CActionData *data);
     double getMaxActivation(CStateCollection *state, int action, CActionData *data=NULL);
     void getActivationFactors(RBFParams& margin, int currIter, int action, vector<double>& factors);
-    double addCenter(double tderror, RBFParams& newCenter, int iter, int action, double& maxError);
+    void addCenter(double tderror, RBFParams& newCenter, int iter, int action, double& maxError);
     void updateValue(int currIter, RBFParams& margin, int action, double td, vector<vector<RBFParams> >& eTraces);
     void getGradient(CStateCollection *state, int action, vector<vector<RBFParams> >& gradient);
     void getGradient(RBFParams& margin, int currIter, int action, vector<vector<RBFParams> >& gradient);

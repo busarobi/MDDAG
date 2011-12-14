@@ -24,7 +24,7 @@ namespace MultiBoost {
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------	
 	AdaBoostMDPClassifierContinous::AdaBoostMDPClassifierContinous(const nor_utils::Args& args, int verbose, DataReader* datareader, int classNum, int discState)
-	: CEnvironmentModel(classNum,discState), _args(args), _verbose(verbose), _classNum(classNum), _data(datareader) //CEnvironmentModel(classNum+1,classNum)
+	: CEnvironmentModel(classNum,discState), _args(args), _verbose(verbose), _classNum(classNum), _data(datareader), _incrementalReward(false), _lastReward(0.0) //CEnvironmentModel(classNum+1,classNum)
 	{
 		// set the dim of state space
 		for( int i=0; i<_classNum;++i)
@@ -78,6 +78,9 @@ namespace MultiBoost {
 			_succRewardMode = RT_HAMMING;
 		}
 		
+        if (args.hasArgument("incrementalrewardQ")) {
+            _incrementalReward = true;
+        }
 	}
 	
 	// -----------------------------------------------------------------------

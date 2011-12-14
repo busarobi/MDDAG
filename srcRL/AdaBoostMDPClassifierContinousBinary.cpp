@@ -75,7 +75,30 @@ namespace MultiBoost {
 				rew = _skipReward;
 			} else if ( mode == 1 )
 			{								
-				rew = _classificationReward;			
+				rew = _classificationReward;
+                
+                if (_incrementalReward) {    
+                    rew -= _lastReward;
+                    if (_succRewardMode==RT_HAMMING)
+                    {
+                        if ( _data->currentClassifyingResult( _currentRandomInstance,  _exampleResult )  ) // classified correctly
+                        {
+                            _lastReward = _successReward;// /100.0;
+                        }
+                    } 
+                    else if (_succRewardMode==RT_EXP)
+                    {
+                        double exploss;
+                        if (_classifierNumber>0)
+                        {
+                            exploss = _data->getExponentialLoss( _currentRandomInstance,  _exampleResult );
+                            _lastReward = 1/exploss;
+                        }
+                    }
+                    
+                    rew += _lastReward;
+                }
+                
 			} else if ( mode == 2 )
 			{
 				rew = _jumpReward;			

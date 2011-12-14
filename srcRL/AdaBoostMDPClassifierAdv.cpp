@@ -197,7 +197,7 @@ namespace MultiBoost {
 		}
 	
 		_isDataStorageMatrix = true;
-		
+		 
 		if (_isDataStorageMatrix)
 		{			
 			setCurrentDataToTrain();

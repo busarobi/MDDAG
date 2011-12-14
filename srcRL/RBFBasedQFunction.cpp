@@ -467,6 +467,7 @@ GSBNFBasedQFunction::GSBNFBasedQFunction(CActionSet *actions, CStateModifier* st
     addParameter("MaxTDErrorDivFactor", 10);
     addParameter("MinActivation", 0.3);
     addParameter("QLearningRate", 0.2);
+    addParameter("MaxRBFNumber", 100);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -628,9 +629,13 @@ void GSBNFBasedQFunction::getActivationFactors(RBFParams& margin, int currIter, 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int iter, int action, double& maxError)
+void GSBNFBasedQFunction::addCenter(double tderror, RBFParams& newCenter, int iter, int action, double& maxError)
 {
     vector<MultiRBF>& rbfs = _rbfs[action][iter];
+
+    if (rbfs.size() >= getParameter("MaxRBFNumber")) {
+        return;
+    }
     
     double newSigma = getParameter("InitRBFSigma");
 
