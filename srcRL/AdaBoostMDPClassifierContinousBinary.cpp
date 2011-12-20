@@ -78,6 +78,7 @@ namespace MultiBoost {
 				rew = _classificationReward;
                 
                 if (_incrementalReward) {    
+                    
                     rew -= _lastReward;
                     if (_succRewardMode==RT_HAMMING)
                     {
@@ -97,6 +98,7 @@ namespace MultiBoost {
                     }
                     
                     rew += _lastReward;
+//                    _lastReward = rew;
                 }
                 
 			} else if ( mode == 2 )
@@ -112,6 +114,7 @@ namespace MultiBoost {
 				//cout << "Size of action history: " << _history.size() << endl;
 			}
 			
+//            rew -= _lastReward;
 			
 			if (_succRewardMode==RT_HAMMING)
 			{

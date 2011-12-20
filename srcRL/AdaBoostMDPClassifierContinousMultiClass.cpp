@@ -83,6 +83,7 @@ namespace MultiBoost {
                     }
                     
                     rew += _lastReward;
+//                    rew = _lastReward;
                 }
                 
 			} else if ( mode == 2 )
@@ -99,7 +100,7 @@ namespace MultiBoost {
 			}
 			
 			// useful only for "incremental reward" mode
-            rew -= _lastReward;
+//            rew -= _lastReward;
             
 			if (_succRewardMode==RT_HAMMING)
 			{
