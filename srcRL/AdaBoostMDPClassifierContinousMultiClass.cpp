@@ -83,7 +83,7 @@ namespace MultiBoost {
                     }
                     
                     rew += _lastReward;
-//                    rew = _lastReward;
+                    rew = _lastReward;
                 }
                 
 			} else if ( mode == 2 )
