@@ -156,7 +156,7 @@ namespace MultiBoost {
 		{
 		}
 		
-		void classficationAccruacy( BinaryResultStruct& binRes, const char* logFileName = NULL )
+		void classficationAccruacy( BinaryResultStruct& binRes, const string &logFileName )
 		{
 			double value = 0.0;
 			
@@ -181,10 +181,10 @@ namespace MultiBoost {
 			vector<double> currentVotes(0);
 			vector<bool> currentHistory(0);
 			
-			if ( logFileName )
+			if ( !logFileName.empty() )
 			{
-				output.open( logFileName );			
-				cout << "Output classfication reult: " << logFileName << endl;
+				output.open( logFileName.c_str() );			
+				cout << "Output classfication result: " << logFileName << endl;
 			}
 			
 			for (int i = 0; i < numTestExamples; i ++)
@@ -216,7 +216,7 @@ namespace MultiBoost {
 				value += this->getEpisodeValue();
 				
 				
-				if ( logFileName ) {
+				if ( !logFileName.empty() ) {
 					output << (clRes ? "1" : "0");
 					output << " ";					
 					output << (isNeg ? "1" : "2");
@@ -249,7 +249,7 @@ namespace MultiBoost {
 			binRes.TN = (double)correctN/(double)negNum;
 			
 			//cout << posNum << " " << negNum << endl << flush;
-			if (logFileName) output.close();
+			if (!logFileName.empty()) output.close();
 			
 			agent->removeSemiMDPListener(this);
 			

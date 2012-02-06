@@ -903,7 +903,6 @@ int main(int argc, const char *argv[])
                 //#endif
                 
 				
-				char logfname[4096];
 				/*
                  sprintf( logfname, "./%s/qfunction_%d.txt", logDirContinous.c_str(), i );
                  FILE *vFuncFileAB = fopen(logfname,"w");
@@ -919,8 +918,15 @@ int main(int argc, const char *argv[])
 				BinaryResultStruct bres;
 				bres.origAcc = ovaccTrain;
 				bres.iterNumber=i;
-				sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
-				evalTrain.classficationAccruacy(bres, logfname);
+                
+                string logFileName;
+                if (!logDirContinous.empty()) {
+                    char logfname[4096];
+                    sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
+                    logFileName = string(logfname);
+                }
+
+				evalTrain.classficationAccruacy(bres, logFileName);
                 
 				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
 				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
@@ -943,8 +949,14 @@ int main(int argc, const char *argv[])
 				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
 				
 				bres.origAcc = ovaccTest;
-				sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );
-				evalTest.classficationAccruacy(bres,logfname);			
+                
+                if (!logDirContinous.empty()) {
+                    char logfname[4096];
+                    sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );
+                    logFileName = string(logfname);
+                }
+                
+				evalTest.classficationAccruacy(bres,logFileName);			
 
                 if (sptype == 5) {
                     std::stringstream ss;
