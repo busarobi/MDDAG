@@ -854,6 +854,74 @@ void GSBNFBasedQFunction::saveCentersNumber(FILE* stream)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void GSBNFBasedQFunction::loadQFunction(const string& fileName)
+{
+    ifstream inFile(fileName.c_str());
+    if (!inFile.is_open())
+    {
+        cerr << "ERROR: Cannot open Q Table file <" << fileName << ">!" << endl;
+        exit(1);
+    }
+    
+    _rbfs.clear();
+    _rbfs.resize(_numberOfActions);
+    for (int j = 0; j < _numberOfActions; ++j) {
+        _rbfs[j].resize(_numberOfIterations);
+    }
+    
+    nor_utils::StreamTokenizer coarseST(inFile, "\n\r\t");
+    string tmp = coarseST.next_token();
+    
+    int i;
+    for (i = 0; i < _numberOfIterations && coarseST.has_token(); ++i) {
+        for (int ac = 0; ac < _numberOfActions; ++ac) {
+            string coarseToken = coarseST.next_token();
+            stringstream ss(coarseToken);
+            nor_utils::StreamTokenizer fineST(ss, " \n\r\t");
+            
+            if (fineST.next_token().compare("classifier") == 0) {
+                for (int j=0; j<3; ++j) { //eliminate the first useless words
+                    string tmp = fineST.next_token();
+                }
+                
+                while (fineST.has_token()) {
+
+                    string tmp = fineST.next_token();
+                    if (tmp.empty()) 
+                        continue;
+                    
+                    stringstream alphaSS(tmp);
+                    stringstream meanSS(fineST.next_token());
+                    stringstream sigmaSS(fineST.next_token());
+                    
+                    double alpha;
+                    alphaSS >> alpha;
+                    
+                    double sigma;
+                    sigmaSS >> sigma;
+                    
+                    double mean;
+                    meanSS >> mean;
+                    
+                    MultiRBF rbf(_numDimensions);;
+                    
+                    rbf.setAlpha(alpha);
+                    rbf.setMean(mean);
+                    rbf.setSigma(sigma);
+                    
+                    _rbfs[ac][i].push_back(rbf);
+                }
+            }    
+        }
+    }
+    
+    if (i < _numberOfIterations) {
+        cout << "Warning: the number of weak learners loaded is less than that in the QTable file.\n";
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 CAbstractQETraces* GSBNFBasedQFunction::getStandardETraces()
 {
     return new GSBNFQETraces(this);

@@ -207,6 +207,7 @@ void setBasicOptions(nor_utils::Args& args)
 	
 	args.declareArgument("train", "Performs training.", 2, "<dataFile> <nInterations>");
 	args.declareArgument("traintestmdp", "Performs training and test at the same time.", 5, "<trainingDataFile> <testDataFile> <nInterations> <shypfile> <outfile>");
+    args.declareArgument("testmdp", "Performs test of a previously leant model.", 2, "<qtable> <log file>");
 	args.declareArgument("test", "Test the model.", 3, "<dataFile> <numIters> <shypFile>");
 	args.declareArgument("test", "Test the model and output the results", 4, "<datafile> <shypFile> <numIters> <outFile>");
 	args.declareArgument("cmatrix", "Print the confusion matrix for the given model.", 2, "<dataFile> <shypFile>");
@@ -299,6 +300,7 @@ void setBasicOptions(nor_utils::Args& args)
     args.declareArgument("withoutquitQ", "Take the quit action off.", 0, "" );
     args.declareArgument("maxrbfnumber", "The maximum number of RBF per whyp per action.", 1, "<num>" );
     args.declareArgument("incrementalrewardQ", "Give a reward after each evalation.", 0, "" );
+    args.declareArgument("qtable", "Load the GSBNF from a file.", 1, "<file>" );
 }
 
 
@@ -463,14 +465,14 @@ int main(int argc, const char *argv[])
 	DataReader* datahandler = new DataReader( args, verbose );
 	datahandler->setCurrentDataToTrain();
 	
-    
+    double epsNumerator = 1.;    
 	double epsDivisor = 4.0;
     double epsIncrement = 0.1;
-    double epsNumerator = 1.;
-    
+
+    double qRateNumerator = 0.2 ;
 	double qRateDivisor = 1.;
     double qRateIncrement = 1;
-    double qRateNumerator = 0.2 ;
+
     
     if (args.hasArgument("learningrate"))
 	{
@@ -639,6 +641,10 @@ int main(int argc, const char *argv[])
                         bias[2] = args.getValue<double>("rbfbias", 2);	
                     }
                     
+                    if (args.hasArgument("qtable")) {
+                        dynamic_cast<GSBNFBasedQFunction*>( qData )->loadQFunction(args.getValue<string>("qtable", 0));
+                    }
+                    
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->setBias(bias);
                     
                     int addCenter = 1;
@@ -701,6 +707,8 @@ int main(int argc, const char *argv[])
 			cout << "No state space resresantion is given, the default is used" << endl;
 			discState = classifierContinous->getStateSpace(featnum);
 		}
+        
+        
 		//CStateModifier* discState = classifierContinous->getStateSpace(100,0.01);
 		// RBF
 		//CFeatureCalculator* discState = classifierContinous->getStateSpaceRBF(5);
@@ -773,6 +781,41 @@ int main(int argc, const char *argv[])
         //        agentContinous->setController(vLearnerPolicyAB);
         
         
+		// disable automatic logging of the current episode from the agent
+		agentContinous->setLogEpisode(false);
+        
+        if (args.hasArgument("testmdp"))  
+        {            
+            agentContinous->removeSemiMDPListener(qFunctionLearner);
+            
+            CAgentController* greedypolicy = new CQGreedyPolicy(agentContinous->getActions(), qData);
+            agentContinous->setController(greedypolicy);
+            
+            dynamic_cast<GSBNFBasedQFunction*>( qData )->loadQFunction(args.getValue<string>("testmdp", 0));
+            
+            FILE *f = fopen("tmp.txt", "w");
+            dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(f);
+            BinaryResultStruct bres;
+            bres.iterNumber=0;
+            
+            classifierContinous->setCurrentDataToTest();
+            AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
+            
+            double ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();
+            bres.origAcc = ovaccTest;
+            
+            string logFileName = args.getValue<string>("testmdp", 1);
+            
+            evalTest.classficationAccruacy(bres,logFileName);			
+            
+            cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
+            cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
+            cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
+            
+            exit(0);
+        }
+        
+        
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -809,8 +852,6 @@ int main(int argc, const char *argv[])
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
-		// disable automatic logging of the current episode from the agent
-		agentContinous->setLogEpisode(false);
 		
 		int steps2 = 0;
 		int usedClassifierNumber=0;
@@ -827,7 +868,7 @@ int main(int argc, const char *argv[])
 		
         double bestAcc=0., bestWhypNumber=0.;
         int bestEpNumber = 0;
-        
+                
 		// Learn for 500 Episodes
 		for (int i = 0; i < episodeNumber; i++)
 		{
