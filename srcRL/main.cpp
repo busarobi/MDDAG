@@ -667,7 +667,7 @@ int main(int argc, const char *argv[])
                     if ( args.hasArgument("minrbfact") )
                         minact = args.getValue<double>("minrbfact", 0);
 
-                    int maxrbfnumber = 100;
+                    int maxrbfnumber = 1000;
                     if ( args.hasArgument("maxrbfnumber") )
                         maxrbfnumber = args.getValue<int>("MaxRBFNumber", 0);
                     

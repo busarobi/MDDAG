@@ -58,6 +58,7 @@ namespace MultiBoost {
 		double avgReward;
 		
 		int iterNumber;
+        double negNumEval;
 	};
 	
 	
@@ -90,6 +91,10 @@ namespace MultiBoost {
 		CStateModifier* getStateSpaceForRBFQFunction( int numOfFeatures);
 		
 		void outPutStatistic( BinaryResultStruct& bres );
+        
+        int getPositiveLabelIndex() {
+            return _positiveLabelIndex;
+        }
 	};
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////	

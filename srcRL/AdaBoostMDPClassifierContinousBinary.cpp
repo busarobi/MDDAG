@@ -425,7 +425,7 @@ namespace MultiBoost {
 	
 	void AdaBoostMDPClassifierContinousBinary::outPutStatistic( BinaryResultStruct& bres )
 	{
-		_outputStream << bres.iterNumber << " " <<  bres.origAcc << " " << bres.acc << " " << bres.usedClassifierAvg << " " << bres.avgReward << " " << bres.TP << " " << bres.TN << endl;
+		_outputStream << bres.iterNumber << " " <<  bres.origAcc << " " << bres.acc << " " << bres.usedClassifierAvg << " " << bres.avgReward << " " << bres.TP << " " << bres.TN << " " << bres.negNumEval <<  endl;
 	}
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------	

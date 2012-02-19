@@ -159,7 +159,8 @@ namespace MultiBoost {
 		void classficationAccruacy( BinaryResultStruct& binRes, const string &logFileName )
 		{
 			double value = 0.0;
-			
+            double negNumEval = 0.0;
+            
 			agent->addSemiMDPListener(this);
 			
 			CAgentController *tempController = NULL;
@@ -201,7 +202,7 @@ namespace MultiBoost {
 				bool clRes = classifier->classifyCorrectly();				
 				if (clRes ) correct++;
 				else notcorrect++;
-				bool isNeg = classifier->hasithLabelCurrentElement(0);
+				bool isNeg = !classifier->hasithLabelCurrentElement(classifier->getPositiveLabelIndex());
 				if (isNeg) // neg
 				{
 					negNum++;
@@ -212,18 +213,22 @@ namespace MultiBoost {
 				}
 				
 				
-				usedClassifierAvg += classifier->getUsedClassifierNumber();
+                double numEval = classifier->getUsedClassifierNumber();
+				usedClassifierAvg += numEval;
 				value += this->getEpisodeValue();
 				
+                if (isNeg) {
+                    negNumEval += numEval;
+                }
 				
 				if ( !logFileName.empty() ) {
 					output << (clRes ? "1" : "0");
 					output << " ";					
-					output << (isNeg ? "1" : "2");
+					output << (isNeg ? "2" : "1");
 					output << " ";
 					classifier->getCurrentExmapleResult( currentVotes );
 					classifier->getHistory( currentHistory );
-					output << currentVotes[0] << " ";
+					output << currentVotes[classifier->getPositiveLabelIndex()] << " ";
 					//for( int i=0; i<currentHistory.size(); ++i) output << currentHistory[i] << " ";
 					for( int i=0; i<currentHistory.size(); ++i) 
 					{ 
@@ -243,7 +248,9 @@ namespace MultiBoost {
 			
 			binRes.avgReward = value/(double)numTestExamples ;
 			binRes.usedClassifierAvg = (double)usedClassifierAvg/(double)numTestExamples ;
-			binRes.acc = ((double)correct/(double)numTestExamples)*100.0;
+			binRes.negNumEval = (double)negNumEval/(double)negNum;
+            
+            binRes.acc = ((double)correct/(double)numTestExamples)*100.0;
 			
 			binRes.TP = (double)correctP/(double)posNum;
 			binRes.TN = (double)correctN/(double)negNum;
