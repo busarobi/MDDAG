@@ -207,7 +207,7 @@ void setBasicOptions(nor_utils::Args& args)
 	
 	args.declareArgument("train", "Performs training.", 2, "<dataFile> <nInterations>");
 	args.declareArgument("traintestmdp", "Performs training and test at the same time.", 5, "<trainingDataFile> <testDataFile> <nInterations> <shypfile> <outfile>");
-    args.declareArgument("testmdp", "Performs test of a previously leant model.", 2, "<qtable> <log file>");
+    args.declareArgument("testmdp", "Performs test of a previously leant model.", 3, "<qtable> <train log file> <test log file>");
 	args.declareArgument("test", "Test the model.", 3, "<dataFile> <numIters> <shypFile>");
 	args.declareArgument("test", "Test the model and output the results", 4, "<datafile> <shypFile> <numIters> <outFile>");
 	args.declareArgument("cmatrix", "Print the confusion matrix for the given model.", 2, "<dataFile> <shypFile>");
@@ -784,6 +784,17 @@ int main(int argc, const char *argv[])
 		// disable automatic logging of the current episode from the agent
 		agentContinous->setLogEpisode(false);
         
+        int steps2 = 0;
+		int usedClassifierNumber=0;
+		int max_Steps = 100000;		
+		double ovaccTrain, ovaccTest;
+		
+		classifierContinous->setCurrentDataToTrain();
+		ovaccTrain = classifierContinous->getAccuracyOnCurrentDataSet();
+		classifierContinous->setCurrentDataToTest();
+		ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();
+		classifierContinous->setCurrentDataToTrain();
+        
         if (args.hasArgument("testmdp"))  
         {            
             agentContinous->removeSemiMDPListener(qFunctionLearner);
@@ -793,20 +804,26 @@ int main(int argc, const char *argv[])
             
             dynamic_cast<GSBNFBasedQFunction*>( qData )->loadQFunction(args.getValue<string>("testmdp", 0));
             
-            FILE *f = fopen("tmp.txt", "w");
-            dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(f);
+//            FILE *f = fopen("tmp.txt", "w");
+//            dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(f);
+            
+            classifierContinous->setCurrentDataToTrain();
+            AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
             BinaryResultStruct bres;
             bres.iterNumber=0;
+            bres.origAcc = ovaccTrain;
+            
+            string logFileName = args.getValue<string>("testmdp", 1);
+            evalTrain.classficationAccruacy(bres,logFileName);
             
             classifierContinous->setCurrentDataToTest();
             AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
             
-            double ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();
             bres.origAcc = ovaccTest;
+//            bres.iterNumber=0;
+            string logFileName2 = args.getValue<string>("testmdp", 2);
             
-            string logFileName = args.getValue<string>("testmdp", 1);
-            
-            evalTest.classficationAccruacy(bres,logFileName);			
+            evalTest.classficationAccruacy(bres,logFileName2);			
             
             cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
             cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
@@ -852,17 +869,6 @@ int main(int argc, const char *argv[])
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
-		
-		int steps2 = 0;
-		int usedClassifierNumber=0;
-		int max_Steps = 100000;		
-		double ovaccTrain, ovaccTest;
-		
-		classifierContinous->setCurrentDataToTrain();
-		ovaccTrain = classifierContinous->getAccuracyOnCurrentDataSet();
-		classifierContinous->setCurrentDataToTest();
-		ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();
-		classifierContinous->setCurrentDataToTrain();
 		
 		cout << "Valid: " << ovaccTrain << " Test: " << ovaccTest << endl << flush;
 		
