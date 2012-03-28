@@ -618,7 +618,7 @@ int main(int argc, const char *argv[])
                     dynamic_cast<RBFBasedQFunctionBinary*>( qData )->setMuSigma(0) ;
                     
 				}
-                else if (sptype==5) {
+                else if (sptype>=5 && sptype <= 6) {
 					discState = classifierContinous->getStateSpaceForRBFQFunction(featnum);
 					agentContinous->addStateModifier(discState);
 					qData = new GSBNFBasedQFunction(agentContinous->getActions(), discState);
@@ -685,7 +685,30 @@ int main(int argc, const char *argv[])
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuMean(0.000) ;
                     dynamic_cast<GSBNFBasedQFunction*>( qData )->setMuSigma(0.000) ;
                     
-				}
+				
+                    if (sptype==6) {
+                        
+
+//                        CFeatureVFunction *vFunctionCritic = new CFeatureVFunction(agentContinous);
+//                        CFeatureVFunction *vFunctionActor = new CFeatureVFunction(agentContinous);
+//                        
+//                        CVFunctionLearner *vFunctionLearner = new CVFunctionLearner(classifierContinous, vFunctionCritic);
+//                        
+//                        CActorFromQFunction *actor = new CActorFromQFunction(qData);
+//                        
+//                        CAgentController *vLearnerPolicyAB = new CVMStochasticPolicy(agentAB->getActions(), new CEpsilonGreedyDistribution(1.0), vFunctionAB, classifier, rewardFunctionAB, agentAB->getStateModifiers());
+//                        
+//                        // Set some options of the Etraces which are not default
+//                        vFunctionLearnerAB->setParameter("ReplacingETraces", 1.0);
+//                        vFunctionLearnerAB->setParameter("Lambda", 0.95);
+//                        
+//                        // Add the learner to the agent listener list, so he can learn from the agent's steps.
+//                        agentAB->addSemiMDPListener(vFunctionLearnerAB);
+//                        
+//                        // Set the controller of the agent
+//                        agentAB->setController(vLearnerPolicyAB);
+                    }
+                }
                 else {
                     cout << "unkown statespcae" << endl;
                 }
@@ -1536,6 +1559,7 @@ int main(int argc, const char *argv[])
                  */
 				
 				agentContinous->addSemiMDPListener(qFunctionLearner);
+                agentContinous->setController(policy);
 			}
 			
 			
