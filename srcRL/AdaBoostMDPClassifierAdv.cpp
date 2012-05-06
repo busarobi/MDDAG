@@ -196,7 +196,7 @@ namespace MultiBoost {
 			_sumAlphas += currBLearner->getAlpha();			
 		}
 	
-		_isDataStorageMatrix = true;
+		_isDataStorageMatrix = false;
 		 
 		if (_isDataStorageMatrix)
 		{			

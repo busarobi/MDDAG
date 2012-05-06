@@ -551,34 +551,34 @@ int main(int argc, const char *argv[])
 			sptype = args.getValue<int>("statespace", 0);
 			
             if (sptype == 2 ) {
-                CStateModifier * nnStateModifier = classifierContinous->getStateSpaceNN();
-                
-                agentContinous->addStateModifier(nnStateModifier);
-                
-                qData = new CQFunction(agentContinous->getActions());
-                
-                CActionSet * actionSet = agentContinous->getActions();
-                CActionSet::iterator acIt = actionSet->begin();
-                
-                for (; acIt != actionSet->end(); ++acIt) {
-                    
-                    //                    MLP * gm = new MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
-                    Linear layer1(2, featnum);
-                    LogRBF layer2(featnum, featnum);
-                    Linear layer3(featnum, 1);
-                    
-                    ConnectedMachine gm;
-                    gm.addFCL(&layer1);
-                    gm.addFCL(&layer2);
-                    gm.addFCL(&layer3);
-                    
-                    gm.build();
-                    
-                    CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(&gm);
-                    CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
-                    static_cast<CQFunction*>(qData)->setVFunction(*acIt, vFunction);
-                    
-                }
+//                CStateModifier * nnStateModifier = classifierContinous->getStateSpaceNN();
+//                
+//                agentContinous->addStateModifier(nnStateModifier);
+//                
+//                qData = new CQFunction(agentContinous->getActions());
+//                
+//                CActionSet * actionSet = agentContinous->getActions();
+//                CActionSet::iterator acIt = actionSet->begin();
+//                
+//                for (; acIt != actionSet->end(); ++acIt) {
+//                    
+//                    //                    MLP * gm = new MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
+//                    Linear layer1(2, featnum);
+//                    LogRBF layer2(featnum, featnum);
+//                    Linear layer3(featnum, 1);
+//                    
+//                    ConnectedMachine gm;
+//                    gm.addFCL(&layer1);
+//                    gm.addFCL(&layer2);
+//                    gm.addFCL(&layer3);
+//                    
+//                    gm.build();
+//                    
+//                    CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(&gm);
+//                    CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
+//                    static_cast<CQFunction*>(qData)->setVFunction(*acIt, vFunction);
+//                    
+//                }
                 
             }
             else {
@@ -642,6 +642,7 @@ int main(int argc, const char *argv[])
                     }
                     
                     if (args.hasArgument("qtable")) {
+                        cout << "Loading Q-Table..." << endl;
                         dynamic_cast<GSBNFBasedQFunction*>( qData )->loadQFunction(args.getValue<string>("qtable", 0));
                     }
                     
@@ -775,9 +776,9 @@ int main(int argc, const char *argv[])
         //        CTDResidualLearner *qFunctionLearner = new CTDResidualLearner(rewardFunctionContinous, dynamic_cast<CGradientQFunction*>(qData), agentContinous, residualFunction, residualGradient, betaCalculator);
         
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
-		CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
-        
-        
+
+//        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
+        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CSoftMaxDistribution(currentEpsilon), qData);
         
         
 		// Set some options of the Etraces which are not default
@@ -944,6 +945,7 @@ int main(int argc, const char *argv[])
 				epsDivisor += epsIncrement;
 				currentEpsilon =  epsNumerator / epsDivisor;
 				policy->setParameter("EpsilonGreedy", currentEpsilon);
+				//policy->setParameter("SoftMaxBeta", currentEpsilon);
                 
 			}
 			if ((i>2)&&((i%paramUpdate)==0)) 
@@ -1224,9 +1226,9 @@ int main(int argc, const char *argv[])
                 
                 for (; acIt != actionSet->end(); ++acIt) {
                     
-                    Torch::MLP * gm = new Torch::MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
-                    CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(gm);
-                    CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
+//                    Torch::MLP * gm = new Torch::MLP(3, 2, "linear", featnum, "sigmoid", featnum, "linear" , 1);
+//                    CTorchGradientFunction * torchGradientFunction = new CTorchGradientFunction(gm);
+//                    CVFunctionFromGradientFunction* vFunction = new CVFunctionFromGradientFunction(torchGradientFunction,  agentContinous->getStateProperties());
 //TMP                    qData->setVFunction(*acIt, vFunction);
                     
                 }
