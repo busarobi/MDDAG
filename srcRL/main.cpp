@@ -777,8 +777,8 @@ int main(int argc, const char *argv[])
         
         // Create the Controller for the agent from the QFunction. We will use a EpsilonGreedy-Policy for exploration.
 
-//        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
-        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CSoftMaxDistribution(currentEpsilon), qData);
+        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CEpsilonGreedyDistribution(currentEpsilon), qData);
+//        CAgentController *policy = new CQStochasticPolicy(agentContinous->getActions(), new CSoftMaxDistribution(currentEpsilon), qData);
         
         
 		// Set some options of the Etraces which are not default
