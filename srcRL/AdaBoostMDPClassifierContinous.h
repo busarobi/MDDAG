@@ -112,6 +112,7 @@ namespace MultiBoost {
 		
 		void setCurrentDataToTrain() { _data->setCurrentDataToTrain(); }
 		void setCurrentDataToTest() { _data->setCurrentDataToTest(); }		
+        bool setCurrentDataToTest2() { return _data->setCurrentDataToTest2(); }		
 		double getAccuracyOnCurrentDataSet(){ return _data->getAccuracyOnCurrentDataSet(); }
 		
 		void outPutStatistic( double acc, double curracc, double uc, double sumrew );

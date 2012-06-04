@@ -154,18 +154,29 @@ namespace MultiBoost {
 	// -----------------------------------------------------------------------
 	DataReader::DataReader(const nor_utils::Args& args, int verbose) : _verbose(verbose), _args(args)
 	{				
-		string mdpTrainFileName = _args.getValue<string>("traintestmdp", 0);				
-		string testFileName = _args.getValue<string>("traintestmdp", 1);				
-		string shypFileName = _args.getValue<string>("traintestmdp", 3);
-		_numIterations = _args.getValue<int>("traintestmdp", 2);				
-		
-		string tmpFname = _args.getValue<string>("traintestmdp", 4);		
+        int optionsCursor = 0;
+		string mdpTrainFileName = _args.getValue<string>("traintestmdp", optionsCursor);	
+        ++optionsCursor;
+		string testFileName = _args.getValue<string>("traintestmdp", optionsCursor);				
+        ++optionsCursor;
+        
+        string testFileName2;
+        if (_args.getNumValues("traintestmdp") > 5) {
+            testFileName2 = _args.getValue<string>("traintestmdp", optionsCursor);
+            ++optionsCursor;
+        }
+        
+		_numIterations = _args.getValue<int>("traintestmdp", optionsCursor);				
+        ++optionsCursor;		
+        string shypFileName = _args.getValue<string>("traintestmdp", optionsCursor);
+        ++optionsCursor;
+		string tmpFname = _args.getValue<string>("traintestmdp", optionsCursor);		
 		
 		if (_verbose > 0)
 			cout << "Loading arff data for MDP learning..." << flush;
 		
 		// load the arff
-		loadInputData(mdpTrainFileName, testFileName, shypFileName);
+		loadInputData(mdpTrainFileName, testFileName, testFileName2, shypFileName);
 		
 		if (_verbose > 0)
 			cout << "Done." << endl << flush;
@@ -252,7 +263,7 @@ namespace MultiBoost {
 		cout << "Done" << endl;
 	}
 	
-	void DataReader::loadInputData(const string& dataFileName, const string& testDataFileName, const string& shypFileName)
+	void DataReader::loadInputData(const string& dataFileName, const string& testDataFileName, const string& testDataFileName2, const string& shypFileName)
 	{
 		// open file
 		ifstream inFile(shypFileName.c_str());
@@ -300,6 +311,15 @@ namespace MultiBoost {
 		_pTestData->initOptions(_args);
 		// load the data
 		_pTestData->load(testDataFileName, IT_TEST, _verbose);				
+        
+        
+        _pTestData2 = baseLearner->createInputData();
+		
+		// set the non-default arguments of the input data
+		_pTestData2->initOptions(_args);
+		// load the data
+		_pTestData2->load(testDataFileName2, IT_TEST, _verbose);				
+        
 		
 	}				
 	// -----------------------------------------------------------------------

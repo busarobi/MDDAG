@@ -811,12 +811,16 @@ int main(int argc, const char *argv[])
         int steps2 = 0;
 		int usedClassifierNumber=0;
 		int max_Steps = 100000;		
-		double ovaccTrain, ovaccTest;
+		double ovaccTrain, ovaccValid, ovaccTest;
 		
 		classifierContinous->setCurrentDataToTrain();
 		ovaccTrain = classifierContinous->getAccuracyOnCurrentDataSet();
 		classifierContinous->setCurrentDataToTest();
-		ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();
+		ovaccValid = classifierContinous->getAccuracyOnCurrentDataSet();
+        
+        if (classifierContinous->setCurrentDataToTest2()) 
+            ovaccTest = classifierContinous->getAccuracyOnCurrentDataSet();    
+            
 		classifierContinous->setCurrentDataToTrain();
         
         if (args.hasArgument("testmdp"))  
@@ -898,6 +902,8 @@ int main(int argc, const char *argv[])
 		
         double bestAcc=0., bestWhypNumber=0.;
         int bestEpNumber = 0;
+        
+        classifierContinous->outHeader();
                 
 		// Learn for 500 Episodes
 		for (int i = 0; i < episodeNumber; i++)
@@ -982,7 +988,9 @@ int main(int argc, const char *argv[])
                  fclose(vFuncFileAB);
                  */
                 
-				// TRAIN			
+							
+                // TRAIN stats
+                
 				classifierContinous->setCurrentDataToTrain();
 				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTrain( agentContinous, rewardFunctionContinous );
 				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTrain( agentContinous, rewardFunctionContinous );
@@ -991,45 +999,79 @@ int main(int argc, const char *argv[])
 				bres.origAcc = ovaccTrain;
 				bres.iterNumber=i;
                 
+				evalTrain.classficationAccruacy(bres, "");
+
+                cout << "[+] Training set results: " << endl;
+				cout << "******** Overall accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
+				cout << "******** Average classifier used: " << bres.usedClassifierAvg << endl;
+				cout << "******** Sum of rewards: " << bres.avgReward << endl << endl;
+				
+                //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+                
+				classifierContinous->outPutStatistic( bres );
+				
+
+                // VALID stats
+                
+                classifierContinous->setCurrentDataToTest();
+				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTrain( agentContinous, rewardFunctionContinous );
+				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalValid( agentContinous, rewardFunctionContinous );
+				
+				bres.origAcc = ovaccValid;
+				bres.iterNumber=i;
+                
                 string logFileName;
                 if (!logDirContinous.empty()) {
                     char logfname[4096];
                     sprintf( logfname, "./%s/classValid_%d.txt", logDirContinous.c_str(), i );
                     logFileName = string(logfname);
                 }
-
-				evalTrain.classficationAccruacy(bres, logFileName);
                 
-				cout << "******** Overall Train accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
-				cout << "******** Average Train classifier used: " << bres.usedClassifierAvg << endl;
-				cout << "******** Sum of rewards on Train: " << bres.avgReward << endl << endl;
+				evalValid.classficationAccruacy(bres, logFileName);
+                
+                cout << "[+] Validation set results: " << endl;
+				cout << "******** Overall accuracy by MDP: " << bres.acc << "(" << ovaccValid << ")" << endl;
+				cout << "******** Average classifier used: " << bres.usedClassifierAvg << endl;
+				cout << "******** Sum of rewards: " << bres.avgReward << endl << endl;
 				
                 //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
 				classifierContinous->outPutStatistic( bres );
-				
-				
-				// TEST
-				//qData->printValues();
-				//agentContinous->removeSemiMDPListener(qFunctionLearner);
-				//CAgentController* greedypolicy = new CQGreedyPolicy(agentContinous->getActions(), qData);
-				//agentContinous->setController(greedypolicy);
-				
-				
-				classifierContinous->setCurrentDataToTest();
-				//AdaBoostMDPClassifierContinousBinaryEvaluator evalTest( agentContinous, rewardFunctionContinous );
-				AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
-				
-				bres.origAcc = ovaccTest;
                 
-                if (!logDirContinous.empty()) {
-                    char logfname[4096];
-                    sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );
-                    logFileName = string(logfname);
+                
+                // TEST stats
+						
+				if (classifierContinous->setCurrentDataToTest2() )
+                {
+                    //AdaBoostMDPClassifierContinousBinaryEvaluator evalTest( agentContinous, rewardFunctionContinous );
+                    AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
+                    
+                    bres.origAcc = ovaccTest;
+                    
+                    if (!logDirContinous.empty()) {
+                        char logfname[4096];
+                        sprintf( logfname, "./%s/classTest_%d.txt", logDirContinous.c_str(), i );
+                        logFileName = string(logfname);
+                    }
+                    
+                    evalTest.classficationAccruacy(bres,logFileName);			
+                    
+                    
+                    //                ss.clear();
+                    //                ss << "qtables/ActionTable_" << i << ".dta";
+                    //                FILE *actionTableFile2 = fopen(ss.str().c_str(), "w");
+                    //                dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionTable(actionTableFile2);
+                    //                fclose(actionTableFile2);
+                    
+                    cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
+                    cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
+                    cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
+                    
+                    cout << endl << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+                    
+                    classifierContinous->outPutStatistic( bres );
                 }
-                
-				evalTest.classficationAccruacy(bres,logFileName);			
-
+                    
                 if (sptype == 5) {
                     std::stringstream ss;
                     ss << "qtables/QTable_" << i << ".dta";
@@ -1038,12 +1080,8 @@ int main(int argc, const char *argv[])
                     fclose(qTableFile2);                    
                 }
                 
-//                ss.clear();
-//                ss << "qtables/ActionTable_" << i << ".dta";
-//                FILE *actionTableFile2 = fopen(ss.str().c_str(), "w");
-//                dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionTable(actionTableFile2);
-//                fclose(actionTableFile2);
-
+				
+                
                 
                 if (sptype==3)
                 {
@@ -1134,14 +1172,6 @@ int main(int argc, const char *argv[])
                     
 				}
                 
-				cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
-				cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
-				cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
-				
-                cout << endl << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
-                
-				classifierContinous->outPutStatistic( bres );
-				
                 //stringstream ss;
                 //ss << "rbf/centers_" << i << ".txt";
                 //FILE* pFile = fopen(ss.str().c_str(),"w");

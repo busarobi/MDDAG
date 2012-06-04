@@ -63,7 +63,7 @@ namespace MultiBoost {
 		DataReader(const nor_utils::Args& args, int verbose);
 		
 		// upload the data
-		void loadInputData(const string& dataFileName, const string& testDataFileName, const string& shypFileName);
+		void loadInputData(const string& dataFileName, const string& testDataFileName, const string& testDataFileName2, const string& shypFileName);
 
 		// update example result, and return the alpha of the weak classifier used
 		double classifyKthWeakLearner( const int wHypInd, const int instance, ExampleResults* exampleResult );
@@ -88,7 +88,17 @@ namespace MultiBoost {
 			_pCurrentData = _pTestData; 
 			if (_isDataStorageMatrix) _pCurrentMatrix = &_weakHypothesesMatrices[_pCurrentData];
 		}		
-		
+
+        bool setCurrentDataToTest2() { 
+            if (_pTestData2) {
+                _pCurrentData = _pTestData2; 
+                return true;
+            }
+            return false;
+			
+//			if (_isDataStorageMatrix) _pCurrentMatrix = &_weakHypothesesMatrices[_pCurrentData];
+		}		
+        
 		double getAccuracyOnCurrentDataSet();
 		
 		double getSumOfAlphas() const { return _sumAlphas; }
@@ -110,6 +120,8 @@ namespace MultiBoost {
 		InputData*				_pTrainData;
 		InputData*				_pTestData;
 		
+        InputData*				_pTestData2;
+        
 		int						_numIterations;	
 		
 //		map< InputData*, vBitSet > _weakHypothesesMatrices;
