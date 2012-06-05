@@ -152,7 +152,7 @@ namespace MultiBoost {
 	} 
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
-	DataReader::DataReader(const nor_utils::Args& args, int verbose) : _verbose(verbose), _args(args)
+	DataReader::DataReader(const nor_utils::Args& args, int verbose) : _verbose(verbose), _args(args), _pTestData2(NULL)
 	{				
         int optionsCursor = 0;
 		string mdpTrainFileName = _args.getValue<string>("traintestmdp", optionsCursor);	
@@ -160,18 +160,18 @@ namespace MultiBoost {
 		string testFileName = _args.getValue<string>("traintestmdp", optionsCursor);				
         ++optionsCursor;
         
-        string testFileName2;
-        if (_args.getNumValues("traintestmdp") > 5) {
-            testFileName2 = _args.getValue<string>("traintestmdp", optionsCursor);
-            ++optionsCursor;
-        }
-        
 		_numIterations = _args.getValue<int>("traintestmdp", optionsCursor);				
         ++optionsCursor;		
         string shypFileName = _args.getValue<string>("traintestmdp", optionsCursor);
         ++optionsCursor;
 		string tmpFname = _args.getValue<string>("traintestmdp", optionsCursor);		
-		
+        ++optionsCursor;
+        string testFileName2;
+        if (_args.getNumValues("traintestmdp") > 5) {
+            testFileName2 = _args.getValue<string>("traintestmdp", optionsCursor);
+        }
+        
+        
 		if (_verbose > 0)
 			cout << "Loading arff data for MDP learning..." << flush;
 		
@@ -280,7 +280,7 @@ namespace MultiBoost {
 		if ( !UnSerialization::seekSimpleTag(st, "multiboost") )
 		{
 			// no multiboost tag found: this is not the correct file!
-			cerr << "ERROR: Not a valid MultiBoost Strong Hypothesis file!!" << endl;
+			cerr << "ERROR: Not a valid MultiBoost Strong Hypothesis file: " << shypFileName << endl;
 			exit(1);
 		}
 		
@@ -313,14 +313,14 @@ namespace MultiBoost {
 		_pTestData->load(testDataFileName, IT_TEST, _verbose);				
         
         
-        _pTestData2 = baseLearner->createInputData();
-		
-		// set the non-default arguments of the input data
-		_pTestData2->initOptions(_args);
-		// load the data
-		_pTestData2->load(testDataFileName2, IT_TEST, _verbose);				
-        
-		
+        if (!testDataFileName2.empty()) {
+            _pTestData2 = baseLearner->createInputData();
+            
+            // set the non-default arguments of the input data
+            _pTestData2->initOptions(_args);
+            // load the data
+            _pTestData2->load(testDataFileName2, IT_TEST, _verbose);				            
+        }        
 	}				
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------

@@ -207,6 +207,7 @@ void setBasicOptions(nor_utils::Args& args)
 	
 	args.declareArgument("train", "Performs training.", 2, "<dataFile> <nInterations>");
 	args.declareArgument("traintestmdp", "Performs training and test at the same time.", 5, "<trainingDataFile> <testDataFile> <nInterations> <shypfile> <outfile>");
+    args.declareArgument("traintestmdp", "Performs training and test at the same time.", 6, "<trainingDataFile> <validDataFile> <nInterations> <shypfile> <outfile> <testDataFile>");
     args.declareArgument("testmdp", "Performs test of a previously leant model.", 3, "<qtable> <train log file> <test log file>");
 	args.declareArgument("test", "Test the model.", 3, "<dataFile> <numIters> <shypFile>");
 	args.declareArgument("test", "Test the model and output the results", 4, "<datafile> <shypFile> <numIters> <outFile>");
@@ -899,7 +900,7 @@ int main(int argc, const char *argv[])
 		
 		
 		cout << "Valid: " << ovaccTrain << " Test: " << ovaccTest << endl << flush;
-		
+        cout << "---------------------------------" << endl;
         double bestAcc=0., bestWhypNumber=0.;
         int bestEpNumber = 0;
         
@@ -935,14 +936,13 @@ int main(int argc, const char *argv[])
 			
 			if ((i>2)&&((i%1000)==0))
 			{
-				
-				cout << "----------------------------------------------------------" << endl;
-				cout << "Episode number: " << '\t' << i << endl;		
-				cout << "Current Accuracy :" << '\t' << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
-				cout << "Used Classifier  :" << '\t' << ((float)usedClassifierNumber / 1000.0) << endl;						
-				cout << "Current alpha: " << currentAlpha << endl;
-				cout << "Current Epsilon: " << currentEpsilon << endl;
-				usedClassifierNumber = 0;
+				cout << "Episode number:" << "\t\t"  << i << endl;		
+				cout << "Current Accuracy:" << "\t\t" << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
+				cout << "Used Classifier:" << "\t\t" << ((float)usedClassifierNumber / 1000.0) << endl;						
+				cout << "Current alpha:"  << "\t\t"  << currentAlpha << endl;
+				cout << "Current Epsilon:"  << "\t\t"  << currentEpsilon << endl;
+				cout << "---------------------------------" << endl;
+				usedClassifierNumber = 0;                
 			}
 			
 			
@@ -1002,9 +1002,9 @@ int main(int argc, const char *argv[])
 				evalTrain.classficationAccruacy(bres, "");
 
                 cout << "[+] Training set results: " << endl;
-				cout << "******** Overall accuracy by MDP: " << bres.acc << "(" << ovaccTrain << ")" << endl;
-				cout << "******** Average classifier used: " << bres.usedClassifierAvg << endl;
-				cout << "******** Sum of rewards: " << bres.avgReward << endl << endl;
+				cout << "--> Overall accuracy by MDP: " << bres.acc << " (" << ovaccTrain << ")" << endl;
+				cout << "--> Average classifier used: " << bres.usedClassifierAvg << endl;
+				cout << "--> Sum of rewards: " << bres.avgReward << endl << endl;
 				
                 //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
@@ -1030,14 +1030,29 @@ int main(int argc, const char *argv[])
 				evalValid.classficationAccruacy(bres, logFileName);
                 
                 cout << "[+] Validation set results: " << endl;
-				cout << "******** Overall accuracy by MDP: " << bres.acc << "(" << ovaccValid << ")" << endl;
-				cout << "******** Average classifier used: " << bres.usedClassifierAvg << endl;
-				cout << "******** Sum of rewards: " << bres.avgReward << endl << endl;
-				
+				cout << "--> Overall accuracy by MDP: " << bres.acc << " (" << ovaccValid << ")" << endl;
+				cout << "--> Average classifier used: " << bres.usedClassifierAvg << endl;
+				cout << "--> Sum of rewards: " << bres.avgReward << endl << endl;
+				                
                 //                cout << "----> Best accuracy so far : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
                 
 				classifierContinous->outPutStatistic( bres );
                 
+                cout << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+
+                if ((bres.acc > bestAcc)&&(sptype==5)) {
+                    bestEpNumber = i;
+                    bestAcc = bres.acc;
+                    bestWhypNumber = bres.usedClassifierAvg;
+                    
+                    FILE* qTableFile = fopen("QTable.dta", "w");
+                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile);
+                    fclose(qTableFile);
+                    
+                    FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
+                    fprintf(improvementLogFile, "%i\n", i);
+                    fclose(improvementLogFile);
+				}
                 
                 // TEST stats
 						
@@ -1063,14 +1078,14 @@ int main(int argc, const char *argv[])
                     //                dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveActionTable(actionTableFile2);
                     //                fclose(actionTableFile2);
                     
-                    cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
-                    cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;
-                    cout << "******** Sum of rewards on Test: " << bres.avgReward << endl;
-                    
-                    cout << endl << "----> Best accuracy so far ( " << bestEpNumber << " ) : " << bestAcc << endl << "----> Num of whyp used : " << bestWhypNumber << endl << endl;
+                    cout << "--> Overall Test accuracy by MDP: " << bres.acc << " (" << ovaccTest << ")" << endl;
+                    cout << "--> Average Test classifier used: " << bres.usedClassifierAvg << endl;
+                    cout << "--> Sum of rewards on Test: " << bres.avgReward << endl << endl;
                     
                     classifierContinous->outPutStatistic( bres );
                 }
+                
+                cout << "---------------------------------" << endl;
                     
                 if (sptype == 5) {
                     std::stringstream ss;
@@ -1079,9 +1094,6 @@ int main(int argc, const char *argv[])
                     dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile2);
                     fclose(qTableFile2);                    
                 }
-                
-				
-                
                 
                 if (sptype==3)
                 {
@@ -1155,21 +1167,6 @@ int main(int argc, const char *argv[])
                     
 
                     //					dynamic_cast<RBFBasedQFunctionBinary*>(qData)->saveQTable("QTable.dta");
-				}
-
-                if ((bres.acc > bestAcc)&&(sptype==5)) {
-                    bestEpNumber = i;
-                    bestAcc = bres.acc;
-                    bestWhypNumber = bres.usedClassifierAvg;
-                    
-                    FILE* qTableFile = fopen("QTable.dta", "w");
-                    dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile);
-                    fclose(qTableFile);
-                    
-                    FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
-                    fprintf(improvementLogFile, "%i\n", i);
-                    fclose(improvementLogFile);
-                    
 				}
                 
                 //stringstream ss;
