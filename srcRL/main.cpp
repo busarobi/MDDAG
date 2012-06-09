@@ -59,6 +59,7 @@ using namespace std;
 using namespace MultiBoost;
 using namespace Torch;
 
+#define SEP setw(15)
 
 //#define LOGQTABLE				
 //////////////////////////////////////////////////////////////////////////
@@ -936,11 +937,11 @@ int main(int argc, const char *argv[])
 			
 			if ((i>2)&&((i%1000)==0))
 			{
-				cout << "Episode number:" << "\t\t"  << i << endl;		
-				cout << "Current Accuracy:" << "\t\t" << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
-				cout << "Used Classifier:" << "\t\t" << ((float)usedClassifierNumber / 1000.0) << endl;						
-				cout << "Current alpha:"  << "\t\t"  << currentAlpha << endl;
-				cout << "Current Epsilon:"  << "\t\t"  << currentEpsilon << endl;
+				cout << "Episode number:  " << SEP  << i << endl;		
+				cout << "Current Accuracy:" << SEP << (((float)ges_succeeded / ((float)(ges_succeeded+ges_failed))) * 100.0) << endl;;
+				cout << "Used Classifier: " << SEP << ((float)usedClassifierNumber / 1000.0) << endl;						
+				cout << "Current alpha:   "  << SEP  << currentAlpha << endl;
+				cout << "Current Epsilon: "  << SEP  << currentEpsilon << endl;
 				cout << "---------------------------------" << endl;
 				usedClassifierNumber = 0;                
 			}
