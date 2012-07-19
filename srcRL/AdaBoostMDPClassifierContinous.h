@@ -60,7 +60,8 @@ namespace MultiBoost {
 		int						_classNum;
 		int						_classifierNumber; // number of classifier used during the episode
 		vector<bool>			_classifierUsed; // store which classifier was used during the process
-		
+		vector<double>			_classifiersOutput;
+        
 		// rewards
 		double					_classificationReward;
 		double					_skipReward;
@@ -108,6 +109,7 @@ namespace MultiBoost {
 		int getNumClasses() { return _data->getClassNumber(); };
 		int getNumExamples() { return _data->getNumExamples(); }
 		void getHistory( vector<bool>& history );
+        void getClassifiersOutput( vector<double>& classifiersOutput );
 		void getCurrentExmapleResult( vector<double>& result );
 		
 		void setCurrentDataToTrain() { _data->setCurrentDataToTrain(); }

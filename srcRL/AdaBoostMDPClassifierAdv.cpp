@@ -330,6 +330,9 @@ namespace MultiBoost {
 			//cout << "Classifiying: " << wHypInd << endl;
 		}
 		
+        //tmp
+        int vote = 0;
+        
 		if ( wHypInd >= _numIterations ) return -1.0; // indicating error						
 		
 		const int numClasses = _pCurrentData->getNumClasses();				
@@ -352,12 +355,14 @@ namespace MultiBoost {
 		{
 			BaseLearner* currWeakHyp = _weakHypotheses[wHypInd];
 			alpha = currWeakHyp->getAlpha();
+            
+            vote = currWeakHyp->classify(_pCurrentData, instance, 0);
 
 			for (int l = 0; l < numClasses; ++l)
 				currVotesVector[l] += alpha * currWeakHyp->classify(_pCurrentData, instance, l);
 		}
 		
-		return alpha;
+		return alpha * vote;
 	}
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------

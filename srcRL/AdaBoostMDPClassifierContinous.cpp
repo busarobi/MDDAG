@@ -40,6 +40,9 @@ namespace MultiBoost {
 		_outputStream.open( tmpFname.c_str() );
 		
 		_sumAlpha = _data->getSumOfAlphas();
+        
+        cout << "[+] Sum of alphas: " << _sumAlpha << endl;
+        
 		_classifierUsed.resize(_data->getIterationNumber());
 		
 		if (args.hasArgument("rewards"))
@@ -127,8 +130,10 @@ namespace MultiBoost {
 		}
 		else if (mode == 1 ) // classify
 		{	
-			_currentSumAlpha += _data->classifyKthWeakLearner(_currentClassifier,_currentRandomInstance,_exampleResult);
+            double classifierOutput = _data->classifyKthWeakLearner(_currentClassifier,_currentRandomInstance,_exampleResult);
+			_currentSumAlpha += classifierOutput;
 			_classifierUsed[_currentClassifier]=true;
+            _classifiersOutput.push_back(classifierOutput);
 			_classifierNumber++; 
 			_currentClassifier++;						
 		} else if (mode == 2 ) // jump to end			
@@ -164,6 +169,7 @@ namespace MultiBoost {
 		
 		fill( currVotesVector.begin(), currVotesVector.end(), 0.0 );		
 		fill( _classifierUsed.begin(), _classifierUsed.end(), false );
+        _classifiersOutput.clear();
 			
 	}
 	// -----------------------------------------------------------------------
@@ -322,7 +328,15 @@ namespace MultiBoost {
 		history.resize( _classifierUsed.size() );
 		copy( _classifierUsed.begin(), _classifierUsed.end(), history.begin() );
 	}
+
+    // -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
+	void AdaBoostMDPClassifierContinous::getClassifiersOutput( vector<double>& classifiersOutput )
+	{
+		classifiersOutput.resize( _classifiersOutput.size() );
+		copy( _classifiersOutput.begin(), _classifiersOutput.end(), classifiersOutput.begin() );
+	}
+    // -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------	
 	void AdaBoostMDPClassifierContinous::getCurrentExmapleResult( vector<double>& result )
 	{

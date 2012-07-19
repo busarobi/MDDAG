@@ -844,7 +844,7 @@ int main(int argc, const char *argv[])
             bres.origAcc = ovaccTrain;
             
             string logFileName = args.getValue<string>("testmdp", 1);
-            evalTrain.classficationAccruacy(bres,logFileName);
+            evalTrain.classficationAccruacy(bres,logFileName, true);
             
             classifierContinous->setCurrentDataToTest();
             AdaBoostMDPBinaryDiscreteEvaluator<AdaBoostMDPClassifierContinousBinary> evalTest( agentContinous, rewardFunctionContinous );
@@ -853,7 +853,7 @@ int main(int argc, const char *argv[])
 //            bres.iterNumber=0;
             string logFileName2 = args.getValue<string>("testmdp", 2);
             
-            evalTest.classficationAccruacy(bres,logFileName2);			
+            evalTest.classficationAccruacy(bres,logFileName2, true);			
             
             cout << "******** Overall Test accuracy by MDP: " << bres.acc << "(" << ovaccTest << ")" << endl;
             cout << "******** Average Test classifier used: " << bres.usedClassifierAvg << endl;

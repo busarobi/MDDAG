@@ -156,7 +156,7 @@ namespace MultiBoost {
 		{
 		}
 		
-		void classficationAccruacy( BinaryResultStruct& binRes, const string &logFileName )
+		void classficationAccruacy( BinaryResultStruct& binRes, const string &logFileName, bool detailed = false )
 		{
 			double value = 0.0;
             double negNumEval = 0.0;
@@ -179,6 +179,7 @@ namespace MultiBoost {
 			int correctN=0;
 			int negNum=0;
 			ofstream output;
+            ofstream detailedOutput;
 			vector<double> currentVotes(0);
 			vector<bool> currentHistory(0);
 			
@@ -186,8 +187,14 @@ namespace MultiBoost {
 			{
 				output.open( logFileName.c_str() );			
 				cout << "Output classfication result: " << logFileName << endl;
+                
+                if ( detailed ) {
+                    string logFileNameDetailed = logFileName + ".detailed";
+                    detailedOutput.open(logFileNameDetailed.c_str());
+                }                
 			}
 			
+            
 			for (int i = 0; i < numTestExamples; i ++)
 			{
 				
@@ -235,8 +242,17 @@ namespace MultiBoost {
 						if ( currentHistory[i] )
 							output << i+1 << " ";
 					}
-					
+                    
 					output << endl << flush;
+                    
+                    if (detailed) {
+                        vector<double> classifiersOutput;
+                        classifier->getClassifiersOutput(classifiersOutput);
+                        for (int i = 0; i < classifiersOutput.size(); ++i) {
+                            detailedOutput << classifiersOutput[i] << " ";
+                        }
+                        detailedOutput << endl << flush;
+                    }
 				}
 				
 				//if ((i>10)&&((i%100)==0))
