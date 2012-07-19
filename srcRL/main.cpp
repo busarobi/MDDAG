@@ -1050,9 +1050,9 @@ int main(int argc, const char *argv[])
                     dynamic_cast<GSBNFBasedQFunction*>(qData)->saveActionValueTable(qTableFile);
                     fclose(qTableFile);
                     
-                    FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
-                    fprintf(improvementLogFile, "%i\n", i);
-                    fclose(improvementLogFile);
+//                    FILE *improvementLogFile = fopen("ImprovementLog.dta", "a");
+//                    fprintf(improvementLogFile, "%i\n", i);
+//                    fclose(improvementLogFile);
 				}
                 
                 // TEST stats
